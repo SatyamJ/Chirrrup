@@ -43,51 +43,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
-        let requestToken = BDBOAuth1Credential(queryString: url.query)
-        let twitterClient = BDBOAuth1SessionManager(baseURL: NSURL(string: "https://api.twitter.com"), consumerKey: "qPDZMKsesEU2VqRQycEbtWtEs", consumerSecret: "Wx8KLHmRQn2L3XXDDqmGtBBlr742r75XhXbfZTJTbheH3YPjqY")
-        
-        twitterClient.fetchAccessTokenWithPath("oauth/access_token", method: "POST", requestToken: requestToken,
-            success: { (accessToken: BDBOAuth1Credential!) -> Void in
-                print("Got access token")
-            
-                twitterClient.GET("1.1/account/verify_credentials.json", parameters: nil,
-                    success: { (task: NSURLSessionDataTask, response: AnyObject?) -> Void in
-                        var user = User(user_dictionary: response as! NSDictionary)
-                        print("name: \(user.name)")
-                        print("screen name: \(user.screen_name)")
-                        print("profile image url: \(user.user_profile_image_url)")
-                        print("tagline: \(user.tagline)")
-                    },
-                    failure: { (task: NSURLSessionDataTask?, error: NSError) -> Void in
-                        print("Verify credentials error: \(error)")
-                    }
-                )
-            
-                twitterClient.GET("1.1/statuses/home_timeline.json", parameters: nil,
-                    success: { (task: NSURLSessionDataTask, response: AnyObject?) -> Void in
-                        print("Home timeline tweets")
-                
-                        let tweetsArrayDictionary = response as! [NSDictionary]
-                        let tweets = Tweets.arrayOfTweets(tweetsArrayDictionary)
-                        
-                        for tweet in tweets{
-                            print("Tweet: \(tweet.text)")
-                            print("Retweet count: \(tweet.retweet_count)")
-                            print("Likes: \(tweet.likes_count)")
-                            print("Date-Time: \(tweet.timestamp)")
-                        }
-                
-                    },
-                    failure: { (task: NSURLSessionDataTask?, error: NSError) -> Void in
-                        print("home timeline error: \(error)")
-                    }
-                )
-            }
-        )
-        { (error: NSError!) -> Void in
-                print("Access token error: \(error)")
-        }
+
+        let client = TwitterClient.sharedInstance
+        client.handleOpenUrl(url)
+
         return true
     }
-}
 
+}
