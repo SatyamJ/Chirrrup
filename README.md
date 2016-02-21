@@ -41,8 +41,8 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-I'm still confused with infinite scroll
-Remember steps for creating an API client was difficult to me
+- I'm still confused with infinite scroll
+- Remembering steps for creating an API client was difficult to me
 
 ## License
 
