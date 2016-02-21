@@ -112,4 +112,60 @@ class TwitterClient: BDBOAuth1SessionManager {
             }
         )
     }
+    
+    
+    func retweet(tweetId: String, success: () -> (), failure: (NSError) -> () ){
+        
+        POST("1.1/statuses/retweet/\(tweetId).json", parameters: nil, progress: nil,
+            success: { (task: NSURLSessionDataTask, response: AnyObject?) -> Void in
+                print("Retweeted \(tweetId)")
+                
+                success()
+            },
+            failure: { (task: NSURLSessionDataTask?, error: NSError) -> Void in
+                failure(error)
+            }
+        )
+    }
+    
+    func unretweet(tweetId: String, success: () -> (), failure: (NSError) -> () ){
+        
+        POST("1.1/statuses/unretweet/\(tweetId).json", parameters: nil, progress: nil,
+            success: { (task: NSURLSessionDataTask, response: AnyObject?) -> Void in
+                print("Retweet undone \(tweetId)")
+                
+                success()
+            },
+            failure: { (task: NSURLSessionDataTask?, error: NSError) -> Void in
+                failure(error)
+            }
+        )
+    }
+    
+    func like(tweetId: String, success: () -> (), failure: (NSError) -> () ){
+        
+        POST("1.1/favorites/create.json?id=\(tweetId)", parameters: nil, progress: nil,
+            success: { (task: NSURLSessionDataTask, response: AnyObject?) -> Void in
+                print("Liked \(tweetId)")
+                
+                success()
+            },
+            failure: { (task: NSURLSessionDataTask?, error: NSError) -> Void in
+                failure(error)
+            }
+        )
+    }
+    
+    func unlike(tweetId: String, success: () -> (), failure: (NSError) -> () ){
+        
+        POST("1.1/favorites/destroy.json?id=\(tweetId)", parameters: nil, progress: nil,
+            success: { (task: NSURLSessionDataTask, response: AnyObject?) -> Void in
+                print("Unlike \(tweetId)")
+                success()
+            },
+            failure: { (task: NSURLSessionDataTask?, error: NSError) -> Void in
+                failure(error)
+            }
+        )
+    }
 }

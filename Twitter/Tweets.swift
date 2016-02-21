@@ -17,6 +17,10 @@ class Tweets: NSObject {
     var username: NSString?
     var user_screenname: NSString?
     var user:User?
+    var retweetedBy: NSString?
+    var retweeted: Bool?
+    var liked: Bool?
+    var tweetId: NSString?
     
     init(tweet_dictionary: NSDictionary){
         text = tweet_dictionary["text"] as? String
@@ -47,6 +51,23 @@ class Tweets: NSObject {
                 self.user_screenname = user_screenname
             }
         }
+        
+        if let retweetedBy = tweet_dictionary["in_reply_to_user_id_str"] as? String{
+            self.retweetedBy = retweetedBy
+        }
+        
+        if let retweeted = tweet_dictionary["retweed"]{
+            self.retweeted = retweeted as? Bool
+        }
+        
+        if let liked = tweet_dictionary["favourited"]{
+            self.liked = liked as? Bool
+        }
+        
+        if let tweetId = tweet_dictionary["id_str"]{
+            self.tweetId = tweetId as! String
+        }
+        
         
     }
     

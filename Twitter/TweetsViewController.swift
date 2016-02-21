@@ -17,20 +17,27 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Twitter Twitz"
+        navigationController?.navigationBar.backgroundColor = UIColor.blueColor()
+        navigationController?.navigationBar.tintColor = UIColor.blueColor()
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.grayColor()]
+        
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 120
         
         TwitterClient.sharedInstance.homeTimeline({ (tweets:[Tweets]) -> () in
             self.tweets = tweets
             self.tableView.reloadData()
-            
+            /*
             for tweet in tweets{
                 print("Tweet: \(tweet.text)")
                 print("Retweet count: \(tweet.retweet_count)")
                 print("Likes: \(tweet.likes_count)")
                 print("Date-Time: \(tweet.timestamp)")
                 
-            }
+            }*/
             }) { (error: NSError) -> () in
                 print("Error: \(error.localizedDescription)")
         }
@@ -63,6 +70,12 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         cell.tweet = self.tweets![indexPath.row]
         return cell
     }
+    
+    
+    
+    
+    
+    
     /*
     // MARK: - Navigation
 
