@@ -17,6 +17,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        if User.currentUser != nil {
+            print("There is a current user")
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewControllerWithIdentifier("TweetsNavigationController")
+            window?.rootViewController = vc
+        }
+        else{
+            print("There is no current user")
+        }
+        
+        NSNotificationCenter.defaultCenter().addObserverForName("userDidLogout", object: nil, queue: NSOperationQueue.mainQueue()) { (NSNotification) -> Void in
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateInitialViewController()
+            self.window?.rootViewController = vc
+        }
         return true
     }
     
