@@ -43,18 +43,9 @@ class TweetCell: UITableViewCell {
             self.userHandleLabel.text = "@\(tweet!.user_screenname!)" //as String
             
             if let date = tweet!.timestamp {
-                //let formatter = NSDateFormatter()
-                //formatter.dateFormat = "MM/dd/yyyy"
-                //self.timeLabel.text = formatter.stringFromDate(date)
-//                self.timeLabel.text = "\(tweet!.timestamp)"
-                //let currentDate = NSDate!.self
-                let elapsed = NSDate().offsetFrom(date)
                 self.timeLabel.text = NSDate().offsetFrom(date)
-                print("elapsed: \(elapsed)")
-                
-                
-                
             }
+            
             self.tweetTextLabel.text = tweet!.text! as String
             self.retweetCountLabel.text = "\(tweet!.retweet_count)"
             self.likesCountLabel.text = "\(tweet!.likes_count)"
