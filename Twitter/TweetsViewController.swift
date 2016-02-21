@@ -17,9 +17,10 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.title = "Twitter Twitz"
-        navigationController?.navigationBar.backgroundColor = UIColor.blueColor()
-        navigationController?.navigationBar.tintColor = UIColor.blueColor()
+        navigationController?.navigationBar.backgroundColor = UIColor.blackColor()
+        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.grayColor()]
         
         tableView.dataSource = self
@@ -27,22 +28,35 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 120
         
+        requestNetworkData()
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: "refreshControlAction:", forControlEvents: UIControlEvents.ValueChanged)
+        tableView.insertSubview(refreshControl, atIndex: 0)
+        
+        // Do any additional setup after loading the view.
+    }
+    
+    func refreshControlAction(refreshControl: UIRefreshControl){
+        requestNetworkData()
+        refreshControl.endRefreshing()
+    }
+    
+    func requestNetworkData(){
         TwitterClient.sharedInstance.homeTimeline({ (tweets:[Tweets]) -> () in
             self.tweets = tweets
             self.tableView.reloadData()
             /*
             for tweet in tweets{
-                print("Tweet: \(tweet.text)")
-                print("Retweet count: \(tweet.retweet_count)")
-                print("Likes: \(tweet.likes_count)")
-                print("Date-Time: \(tweet.timestamp)")
-                
+            print("Tweet: \(tweet.text)")
+            print("Retweet count: \(tweet.retweet_count)")
+            print("Likes: \(tweet.likes_count)")
+            print("Date-Time: \(tweet.timestamp)")
+            
             }*/
             }) { (error: NSError) -> () in
                 print("Error: \(error.localizedDescription)")
         }
-
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {

@@ -17,11 +17,35 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sjc-4I-eYc">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Twitter_logo" translatesAutoresizingMaskIntoConstraints="NO" id="wU0-QH-PAC">
+                                <rect key="frame" x="35" y="344" width="48" height="48"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Twitter Twitz" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="67Q-be-sze">
+                                <rect key="frame" x="74" y="71" width="173" height="35"/>
+                                <color key="backgroundColor" red="0.39095906260000002" green="0.64431938879999995" blue="0.85342359290000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="29"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <color key="shadowColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Copyright © 2016 Satyam Jaiswal. All rights reserved" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qh8-DT-LJW">
+                                <rect key="frame" x="46" y="507" width="228" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sjc-4I-eYc">
                                 <rect key="frame" x="86" y="392" width="149" height="39"/>
                                 <color key="backgroundColor" red="0.26897124183357135" green="0.68362853266641976" blue="0.86391524869109948" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Login with Twitter">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="Login with Twitter">
+                                            <attributes>
+                                                <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <font key="NSFont" size="15" name="HelveticaNeue"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
                                 </state>
                                 <connections>
                                     <action selector="onClickLoginButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="viD-ft-vBF"/>
@@ -51,7 +75,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="132" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Nji-uc-rev">
-                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TweetCell" rowHeight="132" id="LPe-HA-grn" customClass="TweetCell" customModule="Twitter" customModuleProvider="target">
@@ -190,7 +214,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Nji-uc-rev" firstAttribute="leading" secondItem="sS1-Y4-zHI" secondAttribute="leading" id="DMe-iH-48m"/>
-                            <constraint firstItem="Nji-uc-rev" firstAttribute="top" secondItem="gAA-bL-Uee" secondAttribute="bottom" id="Pza-mA-tar"/>
+                            <constraint firstItem="Nji-uc-rev" firstAttribute="top" secondItem="gAA-bL-Uee" secondAttribute="bottom" constant="-64" id="Pza-mA-tar"/>
                             <constraint firstAttribute="trailing" secondItem="Nji-uc-rev" secondAttribute="trailing" id="U70-Qg-e6I"/>
                             <constraint firstItem="mnB-6X-fRb" firstAttribute="top" secondItem="Nji-uc-rev" secondAttribute="bottom" id="zxk-Et-akN"/>
                         </constraints>
@@ -202,6 +226,7 @@
                                 <action selector="onClickLogutButton:" destination="VM5-W0-ca0" id="gRF-fx-2Rh"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="Twitter_logo" id="BQL-V0-oiv"/>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="Nji-uc-rev" id="nQN-S8-cfP"/>
@@ -231,6 +256,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Twitter_logo" width="48" height="48"/>
         <image name="like" width="54" height="72"/>
         <image name="reply" width="65" height="72"/>
         <image name="retweet" width="75" height="72"/>
