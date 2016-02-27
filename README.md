@@ -62,7 +62,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
     
     
     
-    # Project 5 - *Twitter Twitz*
+# Project 5 - *Twitter Twitz*
 
 Time spent: **X** hours spent in total
 
