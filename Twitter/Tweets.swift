@@ -23,9 +23,18 @@ class Tweets: NSObject {
     var tweetId: NSString?
     
     init(tweet_dictionary: NSDictionary){
+        if let text = tweet_dictionary["text"]{
+            self.text = text as? String
+        }
+        
+        if let retweet_count = tweet_dictionary["retweet_count"] {
+            self.retweet_count = retweet_count as? Int ?? 0
+        }
+        
+        /*
         text = tweet_dictionary["text"] as? String
         retweet_count = (tweet_dictionary["retweet_count"] as? Int) ?? 0
-        
+        */
         if let user = tweet_dictionary["user"] as? NSDictionary{
             self.user = User(user_dictionary: user)
             likes_count = (user["favourites_count"] as? Int) ?? 0
@@ -41,8 +50,9 @@ class Tweets: NSObject {
         }
         
         
-        
+        /*
         if let user = tweet_dictionary["user"] as? NSDictionary{
+            
             if let username = user["name"] as? String{
                 self.username = username
             }
@@ -50,7 +60,10 @@ class Tweets: NSObject {
             if let user_screenname = user["screen_name"] as? String{
                 self.user_screenname = user_screenname
             }
-        }
+        }*/
+        
+        self.username = tweet_dictionary["user"]?["name"] as? String
+        self.user_screenname = tweet_dictionary["user"]?["screen_name"] as? String
         
         if let retweetedBy = tweet_dictionary["in_reply_to_user_id_str"] as? String{
             self.retweetedBy = retweetedBy

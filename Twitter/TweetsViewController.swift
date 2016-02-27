@@ -82,6 +82,9 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as! TweetCell
         cell.tweet = self.tweets![indexPath.row]
+        //cell.table = self.tableView
+        //cell.index = indexPath
+        //cell.row = indexPath.row
         return cell
     }
     
@@ -90,14 +93,27 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     
     
     
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "TweetDetailsSegue"{
+            let cell = sender as! TweetCell
+            let indexPath = tableView.indexPathForCell(cell)
+            
+            let dvc = segue.destinationViewController as! TweetDetailsViewController
+            
+            //dvc.table = self.tableView
+            dvc.tweet = self.tweets![indexPath!.row] as Tweets
+            //print(self.tweets![indexPath!.row].username)
+            
+            let bgView = UIView()
+            bgView.backgroundColor = UIColor.grayColor()
+            cell.selectedBackgroundView = bgView
+
+            tableView.deselectRowAtIndexPath(indexPath!, animated: true)
+        }
     }
-    */
 
 }

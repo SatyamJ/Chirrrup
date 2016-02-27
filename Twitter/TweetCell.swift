@@ -36,6 +36,9 @@ class TweetCell: UITableViewCell {
     var retweeted: Bool?
     var liked: Bool?
     var tweetId: String?
+    var table: UITableView?
+    var index: NSIndexPath?
+    var row: Int?
     
     var tweet:Tweets? {
         didSet{
@@ -106,6 +109,9 @@ class TweetCell: UITableViewCell {
                 success: { () -> () in
                     self.retweetImage.image = UIImage(named: "retweet")
                     self.retweeted = false
+                    self.tweet?.retweet_count -= 1
+                    self.retweetCountLabel.text = "\((self.tweet?.retweet_count)!)"
+                    
                 }, failure: { (error: NSError) -> () in
                     print("Unretweet Error: \(error.localizedDescription)")
             })
@@ -114,36 +120,22 @@ class TweetCell: UITableViewCell {
                 success: { () -> () in
                     self.retweetImage.image = UIImage(named: "retweeted")
                     self.retweeted = true
+                    self.tweet?.retweet_count += 1
+                    self.retweetCountLabel.text = "\((self.tweet?.retweet_count)!)"
                 }, failure: { (error: NSError) -> () in
                     print("Retweet Error: \(error.localizedDescription)")
-                
             })
-        }
-        
-        if (self.retweeted == true){
-            self.retweetImage.image = UIImage(named: "retweet")
-            self.retweeted = false
-        }else{
-            self.retweetImage.image = UIImage(named: "retweeted")
-            self.retweeted = true
         }
     }
     
     func tappedLike(){
-        /*
-        if (self.liked == true){
-            self.likeImage.image = UIImage(named: "like")
-            self.liked = false
-        }else{
-            self.likeImage.image = UIImage(named: "liked")
-            self.liked = true
-        }*/
-        
         if self.liked == true{
             TwitterClient.sharedInstance.unlike(self.tweetId!,
                 success: { () -> () in
                     self.likeImage.image = UIImage(named: "like")
                     self.liked = false
+                    self.tweet?.likes_count -= 1
+                    self.likesCountLabel.text = "\((self.tweet?.likes_count)!)"
                 }, failure: { (error: NSError) -> () in
                     print("Tweet Unlike error: \(error.localizedDescription)")
             })
@@ -152,15 +144,14 @@ class TweetCell: UITableViewCell {
                 success: { () -> () in
                     self.likeImage.image = UIImage(named: "liked")
                     self.liked = true
+                    self.tweet?.likes_count += 1
+                    self.likesCountLabel.text = "\((self.tweet?.likes_count)!)"
                 }, failure: { (error: NSError) -> () in
                     print("Tweet Like error: \(error.localizedDescription)")
             })
             
         }
     }
-    
-    
-
 }
 
 extension NSDate {
@@ -186,6 +177,7 @@ extension NSDate {
         return NSCalendar.currentCalendar().components(.Second, fromDate: date, toDate: self, options: []).second
     }
     func offsetFrom(date:NSDate) -> String {
+        
         if yearsFrom(date)   > 0 { return "\(yearsFrom(date))y"   }
         if monthsFrom(date)  > 0 { return "\(monthsFrom(date))M"  }
         if weeksFrom(date)   > 0 { return "\(weeksFrom(date))w"   }
