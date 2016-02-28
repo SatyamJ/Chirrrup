@@ -22,6 +22,7 @@ class TweetCell: UITableViewCell {
     
     @IBOutlet weak var likesCountLabel: UILabel!
     
+    
     @IBOutlet weak var userProfileImageView: UIImageView!
     
     @IBOutlet weak var retweetedByLabel: UILabel!
@@ -95,12 +96,25 @@ class TweetCell: UITableViewCell {
         self.likeImage.addGestureRecognizer(tapLike)
         self.likeImage.userInteractionEnabled = true
         
+        let tapProfileImage = UITapGestureRecognizer(target: self, action: Selector("tappedProfileImage"))
+        self.userProfileImageView.addGestureRecognizer(tapProfileImage)
+        self.userProfileImageView.userInteractionEnabled = true
+        
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func tappedProfileImage(){
+        /*
+        let destination = UIViewController() as! UserTimelineViewController // Your destination
+        let vc = UIViewController as UserTimelineViewController
+        let n = UINavigationController(rootViewController: UserTimelineViewController)
+        //navigationController?.pushViewController(destination, animated: true)
+        */
     }
     
     func tappedRetweet(){

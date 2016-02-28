@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TweetDetailsViewController: UIViewController {
+class TweetDetailsViewController: UIViewController, UITextFieldDelegate {
     
     var tweetid: String?
     
@@ -32,6 +32,13 @@ class TweetDetailsViewController: UIViewController {
     
     @IBOutlet weak var likeImageView: UIImageView!
     
+    @IBOutlet weak var replyTextField: UITextField!
+    
+    @IBOutlet weak var replyTweetButton: UIButton!
+    
+    @IBOutlet weak var replyUIView: UIView!
+    
+    
     var tweet: Tweets?
     var retweeted: Bool?
     var liked: Bool?
@@ -39,17 +46,27 @@ class TweetDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.replyTextField.delegate = self
         
         if let profile_image_url = tweet?.profile_image_url{
                 tweetProfileImageView.setImageWithURL(profile_image_url)
         }
         
         tweetUsernameLabel.text = tweet?.username as? String ?? ""
-        tweetHandleLabel.text = tweet?.user_screenname as? String ?? ""
+        //tweetHandleLabel.text = tweet?.user_screenname as? String ?? ""
+        
+        if let tweet_handle = tweet?.user_screenname{
+            tweetHandleLabel.text = "@\(tweet_handle)"
+        }
         tweetTextLabel.text = tweet?.text as? String ?? ""
         
         if let tweet_timestamp = tweet?.timestamp{
-            tweetTimestampLabel.text = "\(tweet_timestamp)"
+            let formatter = NSDateFormatter()
+            formatter.dateStyle = .MediumStyle
+            formatter.timeStyle = .MediumStyle
+            
+            let dateString = formatter.stringFromDate(tweet_timestamp)
+            tweetTimestampLabel.text = "\(dateString)"
         }
         
         if let tweet_retweet_count = tweet?.retweet_count{
@@ -72,6 +89,8 @@ class TweetDetailsViewController: UIViewController {
             self.tweetId = tweetId as String
         }
         
+        
+        
         // Do any additional setup after loading the view.
         let tapRetweet = UITapGestureRecognizer(target: self, action: Selector("tappedRetweet"))
         self.retweetImageView.addGestureRecognizer(tapRetweet)
@@ -80,6 +99,14 @@ class TweetDetailsViewController: UIViewController {
         let tapLike = UITapGestureRecognizer(target: self, action: Selector("tappedLike"))
         self.likeImageView.addGestureRecognizer(tapLike)
         self.likeImageView.userInteractionEnabled = true
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil);
+
+    }
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        self.replyTextField.text = self.tweetHandleLabel.text
     }
 
     override func didReceiveMemoryWarning() {
@@ -148,7 +175,33 @@ class TweetDetailsViewController: UIViewController {
         }
     }
     
-
+    
+    @IBAction func onTapBackground(sender: AnyObject) {
+        self.replyTextField.resignFirstResponder()
+    }
+    
+    
+    func keyboardWillShow(sender: NSNotification) {
+        self.view.frame.origin.y -= 220
+        //print("moving frame up")
+    }
+    
+    func keyboardWillHide(sender: NSNotification) {
+        self.view.frame.origin.y += 220
+        //print("moving frame down")
+    }
+    
+    
+    @IBAction func onClickTweetButton(sender: AnyObject) {
+        let status = self.replyTextField.text! as String
+        print(status)
+        TwitterClient.sharedInstance.replyToTweet(self.tweetId!, status: status ,success: { () -> () in
+                self.replyTextField.resignFirstResponder()
+            }) { (error: NSError) -> () in
+                print("Error in tweet reply: \(error.localizedDescription)")
+        }
+    }
+    
     /*
     // MARK: - Navigation
 

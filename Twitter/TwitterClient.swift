@@ -168,4 +168,17 @@ class TwitterClient: BDBOAuth1SessionManager {
             }
         )
     }
+    
+    func replyToTweet(tweetId: String, status: String, success: () -> (), failure: (NSError) -> () ){
+        print(tweetId)
+        POST("1.1/statuses/update.json?in_reply_to_status_id_str=\(tweetId)&status=\(status)", parameters: nil, progress: nil,
+            success: { (task: NSURLSessionDataTask, response: AnyObject?) -> Void in
+                print("Replied to: \(tweetId)")
+                success()
+            },
+            failure: { (task: NSURLSessionDataTask?, error: NSError) -> Void in
+                failure(error)
+            }
+        )
+    }
 }
