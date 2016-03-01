@@ -20,7 +20,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "Twitter Twitz"
+        //self.title = "Twitter Twitz"
         navigationController?.navigationBar.backgroundColor = UIColor.blackColor()
         navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.grayColor()]
@@ -139,8 +139,27 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
             }else{
                 dvc.user = self.user
                 owner = true
-                dvc.title = "\(self.user?.name)"
+                dvc.title = self.user?.name as? String ?? ""
             }
+        }
+    }
+    
+    @IBAction func unwindToHomeTimeline(sender: UIStoryboardSegue) {
+        print("inside unwindToHomeTimeline")
+        /*if let sourceViewController = sender.sourceViewController as? MealViewController, meal = sourceViewController.meal {
+            // Add a new meal.
+            let newIndexPath = NSIndexPath(forRow: meals.count, inSection: 0)
+            meals.append(meal)
+            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+        }*/
+        let sourceViewController = sender.sourceViewController as? ComposeTweetViewController
+        let newStatus = sourceViewController!.newTweetTextField.text! as String
+        print(newStatus)
+        TwitterClient.sharedInstance.replyToTweet("", status: newStatus ,success: { () -> () in
+            
+            sourceViewController!.newTweetTextField.resignFirstResponder()
+            }) { (error: NSError) -> () in
+                print("Error in tweet reply: \(error.localizedDescription)")
         }
     }
 

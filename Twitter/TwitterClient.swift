@@ -171,7 +171,15 @@ class TwitterClient: BDBOAuth1SessionManager {
     
     func replyToTweet(tweetId: String, status: String, success: () -> (), failure: (NSError) -> () ){
         print(tweetId)
-        POST("1.1/statuses/update.json?in_reply_to_status_id_str=\(tweetId)&status=\(status)", parameters: nil, progress: nil,
+        
+        var params = [String: AnyObject]()
+        params["status"] = status
+        
+        if tweetId.characters.count > 0 {
+            params["in_reply_to_status_id"] = tweetId
+        }
+        
+        POST("1.1/statuses/update.json", parameters: params, progress: nil,
             success: { (task: NSURLSessionDataTask, response: AnyObject?) -> Void in
                 print("Replied to: \(tweetId)")
                 success()
