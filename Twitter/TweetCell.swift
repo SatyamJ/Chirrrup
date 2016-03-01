@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol CellDelegate {
+    func onTapCellProfileImage(sender: AnyObject?)
+}
+
 class TweetCell: UITableViewCell {
 
     @IBOutlet weak var nameLabek: UILabel!
@@ -33,6 +37,8 @@ class TweetCell: UITableViewCell {
     
     @IBOutlet weak var likeImage: UIImageView!
     
+    var delegate: CellDelegate?
+    let profileImageTapGes = UITapGestureRecognizer()
     
     var retweeted: Bool?
     var liked: Bool?
@@ -82,7 +88,16 @@ class TweetCell: UITableViewCell {
             if let tweetId = tweet?.tweetId{
                 self.tweetId = tweetId as String
             }
+            
+            profileImageTapGes.addTarget(self, action: "profileImageTapGestureAction:")
+            userProfileImageView.addGestureRecognizer(profileImageTapGes)
+            userProfileImageView.userInteractionEnabled = true
         }
+    }
+    
+    func profileImageTapGestureAction(sender: AnyObject) {
+        //print("profileImageTapGestureAction method called")
+        delegate?.onTapCellProfileImage(sender)
     }
     
     override func awakeFromNib() {

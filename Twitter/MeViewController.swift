@@ -28,10 +28,10 @@ class MeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Me"
+        //self.title = "Me"
         
-        if let user = User.currentUser{
-            self.user = user
+        if let user = self.user{
+            //self.user = user
             
             self.profileImageView.setImageWithURL(user.user_profile_image_url!)
             self.usernameLabel.text = user.name as? String

@@ -9,11 +9,13 @@
 import UIKit
 import AFNetworking
 
-class TweetsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class TweetsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CellDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
     var tweets: [Tweets]?
+    var user: User?
+    var owner = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +37,17 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.insertSubview(refreshControl, atIndex: 0)
         
         // Do any additional setup after loading the view.
+    }
+    
+    func onTapCellProfileImage(sender: AnyObject?){
+        //print("onTapCellProfileImage")
+        self.owner = false
+        let recog = sender as! UITapGestureRecognizer
+        let view = recog.view
+        let cell = view!.superview?.superview as! TweetCell
+        let indexPath = tableView.indexPathForCell(cell)
+        self.user = tweets![indexPath!.row].user
+        performSegueWithIdentifier("mePushSegue", sender: nil)
     }
     
     func refreshControlAction(refreshControl: UIRefreshControl){
@@ -85,6 +98,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         //cell.table = self.tableView
         //cell.index = indexPath
         //cell.row = indexPath.row
+        cell.delegate = self
         return cell
     }
     
@@ -98,10 +112,11 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        
         if segue.identifier == "TweetDetailsSegue"{
             let cell = sender as! TweetCell
             let indexPath = tableView.indexPathForCell(cell)
-            
             let dvc = segue.destinationViewController as! TweetDetailsViewController
             
             //dvc.table = self.tableView
@@ -113,6 +128,19 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
             cell.selectedBackgroundView = bgView
 
             tableView.deselectRowAtIndexPath(indexPath!, animated: true)
+        }
+        
+        if segue.identifier == "mePushSegue" {
+            
+            let dvc = segue.destinationViewController as! MeViewController
+            if owner{
+                dvc.user = User.currentUser
+                dvc.title = "Me"
+            }else{
+                dvc.user = self.user
+                owner = true
+                dvc.title = "\(self.user?.name)"
+            }
         }
     }
 
