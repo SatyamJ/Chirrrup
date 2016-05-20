@@ -21,6 +21,7 @@ class Tweets: NSObject {
     var retweeted: Bool?
     var liked: Bool?
     var tweetId: NSString?
+    var tweetMediaUrl: NSURL?
     
     init(tweet_dictionary: NSDictionary){
         if let text = tweet_dictionary["text"]{
@@ -81,7 +82,13 @@ class Tweets: NSObject {
             self.tweetId = tweetId as! String
         }
         
-        
+        if let entityBlock = tweet_dictionary["entities"]as? NSDictionary{
+            if let mediaBlockArray = entityBlock["media"] as? [NSDictionary]{
+                if let mediaUrl = mediaBlockArray[0]["media_url"] as? String{
+                    self.tweetMediaUrl = NSURL(string: mediaUrl)
+                }
+            }
+        }
     }
     
     class func arrayOfTweets(tweetArray_dictionary: [NSDictionary]) -> [Tweets]{

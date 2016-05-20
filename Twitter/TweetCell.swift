@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AFNetworking
 
 protocol CellDelegate {
     func onTapCellProfileImage(sender: AnyObject?)
@@ -20,12 +21,11 @@ class TweetCell: UITableViewCell {
     
     @IBOutlet weak var timeLabel: UILabel!
     
-    @IBOutlet weak var tweetTextLabel: UILabel!
+    @IBOutlet weak var tweetTextView: UITextView!
     
     @IBOutlet weak var retweetCountLabel: UILabel!
     
     @IBOutlet weak var likesCountLabel: UILabel!
-    
     
     @IBOutlet weak var userProfileImageView: UIImageView!
     
@@ -36,6 +36,9 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var retweetImage: UIImageView!
     
     @IBOutlet weak var likeImage: UIImageView!
+    
+    @IBOutlet weak var tweetPosterView: UIImageView!
+    
     
     var delegate: CellDelegate?
     let profileImageTapGes = UITapGestureRecognizer()
@@ -56,11 +59,12 @@ class TweetCell: UITableViewCell {
                 self.timeLabel.text = NSDate().offsetFrom(date)
             }
             
-            self.tweetTextLabel.text = tweet!.text! as String
+            self.tweetTextView.text = tweet!.text! as String
             self.retweetCountLabel.text = "\(tweet!.retweet_count)"
             self.likesCountLabel.text = "\(tweet!.likes_count)"
             
             if let url = tweet!.profile_image_url {
+                print("profile: \(url)")
                 self.userProfileImageView.setImageWithURL(url)
             }
             
@@ -89,9 +93,21 @@ class TweetCell: UITableViewCell {
                 self.tweetId = tweetId as String
             }
             
-            profileImageTapGes.addTarget(self, action: "profileImageTapGestureAction:")
-            userProfileImageView.addGestureRecognizer(profileImageTapGes)
-            userProfileImageView.userInteractionEnabled = true
+            if let tweetMedia = tweet?.tweetMediaUrl{
+                //print("media: \(tweetMedia)")
+                self.tweetPosterView.hidden = false
+                self.tweetPosterView.setImageWithURL(tweetMedia)
+            }else{
+                //print("No media found")
+                
+                self.tweetPosterView.hidden = true
+                //self.tweetPosterView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+                
+                self.tweetPosterView.frame.size.height = 0
+                self.tweetPosterView.frame.size.width = 0
+                
+            }
+            
         }
     }
     
@@ -103,17 +119,17 @@ class TweetCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        let tapRetweet = UITapGestureRecognizer(target: self, action: Selector("tappedRetweet"))
+        let tapRetweet = UITapGestureRecognizer(target: self, action: #selector(TweetCell.tappedRetweet))
         self.retweetImage.addGestureRecognizer(tapRetweet)
         self.retweetImage.userInteractionEnabled = true
         
-        let tapLike = UITapGestureRecognizer(target: self, action: Selector("tappedLike"))
+        let tapLike = UITapGestureRecognizer(target: self, action: #selector(TweetCell.tappedLike))
         self.likeImage.addGestureRecognizer(tapLike)
         self.likeImage.userInteractionEnabled = true
         
-        let tapProfileImage = UITapGestureRecognizer(target: self, action: Selector("tappedProfileImage"))
-        self.userProfileImageView.addGestureRecognizer(tapProfileImage)
-        self.userProfileImageView.userInteractionEnabled = true
+        profileImageTapGes.addTarget(self, action: #selector(TweetCell.profileImageTapGestureAction(_:)))
+        userProfileImageView.addGestureRecognizer(profileImageTapGes)
+        userProfileImageView.userInteractionEnabled = true
         
     }
 

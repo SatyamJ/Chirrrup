@@ -91,6 +91,7 @@ class TwitterClient: BDBOAuth1SessionManager {
                 print("Home timeline tweets")
                 
                 let tweetsArrayDictionary = response as! [NSDictionary]
+                //print(tweetsArrayDictionary)
                 let tweets = Tweets.arrayOfTweets(tweetsArrayDictionary)
                 
                 success(tweets)

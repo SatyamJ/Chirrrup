@@ -92,16 +92,16 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate {
         
         
         // Do any additional setup after loading the view.
-        let tapRetweet = UITapGestureRecognizer(target: self, action: Selector("tappedRetweet"))
+        let tapRetweet = UITapGestureRecognizer(target: self, action: #selector(TweetDetailsViewController.tappedRetweet))
         self.retweetImageView.addGestureRecognizer(tapRetweet)
         self.retweetImageView.userInteractionEnabled = true
         
-        let tapLike = UITapGestureRecognizer(target: self, action: Selector("tappedLike"))
+        let tapLike = UITapGestureRecognizer(target: self, action: #selector(TweetDetailsViewController.tappedLike))
         self.likeImageView.addGestureRecognizer(tapLike)
         self.likeImageView.userInteractionEnabled = true
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil);
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TweetDetailsViewController.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TweetDetailsViewController.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil);
 
     }
     
