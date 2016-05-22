@@ -64,7 +64,7 @@ class TweetCell: UITableViewCell {
             self.likesCountLabel.text = "\(tweet!.likes_count)"
             
             if let url = tweet!.profile_image_url {
-                print("profile: \(url)")
+                //print("profile: \(url)")
                 self.userProfileImageView.setImageWithURL(url)
             }
             
@@ -99,13 +99,7 @@ class TweetCell: UITableViewCell {
                 self.tweetPosterView.setImageWithURL(tweetMedia)
             }else{
                 //print("No media found")
-                
                 self.tweetPosterView.hidden = true
-                //self.tweetPosterView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-                
-                self.tweetPosterView.frame.size.height = 0
-                self.tweetPosterView.frame.size.width = 0
-                
             }
             
         }

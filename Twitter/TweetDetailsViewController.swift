@@ -18,7 +18,7 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var tweetHandleLabel: UILabel!
     
-    @IBOutlet weak var tweetTextLabel: UILabel!
+    @IBOutlet weak var tweetTextLabel: UITextView!
     
     @IBOutlet weak var tweetTimestampLabel: UILabel!
     
@@ -37,6 +37,8 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var replyTweetButton: UIButton!
     
     @IBOutlet weak var replyUIView: UIView!
+    
+    @IBOutlet weak var tweetPosterView: UIImageView!
     
     
     var tweet: Tweets?
@@ -63,7 +65,7 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate {
         if let tweet_timestamp = tweet?.timestamp{
             let formatter = NSDateFormatter()
             formatter.dateStyle = .MediumStyle
-            formatter.timeStyle = .MediumStyle
+            formatter.timeStyle = .ShortStyle
             
             let dateString = formatter.stringFromDate(tweet_timestamp)
             tweetTimestampLabel.text = "\(dateString)"
@@ -87,6 +89,13 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate {
         
         if let tweetId = tweet?.tweetId{
             self.tweetId = tweetId as String
+        }
+        
+        if let tweetPosterUrl = tweet?.tweetMediaUrl{
+            self.tweetPosterView.hidden = false
+            self.tweetPosterView.setImageWithURL(tweetPosterUrl)
+        }else{
+            self.tweetPosterView.hidden = true
         }
         
         
