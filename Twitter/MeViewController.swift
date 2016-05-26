@@ -26,24 +26,27 @@ class MeViewController: UIViewController {
     
     @IBOutlet weak var followersCount: UILabel!
     
+    @IBOutlet weak var menuBarButton: UIBarButtonItem!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.title = "Me"
         
         if let user = self.user{
             //self.user = user
             
             self.profileImageView.setImageWithURL(user.user_profile_image_url!)
             self.usernameLabel.text = user.name as? String
+            self.title = user.name as? String
             self.screennameLabel.text = user.screen_name as? String
             self.coverImageView.setImageWithURL(user.user_background_image_url!)
             self.tweetsCountLabel.text = user.tweetsCount
             self.followersCount.text = user.followersCount
             self.followingCountLabel.text = user.followingCount
-            
-            
         }
-        // Do any additional setup after loading the view.
+        
+        self.menuBarButton.target = self.revealViewController()
+        self.menuBarButton.action = #selector(SWRevealViewController.revealToggle(_:))
+        self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
     }
 
     override func didReceiveMemoryWarning() {

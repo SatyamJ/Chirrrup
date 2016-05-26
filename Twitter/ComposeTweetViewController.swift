@@ -21,7 +21,7 @@ class ComposeTweetViewController: UIViewController {
         super.viewDidLoad()
         self.userProfileImageView.setImageWithURL((User.currentUser?.user_profile_image_url)!)
 
-        // Do any additional setup after loading the view.
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
     }
 
     override func didReceiveMemoryWarning() {

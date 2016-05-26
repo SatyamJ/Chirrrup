@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if User.currentUser != nil {
             print("There is a current user")
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewControllerWithIdentifier("TweetsNavigationController")
+            let vc = storyboard.instantiateViewControllerWithIdentifier("SWRevealViewController")
             window?.rootViewController = vc
         }
         else{
@@ -32,30 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let vc = storyboard.instantiateInitialViewController()
             self.window?.rootViewController = vc
         }
-        
-        /*
-        window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        let homeTimelineNVC = storyboard.instantiateViewControllerWithIdentifier("TweetsNavigationController") as! UINavigationController
-        let homeTimelineVC = homeTimelineNVC.topViewController as! TweetsViewController
-        //nowPlayingViewController.endpoint = "now_playing"
-        homeTimelineVC.tabBarItem.title = "Home"
-        //nowPlayingNavigationViewController.tabBarItem.image = UIImage(named: "now_playing")
-        
-        
-        
-        let userTimelineNVC = storyboard.instantiateViewControllerWithIdentifier("TweetsNavigationController") as! UINavigationController
-        let userTimelineVC = userTimelineNVC.topViewController as! UserTimelineViewController
-        topRatedViewController.endpoint = "top_rated"
-        topRatedNavigationViewController.tabBarItem.title = "Top Rated"
-        topRatedNavigationViewController.tabBarItem.image = UIImage(named: "top_rated")
-        
-        let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [nowPlayingNavigationViewController, topRatedNavigationViewController]
-        
-        window?.rootViewController = tabBarController
-        window?.makeKeyAndVisible()*/
         
         return true
     }

@@ -12,6 +12,9 @@ import AFNetworking
 class TweetsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CellDelegate {
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var menuBarButton: UIBarButtonItem!
+    
+    @IBOutlet weak var composeBarButton: UIBarButtonItem!
     
     var tweets: [Tweets]?
     var user: User?
@@ -20,10 +23,18 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //self.title = "Twitter Twitz"
-        navigationController?.navigationBar.backgroundColor = UIColor.blackColor()
+        if self.revealViewController() == nil {
+            print("revealViewController is nil")
+        }
+        self.menuBarButton.target = self.revealViewController()
+        self.menuBarButton.action = #selector(SWRevealViewController.revealToggle(_:))
+        self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+        
+       self.composeBarButton.image = UIImage(named: "twitter_quill_30")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
+        //navigationController?.navigationBar.backgroundColor = UIColor.blueColor()
+        navigationController?.navigationBar.barTintColor = UIColor(red: 0.2118, green: 0.549, blue: 0.7098, alpha: 1.0)
         navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.grayColor()]
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -36,7 +47,6 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         refreshControl.addTarget(self, action: #selector(TweetsViewController.refreshControlAction(_:)), forControlEvents: UIControlEvents.ValueChanged)
         tableView.insertSubview(refreshControl, atIndex: 0)
         
-        // Do any additional setup after loading the view.
     }
     
     func onTapCellProfileImage(sender: AnyObject?){
@@ -102,15 +112,11 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         return cell
     }
     
-    
-    
-    
-    
-    
-    
-    // MARK: - Navigation
+
+        // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         
@@ -143,6 +149,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
             }
         }
     }
+    
     
     @IBAction func unwindToHomeTimeline(sender: UIStoryboardSegue) {
         print("inside unwindToHomeTimeline")
