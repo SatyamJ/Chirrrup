@@ -85,14 +85,14 @@ class TwitterClient: BDBOAuth1SessionManager {
         }
     }
     
-    func homeTimeline(success: ([Tweets]) -> (), failure: (NSError) -> () ){
+    func homeTimeline(success: ([Tweet]) -> (), failure: (NSError) -> () ){
         GET("1.1/statuses/home_timeline.json", parameters: nil, progress: nil,
             success: { (task: NSURLSessionDataTask, response: AnyObject?) -> Void in
-                print("Home timeline tweets")
+                //print("Home timeline tweets")
                 
                 let tweetsArrayDictionary = response as! [NSDictionary]
                 //print(tweetsArrayDictionary)
-                let tweets = Tweets.arrayOfTweets(tweetsArrayDictionary)
+                let tweets = Tweet.arrayOfTweets(tweetsArrayDictionary)
                 
                 success(tweets)
             },
@@ -170,12 +170,13 @@ class TwitterClient: BDBOAuth1SessionManager {
         )
     }
     
-    func replyToTweet(tweetId: String, status: String, success: () -> (), failure: (NSError) -> () ){
+    func tweet(tweetId: String, status: String, success: () -> (), failure: (NSError) -> () ){
         print(tweetId)
         
         var params = [String: AnyObject]()
         params["status"] = status
         
+        // reply to a tweet or new tweet
         if tweetId.characters.count > 0 {
             params["in_reply_to_status_id"] = tweetId
         }

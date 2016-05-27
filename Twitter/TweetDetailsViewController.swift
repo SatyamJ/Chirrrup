@@ -41,7 +41,7 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var tweetPosterView: UIImageView!
     
     
-    var tweet: Tweets?
+    var tweet: Tweet?
     var retweeted: Bool?
     var liked: Bool?
     var tweetId: String?
@@ -204,7 +204,7 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate {
     @IBAction func onClickTweetButton(sender: AnyObject) {
         let status = self.replyTextField.text! as String
         print(status)
-        TwitterClient.sharedInstance.replyToTweet(self.tweetId!, status: status ,success: { () -> () in
+        TwitterClient.sharedInstance.tweet(self.tweetId!, status: status ,success: { () -> () in
                 self.replyTextField.resignFirstResponder()
             }) { (error: NSError) -> () in
                 print("Error in tweet reply: \(error.localizedDescription)")

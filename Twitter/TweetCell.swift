@@ -11,6 +11,9 @@ import AFNetworking
 
 protocol CellDelegate {
     func onTapCellProfileImage(sender: AnyObject?)
+    func onTapCellLike(sender: AnyObject?)
+    func onTapCellReply(sender: AnyObject?)
+    func onTapCellRetweet(sender: AnyObject?)
 }
 
 class TweetCell: UITableViewCell {
@@ -39,18 +42,18 @@ class TweetCell: UITableViewCell {
     
     @IBOutlet weak var tweetPosterView: UIImageView!
     
+    @IBOutlet weak var replyImageView: UIImageView!
     
     var delegate: CellDelegate?
     let profileImageTapGes = UITapGestureRecognizer()
-    
-    var retweeted: Bool?
-    var liked: Bool?
+    //var retweeted: Bool?
+    //var liked: Bool?
     var tweetId: String?
     var table: UITableView?
     var index: NSIndexPath?
     var row: Int?
     
-    var tweet:Tweets? {
+    var tweet:Tweet? {
         didSet{
             self.nameLabek.text = tweet!.username as? String
             self.userHandleLabel.text = "@\(tweet!.user_screenname!)" //as String
@@ -69,6 +72,8 @@ class TweetCell: UITableViewCell {
             }
             
             if let retweetBy = tweet?.retweetedBy{
+                self.retweetedByLabel.hidden = false
+                self.retweetedByImage.hidden = false
                 self.retweetedByLabel.text = retweetBy as String
             }else{
                 self.retweetedByLabel.hidden = true
@@ -76,16 +81,20 @@ class TweetCell: UITableViewCell {
             }
             
             if let retweeted = tweet?.retweeted{
-                self.retweeted = retweeted
+                //self.retweeted = retweeted
                 if retweeted {
                     self.retweetImage.image = UIImage(named: "retweeted")
+                }else{
+                    self.retweetImage.image = UIImage(named: "retweet")
                 }
             }
             
             if let liked = tweet?.liked{
-                self.liked = liked
+                //self.liked = liked
                 if liked {
                     self.likeImage.image = UIImage(named: "liked")
+                }else{
+                    self.likeImage.image = UIImage(named: "like")
                 }
             }
             
@@ -105,21 +114,20 @@ class TweetCell: UITableViewCell {
         }
     }
     
-    func profileImageTapGestureAction(sender: AnyObject) {
-        //print("profileImageTapGestureAction method called")
-        delegate?.onTapCellProfileImage(sender)
-    }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        let tapRetweet = UITapGestureRecognizer(target: self, action: #selector(TweetCell.tappedRetweet))
+        let tapRetweet = UITapGestureRecognizer(target: self, action: #selector(TweetCell.tappedRetweet(_:)))
         self.retweetImage.addGestureRecognizer(tapRetweet)
         self.retweetImage.userInteractionEnabled = true
         
-        let tapLike = UITapGestureRecognizer(target: self, action: #selector(TweetCell.tappedLike))
+        let tapLike = UITapGestureRecognizer(target: self, action: #selector(TweetCell.tappedLike(_:)))
         self.likeImage.addGestureRecognizer(tapLike)
         self.likeImage.userInteractionEnabled = true
+        
+        let tapReply = UITapGestureRecognizer(target: self, action: #selector(TweetCell.tappedReply(_:)))
+        self.replyImageView.addGestureRecognizer(tapReply)
+        self.replyImageView.userInteractionEnabled = true
         
         profileImageTapGes.addTarget(self, action: #selector(TweetCell.profileImageTapGestureAction(_:)))
         userProfileImageView.addGestureRecognizer(profileImageTapGes)
@@ -127,22 +135,22 @@ class TweetCell: UITableViewCell {
         
     }
 
+    /*
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
     }
+    */
     
-    func tappedProfileImage(){
-        /*
-        let destination = UIViewController() as! UserTimelineViewController // Your destination
-        let vc = UIViewController as UserTimelineViewController
-        let n = UINavigationController(rootViewController: UserTimelineViewController)
-        //navigationController?.pushViewController(destination, animated: true)
-        */
+    func profileImageTapGestureAction(sender: AnyObject) {
+        //print("profileImageTapGestureAction method called")
+        delegate?.onTapCellProfileImage(sender)
     }
     
-    func tappedRetweet(){
+    func tappedRetweet(sender: AnyObject){
+        delegate?.onTapCellRetweet(sender)
+        /*
         if self.retweeted == true{
             TwitterClient.sharedInstance.unretweet(self.tweetId!,
                 success: { () -> () in
@@ -165,9 +173,12 @@ class TweetCell: UITableViewCell {
                     print("Retweet Error: \(error.localizedDescription)")
             })
         }
+        */
     }
     
-    func tappedLike(){
+    func tappedLike(sender: AnyObject){
+        delegate?.onTapCellLike(sender)
+        /*
         if self.liked == true{
             TwitterClient.sharedInstance.unlike(self.tweetId!,
                 success: { () -> () in
@@ -190,6 +201,11 @@ class TweetCell: UITableViewCell {
             })
             
         }
+        */
+    }
+    
+    func tappedReply(sender: AnyObject){
+        delegate?.onTapCellReply(sender)
     }
 }
 

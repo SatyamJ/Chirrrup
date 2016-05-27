@@ -31,18 +31,8 @@ class SlideoutMenuViewController: UIViewController, UIGestureRecognizerDelegate 
         }
         
         if let handle = User.currentUser?.screen_name as? String{
-            self.userHandleLabel.text = handle
+            self.userHandleLabel.text = "@\(handle)"
         }
-        /*
-        let tap = UITapGestureRecognizer(target: self, action: #selector(SlideoutMenuViewController.showMyProfile()))
-        tap.delegate = self
-        self.visitProfileView.addGestureRecognizer(tap)
-        */
-        //let goToProfile = UITapGestureRecognizer(target: self, action: #selector(SlideoutMenuViewController))
-        //self.retweetImage.addGestureRecognizer(tapRetweet)
-        //self.retweetImage.userInteractionEnabled = true
-        
-        
     }
     /*
     override func viewDidAppear(animated: Bool) {

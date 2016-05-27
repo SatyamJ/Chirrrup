@@ -8,20 +8,38 @@
 
 import UIKit
 
-class ComposeTweetViewController: UIViewController {
+class ComposeTweetViewController: UIViewController, UITextViewDelegate {
 
     
-    @IBOutlet weak var newTweetTextField: UITextField!
+    
+    @IBOutlet weak var tweetTextView: UITextView!
     
     @IBOutlet weak var userProfileImageView: UIImageView!
     
-    var newStatus: String?
+    @IBOutlet weak var characterCountLabel: UILabel!
+    
+    var placeholderLabel : UILabel!
+    
+    //var newStatus: String?
+    
+    var tweetId: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.userProfileImageView.setImageWithURL((User.currentUser?.user_profile_image_url)!)
 
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        
+        tweetTextView.delegate = self
+        placeholderLabel = UILabel()
+        placeholderLabel.text = "What's happening today?"
+        placeholderLabel.font = UIFont.italicSystemFontOfSize(tweetTextView.font!.pointSize)
+        placeholderLabel.sizeToFit()
+        tweetTextView.addSubview(placeholderLabel)
+        placeholderLabel.frame.origin = CGPointMake(5, tweetTextView.font!.pointSize / 2)
+        placeholderLabel.textColor = UIColor(white: 0, alpha: 0.3)
+        
+        placeholderLabel.hidden = !tweetTextView.text.isEmpty
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,7 +47,16 @@ class ComposeTweetViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    
+    func textViewDidChange(textView: UITextView) {
+        placeholderLabel.hidden = !textView.text.isEmpty
+    }
+    /*
+    func textViewDidBeginEditing(textView: UITextView) {
+        placeholderLabel.font = UIFont.systemFontOfSize(12)
+        placeholderLabel.sizeToFit()
+    }
+    */
     @IBAction func onClickTweetButton(sender: AnyObject) {
         /*
         self.newStatus = self.newTweetTextField.text! as String
@@ -42,6 +69,13 @@ class ComposeTweetViewController: UIViewController {
         }*/
         
     }
+    
+    @IBAction func onTapTweetButton(sender: AnyObject) {
+        let status = self.tweetTextView.text
+        print(status)
+        
+    }
+    
     /*
     // MARK: - Navigation
 
