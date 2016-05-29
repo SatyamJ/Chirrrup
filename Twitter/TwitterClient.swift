@@ -55,30 +55,6 @@ class TwitterClient: BDBOAuth1SessionManager {
                 }, failure: { (error: NSError) -> () in
                     self.loginfailure?(error)
                 })
-                
-                
-                /*
-                //let client = TwitterClient.sharedInstance
-                client.currentAccount({ (user: User) -> () in
-                    print("name: \(user.name)")
-                    print("screen name: \(user.screen_name)")
-                    print("profile image url: \(user.user_profile_image_url)")
-                    print("tagline: \(user.tagline)")
-                    }, failure: {(error: NSError) -> () in
-                        print("Verify credentials error: \(error)")
-                })
-                
-                client.homeTimeline({ (tweets: [Tweets]) -> () in
-                    for tweet in tweets{
-                        print("Tweet: \(tweet.text)")
-                        print("Retweet count: \(tweet.retweet_count)")
-                        print("Likes: \(tweet.likes_count)")
-                        print("Date-Time: \(tweet.timestamp)")
-                    }
-                    }, failure: { (error: NSError) -> () in
-                        print("home timeline error: \(error)")
-                })*/
-                
             }) { (error: NSError!) -> Void in
                 print("Access token error: \(error)")
                 self.loginfailure?(error)
@@ -144,7 +120,7 @@ class TwitterClient: BDBOAuth1SessionManager {
     }
     
     func like(tweetId: String, success: () -> (), failure: (NSError) -> () ){
-        
+        //print(tweetId)
         POST("1.1/favorites/create.json?id=\(tweetId)", parameters: nil, progress: nil,
             success: { (task: NSURLSessionDataTask, response: AnyObject?) -> Void in
                 print("Liked \(tweetId)")

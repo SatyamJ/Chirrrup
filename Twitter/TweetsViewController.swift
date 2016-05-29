@@ -8,12 +8,15 @@
 
 import UIKit
 import AFNetworking
+import MBProgressHUD
 
 class TweetsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CellDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var menuBarButton: UIBarButtonItem!
     @IBOutlet weak var composeBarButton: UIBarButtonItem!
+    
+    @IBOutlet weak var logoView: UIView!
     
     var tweets: [Tweet]?
     var user: User?
@@ -25,8 +28,9 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         self.menuBarButton.action = #selector(SWRevealViewController.revealToggle(_:))
         self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         
-       self.composeBarButton.image = UIImage(named: "twitter_quill_30")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
-        navigationController?.navigationBar.barTintColor = UIColor(red: 0.2118, green: 0.549, blue: 0.7098, alpha: 1.0)
+        self.composeBarButton.image = UIImage(named: "twitter_quill_30")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
+        //navigationController?.navigationBar.barTintColor = UIColor(red: 0.2118, green: 0.549, blue: 0.7098, alpha: 1.0)
+        navigationController?.navigationBar.barTintColor = UIColor(red: 0.2, green: 0.5, blue: 0.7, alpha: 1.0)
         navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         
@@ -54,38 +58,77 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func onTapCellLike(sender: AnyObject?) {
-        print("onTapCellLike called")
+        //print("onTapCellLike called")
         if let recognizer = sender as? UITapGestureRecognizer{
             let imageView = recognizer.view
             if let cellView = imageView?.superview?.superview as? TweetCell {
                 let indexPath = self.tableView.indexPathForCell(cellView)
                 if let row = indexPath?.row{
                     if let tweet = self.tweets?[row]{
+                        //print("processing tweet id: \(tweet.tweetId)")
                         if tweet.liked == true{
-                            self.tweets![(indexPath?.row)!].liked = false
+                            //self.tweets![(indexPath?.row)!].liked = false
+                            TwitterClient.sharedInstance.unlike(String(tweet.tweetId!),
+                                success: { () -> () in
+                                    self.tweets![(indexPath?.row)!].liked = false
+                                    self.tweets![(indexPath?.row)!].likes_count -= 1
+                                    self.tableView.reloadData()
+                                }, failure: { (error: NSError) -> () in
+                                    print("Tweet Unlike error: \(error.localizedDescription)")
+                            })
                         }else{
-                            self.tweets![(indexPath?.row)!].liked = true
+                            //self.tweets![(indexPath?.row)!].liked = true
+                            TwitterClient.sharedInstance.like(String(tweet.tweetId!),
+                                success: { () -> () in
+                                    self.tweets![(indexPath?.row)!].liked = true
+                                    self.tweets![(indexPath?.row)!].likes_count += 1
+                                    self.tableView.reloadData()
+                                }, failure: { (error: NSError) -> () in
+                                    print("Tweet Like error: \(error.localizedDescription)")
+                            })
                         }
-                        self.tableView.reloadData()
                     }
                 }
-                /*
-                if ((self.tweets![(indexPath?.row)!].liked) != nil) {
-                    self.tweets[indexPath.row].liked = false
-                }else{
-                    self.tweets[indexPath.row].liked = true
-                }
-                */
-                
             }
         }
     }
     
     func onTapCellReply(sender: AnyObject?) {
+        performSegueWithIdentifier("tweetSegue", sender: sender)
     }
     
     func onTapCellRetweet(sender: AnyObject?) {
-        
+        //print("onTapCellRetweet called")
+        if let recognizer = sender as? UITapGestureRecognizer{
+            let imageView = recognizer.view
+            if let cellView = imageView?.superview?.superview as? TweetCell {
+                let indexPath = self.tableView.indexPathForCell(cellView)
+                if let row = indexPath?.row{
+                    if let tweet = self.tweets?[row]{
+                        //print("processing tweet id: \(tweet.tweetId!)")
+                        if tweet.retweeted == true{
+                            TwitterClient.sharedInstance.unretweet(String(tweet.tweetId!),
+                                success: { () -> () in
+                                    self.tweets![(indexPath?.row)!].retweeted = false
+                                    self.tweets![(indexPath?.row)!].retweet_count -= 1
+                                    self.tableView.reloadData()
+                                }, failure: { (error: NSError) -> () in
+                                    print("Un-retweet error: \(error.localizedDescription)")
+                            })
+                        }else{
+                            TwitterClient.sharedInstance.retweet(String(tweet.tweetId!),
+                              success: { () -> () in
+                                self.tweets![(indexPath?.row)!].retweeted = true
+                                self.tweets![(indexPath?.row)!].retweet_count += 1
+                                self.tableView.reloadData()
+                                }, failure: { (error: NSError) -> () in
+                                    print("Retweet error: \(error.localizedDescription)")
+                            })
+                        }
+                    }
+                }
+            }
+        }
     }
     
     func refreshControlAction(refreshControl: UIRefreshControl){
@@ -94,17 +137,11 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func requestNetworkData(){
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         TwitterClient.sharedInstance.homeTimeline({ (tweets:[Tweet]) -> () in
             self.tweets = tweets
             self.tableView.reloadData()
-            /*
-            for tweet in tweets{
-            print("Tweet: \(tweet.text)")
-            print("Retweet count: \(tweet.retweet_count)")
-            print("Likes: \(tweet.likes_count)")
-            print("Date-Time: \(tweet.timestamp)")
-            
-            }*/
+            MBProgressHUD.hideHUDForView(self.view, animated: true)
             }) { (error: NSError) -> () in
                 print("Error: \(error.localizedDescription)")
         }
@@ -152,11 +189,26 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                     tableView.deselectRowAtIndexPath(indexPath!, animated: true)
                 }
             }
-        }
-        
-        if segue.identifier == "showUserProfileSegue" {
+        } else if segue.identifier == "showUserProfileSegue" {
             if let destinationViewController = segue.destinationViewController as? MeViewController {
                 destinationViewController.user = self.user
+            }
+        } else if segue.identifier == "tweetSegue" {
+            if let recognizer = sender as? UIGestureRecognizer{
+                let view = recognizer.view
+                if let cell = view?.superview?.superview as? TweetCell{
+                    let indexPath = tableView.indexPathForCell(cell)
+                    if let destinationViewController = segue.destinationViewController as? ComposeTweetViewController{
+                        destinationViewController.tweetId = String(tweets![(indexPath?.row)!].tweetId!)
+                        destinationViewController.replyTo = String(tweets![(indexPath?.row)!].user_screenname!)
+                    }
+                }
+            }else{
+                if let destinationViewController = segue.destinationViewController as? ComposeTweetViewController{
+                    //print("segue for new tweet")
+                    destinationViewController.tweetId = ""
+                    destinationViewController.replyTo = ""
+                }
             }
         }
     }

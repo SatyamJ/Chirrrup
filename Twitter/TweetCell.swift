@@ -150,58 +150,12 @@ class TweetCell: UITableViewCell {
     
     func tappedRetweet(sender: AnyObject){
         delegate?.onTapCellRetweet(sender)
-        /*
-        if self.retweeted == true{
-            TwitterClient.sharedInstance.unretweet(self.tweetId!,
-                success: { () -> () in
-                    self.retweetImage.image = UIImage(named: "retweet")
-                    self.retweeted = false
-                    self.tweet?.retweet_count -= 1
-                    self.retweetCountLabel.text = "\((self.tweet?.retweet_count)!)"
-                    
-                }, failure: { (error: NSError) -> () in
-                    print("Unretweet Error: \(error.localizedDescription)")
-            })
-        }else{
-            TwitterClient.sharedInstance.retweet(self.tweetId!,
-                success: { () -> () in
-                    self.retweetImage.image = UIImage(named: "retweeted")
-                    self.retweeted = true
-                    self.tweet?.retweet_count += 1
-                    self.retweetCountLabel.text = "\((self.tweet?.retweet_count)!)"
-                }, failure: { (error: NSError) -> () in
-                    print("Retweet Error: \(error.localizedDescription)")
-            })
-        }
-        */
+        
     }
     
     func tappedLike(sender: AnyObject){
         delegate?.onTapCellLike(sender)
-        /*
-        if self.liked == true{
-            TwitterClient.sharedInstance.unlike(self.tweetId!,
-                success: { () -> () in
-                    self.likeImage.image = UIImage(named: "like")
-                    self.liked = false
-                    self.tweet?.likes_count -= 1
-                    self.likesCountLabel.text = "\((self.tweet?.likes_count)!)"
-                }, failure: { (error: NSError) -> () in
-                    print("Tweet Unlike error: \(error.localizedDescription)")
-            })
-        }else{
-            TwitterClient.sharedInstance.like(self.tweetId!,
-                success: { () -> () in
-                    self.likeImage.image = UIImage(named: "liked")
-                    self.liked = true
-                    self.tweet?.likes_count += 1
-                    self.likesCountLabel.text = "\((self.tweet?.likes_count)!)"
-                }, failure: { (error: NSError) -> () in
-                    print("Tweet Like error: \(error.localizedDescription)")
-            })
-            
-        }
-        */
+        
     }
     
     func tappedReply(sender: AnyObject){
