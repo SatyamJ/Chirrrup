@@ -78,6 +78,25 @@ class TwitterClient: BDBOAuth1SessionManager {
         )
     }
     
+    
+    func homeTimelineOnScroll(lastId: Int, success: ([Tweet]) -> (), failure: (NSError) -> () ){
+        let params = ["max_id": lastId]
+        GET("1.1/statuses/home_timeline.json", parameters: params, progress: nil,
+            success: { (task: NSURLSessionDataTask, response: AnyObject?) -> Void in
+                //print("Home timeline tweets")
+                
+                let tweetsArrayDictionary = response as! [NSDictionary]
+                //print(tweetsArrayDictionary)
+                let tweets = Tweet.arrayOfTweets(tweetsArrayDictionary)
+                
+                success(tweets)
+            },
+            failure: { (task: NSURLSessionDataTask?, error: NSError) -> Void in
+                failure(error)
+            }
+        )
+    }
+    
     func currentAccount(success: (User) -> (), failure: (NSError) -> ()){
         GET("1.1/account/verify_credentials.json", parameters: nil, progress: nil,
             success: { (task: NSURLSessionDataTask, response: AnyObject?) -> Void in

@@ -90,7 +90,7 @@ class ComposeTweetViewController: UIViewController, UITextViewDelegate {
             hud.labelText = "Post successful!"
             self.tweetTextView.text = ""
             self.replyInfoLabel.hidden = true
-            self.placeholderLabel.hidden = false
+            self.placeholderLabel.hidden = false		
             MBProgressHUD.hideHUDForView(self.view, animated: true)
         }) { (error: NSError) -> () in
             print("Error in tweet reply: \(error.localizedDescription)")

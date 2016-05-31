@@ -84,10 +84,20 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate {
         
         if let liked = tweet?.liked{
             self.liked = liked
+            if liked{
+               self.likeImageView.image = UIImage(named: "liked")
+            }else{
+                self.likeImageView.image = UIImage(named: "like")
+            }
         }
         
         if let retweeted = tweet?.retweeted{
             self.retweeted = retweeted
+            if retweeted{
+                self.retweetImageView.image = UIImage(named: "retweeted")
+            }else{
+                self.retweetImageView.image = UIImage(named: "retweet")
+            }
         }
         
         if let tweetId = tweet?.tweetId{
