@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TweetDetailsViewController: UIViewController, UITextFieldDelegate {
+class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate {
     
     var tweetid: String?
     
@@ -36,13 +36,15 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate {
     
     
     var tweet: Tweet?
-    var retweeted: Bool?
-    var liked: Bool?
+    //var retweeted: Bool?
+    //var liked: Bool?
     var tweetId: String?
+    var row: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.delegate = self
         navigationController?.navigationBar.barTintColor = UIColor(red: 0.2, green: 0.5, blue: 0.7, alpha: 1.0)
         navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
@@ -83,7 +85,7 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate {
         }
         
         if let liked = tweet?.liked{
-            self.liked = liked
+            //self.liked = liked
             if liked{
                self.likeImageView.image = UIImage(named: "liked")
             }else{
@@ -92,7 +94,7 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate {
         }
         
         if let retweeted = tweet?.retweeted{
-            self.retweeted = retweeted
+            //self.retweeted = retweeted
             if retweeted{
                 self.retweetImageView.image = UIImage(named: "retweeted")
             }else{
@@ -132,11 +134,12 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate {
     }
     
     func tappedRetweet(sender: AnyObject){
-        if self.retweeted == true{
+        if self.tweet?.retweeted == true{
             TwitterClient.sharedInstance.unretweet(self.tweetId!,
                 success: { () -> () in
                     self.retweetImageView.image = UIImage(named: "retweet")
-                    self.retweeted = false
+                    //self.retweeted = false
+                    self.tweet?.retweeted = false
                     self.tweet?.retweet_count -= 1
                     if let retweet_count = self.tweet?.retweet_count{
                         self.retweetCountLabel.text = "\(retweet_count)"
@@ -150,7 +153,8 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate {
             TwitterClient.sharedInstance.retweet(self.tweetId!,
                 success: { () -> () in
                     self.retweetImageView.image = UIImage(named: "retweeted")
-                    self.retweeted = true
+                    //self.retweeted = true
+                    self.tweet?.retweeted = true
                     self.tweet?.retweet_count += 1
                     if let retweet_count = self.tweet?.retweet_count{
                         self.retweetCountLabel.text = "\(retweet_count)"
@@ -163,11 +167,12 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate {
     }
     
     func tappedLike(sender: AnyObject){
-        if self.liked == true{
+        if self.tweet?.liked == true{
             TwitterClient.sharedInstance.unlike(self.tweetId!,
                 success: { () -> () in
                     self.likeImageView.image = UIImage(named: "like")
-                    self.liked = false
+                    //self.liked = false
+                    self.tweet?.liked = false
                     self.tweet?.likes_count -= 1
                     
                     if let likes_count = self.tweet?.likes_count{
@@ -180,7 +185,8 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate {
             TwitterClient.sharedInstance.like(self.tweetId!,
                 success: { () -> () in
                     self.likeImageView.image = UIImage(named: "liked")
-                    self.liked = true
+                    //self.liked = true
+                    self.tweet?.liked = true
                     self.tweet?.likes_count += 1
                     if let likes_count = self.tweet?.likes_count{
                         self.likesCountLabel.text = "\(likes_count)"
@@ -210,7 +216,11 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    
+    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
+        if let destinationViewController = viewController as? TweetsViewController{
+            destinationViewController.tweets![row!] = self.tweet!
+        }
+    }
     
 
 }

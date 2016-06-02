@@ -233,7 +233,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                 let indexPath = tableView.indexPathForCell(cell)
                 if let destinationViewController = segue.destinationViewController as? TweetDetailsViewController{
                     destinationViewController.tweet = self.tweets![indexPath!.row] as Tweet
-                    
+                    destinationViewController.row = indexPath!.row
                     let bgView = UIView()
                     bgView.backgroundColor = UIColor.grayColor()
                     cell.selectedBackgroundView = bgView

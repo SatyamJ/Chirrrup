@@ -3,7 +3,7 @@
 # Uncomment this line if you're using Swift
 use_frameworks!
 
-target 'Twitter' do
+target ‘Chirrrup’ do
 	pod 'AFNetworking'
 	pod 'BDBOAuth1Manager'
     pod 'MBProgressHUD'

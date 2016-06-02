@@ -8,7 +8,7 @@
         <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="LoginViewController" id="BYZ-38-t0r" customClass="LoginViewController" customModule="Twitter" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" id="BYZ-38-t0r" customClass="LoginViewController" customModule="Chirrrup" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -17,25 +17,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Twitter_logo" translatesAutoresizingMaskIntoConstraints="NO" id="wU0-QH-PAC">
-                                <rect key="frame" x="35" y="344" width="48" height="48"/>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Twitter Twitz" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="67Q-be-sze">
-                                <rect key="frame" x="74" y="71" width="173" height="35"/>
-                                <color key="backgroundColor" red="0.39095906260000002" green="0.64431938879999995" blue="0.85342359290000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chirrrup" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="67Q-be-sze">
+                                <rect key="frame" x="103" y="173" width="115" height="36"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="29"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <color key="shadowColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Copyright © 2016 Satyam Jaiswal. All rights reserved" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qh8-DT-LJW">
-                                <rect key="frame" x="46" y="507" width="228" height="34"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copyright © 2016 Satyam Jaiswal. All rights reserved" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qh8-DT-LJW">
+                                <rect key="frame" x="10" y="526" width="301" height="15"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sjc-4I-eYc">
-                                <rect key="frame" x="86" y="392" width="149" height="39"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sjc-4I-eYc">
+                                <rect key="frame" x="86" y="447" width="149" height="39"/>
                                 <color key="backgroundColor" red="0.26897124183357135" green="0.68362853266641976" blue="0.86391524869109948" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
@@ -51,8 +47,34 @@
                                     <action selector="onClickLoginButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="viD-ft-vBF"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Twitter_logo" translatesAutoresizingMaskIntoConstraints="NO" id="wU0-QH-PAC">
+                                <rect key="frame" x="39" y="401" width="48" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="48" id="eoN-3f-qf4"/>
+                                    <constraint firstAttribute="height" constant="48" id="oqk-hP-AwD"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chirrup_logo" translatesAutoresizingMaskIntoConstraints="NO" id="Seo-VZ-hU1">
+                                <rect key="frame" x="39" y="40" width="242" height="125"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="242" id="6BR-K9-H6X"/>
+                                    <constraint firstAttribute="height" constant="125" id="GB9-EG-eDx"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="qh8-DT-LJW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="8bE-zu-lJy"/>
+                            <constraint firstItem="67Q-be-sze" firstAttribute="top" secondItem="Seo-VZ-hU1" secondAttribute="bottom" constant="8" id="Ffz-m9-9sT"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="qh8-DT-LJW" secondAttribute="bottom" constant="27" id="LFB-xs-YTd"/>
+                            <constraint firstItem="wU0-QH-PAC" firstAttribute="leading" secondItem="Seo-VZ-hU1" secondAttribute="leading" id="Mqj-B4-4Eh"/>
+                            <constraint firstItem="sjc-4I-eYc" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="NoJ-04-IOj"/>
+                            <constraint firstItem="Seo-VZ-hU1" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="PCA-x0-cAc"/>
+                            <constraint firstItem="qh8-DT-LJW" firstAttribute="top" secondItem="sjc-4I-eYc" secondAttribute="bottom" constant="40" id="Ub8-IR-UlM"/>
+                            <constraint firstItem="Seo-VZ-hU1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="age-oo-mSA"/>
+                            <constraint firstItem="67Q-be-sze" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="gIz-ge-Vlo"/>
+                            <constraint firstItem="sjc-4I-eYc" firstAttribute="top" secondItem="wU0-QH-PAC" secondAttribute="bottom" constant="8" id="geb-52-Yyq"/>
+                        </constraints>
                     </view>
                     <connections>
                         <segue destination="82R-UU-AFV" kind="modal" identifier="loginSegue" id="9Wg-fD-tv1"/>
@@ -65,7 +87,7 @@
         <!--Me View Controller-->
         <scene sceneID="A4Q-7v-ndd">
             <objects>
-                <viewController id="N4a-zc-Iox" customClass="MeViewController" customModule="Twitter" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="N4a-zc-Iox" customClass="MeViewController" customModule="Chirrrup" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9g1-Tx-LYH"/>
                         <viewControllerLayoutGuide type="bottom" id="RyY-mN-3fD"/>
@@ -210,7 +232,7 @@
         <!--Tweets View Controller-->
         <scene sceneID="LNi-dH-K0d">
             <objects>
-                <viewController id="VM5-W0-ca0" customClass="TweetsViewController" customModule="Twitter" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="VM5-W0-ca0" customClass="TweetsViewController" customModule="Chirrrup" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="gAA-bL-Uee"/>
                         <viewControllerLayoutGuide type="bottom" id="mnB-6X-fRb"/>
@@ -223,7 +245,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="TweetCell" rowHeight="233" id="LPe-HA-grn" customClass="TweetCell" customModule="Twitter" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="TweetCell" rowHeight="233" id="LPe-HA-grn" customClass="TweetCell" customModule="Chirrrup" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="92" width="320" height="233"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LPe-HA-grn" id="vrL-Og-9o6">
@@ -421,7 +443,7 @@
         <!--Tweet Details View Controller-->
         <scene sceneID="Cfn-2d-LuX">
             <objects>
-                <viewController id="Qj0-22-4l8" customClass="TweetDetailsViewController" customModule="Twitter" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Qj0-22-4l8" customClass="TweetDetailsViewController" customModule="Chirrrup" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="dS1-1F-OAv"/>
                         <viewControllerLayoutGuide type="bottom" id="7TT-nD-EKE"/>
@@ -627,7 +649,7 @@
         <!--Compose Tweet View Controller-->
         <scene sceneID="yAb-Q8-ptN">
             <objects>
-                <viewController storyboardIdentifier="UserTimelineViewController" id="Dh0-Ty-eCe" customClass="ComposeTweetViewController" customModule="Twitter" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="UserTimelineViewController" id="Dh0-Ty-eCe" customClass="ComposeTweetViewController" customModule="Chirrrup" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="k2k-2w-6MZ"/>
                         <viewControllerLayoutGuide type="bottom" id="yus-xz-LQB"/>
@@ -770,7 +792,7 @@
         <!--Slideout Menu View Controller-->
         <scene sceneID="qbY-vS-ZHx">
             <objects>
-                <viewController id="irr-Wz-EQT" customClass="SlideoutMenuViewController" customModule="Twitter" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="irr-Wz-EQT" customClass="SlideoutMenuViewController" customModule="Chirrrup" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ZrN-qR-KeM"/>
                         <viewControllerLayoutGuide type="bottom" id="4jI-gW-klg"/>
@@ -913,6 +935,7 @@
     <resources>
         <image name="Twitter_logo" width="48" height="48"/>
         <image name="Twitter_logo_white_32" width="32" height="32"/>
+        <image name="chirrup_logo" width="320" height="169"/>
         <image name="like" width="54" height="72"/>
         <image name="menu" width="20" height="20"/>
         <image name="reply" width="65" height="72"/>

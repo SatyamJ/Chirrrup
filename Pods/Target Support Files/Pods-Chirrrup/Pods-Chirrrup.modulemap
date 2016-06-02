@@ -1,0 +1,6 @@
+framework module Pods_Chirrrup {
+  umbrella header "Pods-Chirrrup-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4A8840901C729A7D00A1D7A0"
-               BuildableName = "Twitter.app"
-               BlueprintName = "Twitter"
-               ReferencedContainer = "container:Twitter.xcodeproj">
+               BuildableName = "Chirrrup.app"
+               BlueprintName = "Chirrrup"
+               ReferencedContainer = "container:Chirrrup.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4A8840901C729A7D00A1D7A0"
-            BuildableName = "Twitter.app"
-            BlueprintName = "Twitter"
-            ReferencedContainer = "container:Twitter.xcodeproj">
+            BuildableName = "Chirrrup.app"
+            BlueprintName = "Chirrrup"
+            ReferencedContainer = "container:Chirrrup.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4A8840901C729A7D00A1D7A0"
-            BuildableName = "Twitter.app"
-            BlueprintName = "Twitter"
-            ReferencedContainer = "container:Twitter.xcodeproj">
+            BuildableName = "Chirrrup.app"
+            BlueprintName = "Chirrrup"
+            ReferencedContainer = "container:Chirrrup.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -75,9 +75,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4A8840901C729A7D00A1D7A0"
-            BuildableName = "Twitter.app"
-            BlueprintName = "Twitter"
-            ReferencedContainer = "container:Twitter.xcodeproj">
+            BuildableName = "Chirrrup.app"
+            BlueprintName = "Chirrrup"
+            ReferencedContainer = "container:Chirrrup.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
