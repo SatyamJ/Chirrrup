@@ -17,25 +17,36 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Twitter Twitz" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SpK-Z8-7vX">
-                                <rect key="frame" x="68" y="137" width="173" height="35"/>
-                                <color key="backgroundColor" red="0.39095906260530461" green="0.64431938876863881" blue="0.85342359293193715" alpha="1" colorSpace="calibratedRGB"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copyright © 2016 Satyam Jaiswal. All rights reserved" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jIt-Am-KxC">
+                                <rect key="frame" x="10" y="539" width="301" height="15"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chirrup_logo" translatesAutoresizingMaskIntoConstraints="NO" id="Ams-St-Gpz">
+                                <rect key="frame" x="39" y="61" width="242" height="125"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="242" id="dHj-Q8-nZf"/>
+                                    <constraint firstAttribute="height" constant="125" id="npY-GB-bSQ"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chirrup" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SpK-Z8-7vX">
+                                <rect key="frame" x="108" y="189" width="104" height="36"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="29"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <color key="shadowColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Twitter_logo" translatesAutoresizingMaskIntoConstraints="NO" id="P6X-Q7-imZ">
-                                <rect key="frame" x="240" y="89" width="48" height="48"/>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Copyright © 2016 Satyam Jaiswal. All rights reserved" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jIt-Am-KxC">
-                                <rect key="frame" x="46" y="520" width="228" height="34"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="jIt-Am-KxC" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="BhZ-kV-4fz"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="jIt-Am-KxC" secondAttribute="bottom" constant="14" id="C4B-dr-IZL"/>
+                            <constraint firstItem="Ams-St-Gpz" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="41" id="D98-u8-Cfn"/>
+                            <constraint firstItem="SpK-Z8-7vX" firstAttribute="top" secondItem="Ams-St-Gpz" secondAttribute="bottom" constant="3" id="HKa-E1-FkR"/>
+                            <constraint firstItem="Ams-St-Gpz" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="igN-ZY-472"/>
+                            <constraint firstItem="SpK-Z8-7vX" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="ybv-6E-KHI"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -44,6 +55,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Twitter_logo" width="48" height="48"/>
+        <image name="chirrup_logo" width="320" height="169"/>
     </resources>
 </document>
