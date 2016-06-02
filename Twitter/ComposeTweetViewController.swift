@@ -9,7 +9,7 @@
 import UIKit
 import MBProgressHUD
 
-class ComposeTweetViewController: UIViewController, UITextViewDelegate {
+class ComposeTweetViewController: UIViewController, UITextViewDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var tweetTextView: UITextView!
     
@@ -25,9 +25,15 @@ class ComposeTweetViewController: UIViewController, UITextViewDelegate {
     
     var tweetId: String?
     var replyTo: String?
+    var delegate: CellDelegate?
+    var tweets: [Tweet]? = []
+    var temp: Tweet?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tweets = []
+        navigationController?.delegate = self
+        
         self.userProfileImageView.setImageWithURL((User.currentUser?.user_profile_image_url)!)
 
         navigationController?.navigationBar.barTintColor = UIColor(red: 0.2, green: 0.5, blue: 0.7, alpha: 1.0)
@@ -38,6 +44,10 @@ class ComposeTweetViewController: UIViewController, UITextViewDelegate {
         
         let tweetCharacterCount = NSString(string: self.tweetTextView.text).length
         self.characterCountLabel.text = "\(140 - tweetCharacterCount)"
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        tweets = []
     }
 
     override func didReceiveMemoryWarning() {
@@ -80,13 +90,17 @@ class ComposeTweetViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func onTapTweetButton(sender: AnyObject) {
+        
         self.tweetTextView.resignFirstResponder()
         let hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         hud.mode = MBProgressHUDMode.Text
         hud.labelText = "Posting..."
         let status = self.tweetTextView.text
         //print(status)
-        TwitterClient.sharedInstance.tweet(self.tweetId!, status: status ,success: { () -> () in
+        TwitterClient.sharedInstance.tweet(self.tweetId!, status: status ,success: { (response: Tweet) -> () in
+            //print("response received")
+            self.tweets?.append(response)
+            
             hud.labelText = "Post successful!"
             self.tweetTextView.text = ""
             self.replyInfoLabel.hidden = true
@@ -95,16 +109,29 @@ class ComposeTweetViewController: UIViewController, UITextViewDelegate {
         }) { (error: NSError) -> () in
             print("Error in tweet reply: \(error.localizedDescription)")
         }
+        
     }
     
-    /*
+    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
+        if let destinationViewController = viewController as? TweetsViewController{
+            if let feeds = self.tweets{
+                for tweet in feeds{
+                    //print("inserting")
+                    destinationViewController.tweets?.insert(tweet, atIndex: 0)
+                }
+            }
+        }
+    }
+    
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        print("prepare for segue of Compose tweet vc called")
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
+ 
 
 }

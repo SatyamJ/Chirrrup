@@ -1,8 +1,8 @@
-# Project 4 - *Twitter Twitz*
+# Project 5 - *Chirrup - Twitter Clone*
 
-**Twitter Twitz** is a basic twitter app to read and compose tweets the [Twitter API](https://apps.twitter.com/).
+**Chirrup - Twitter Clone** is a basic twitter app to read and compose tweets the [Twitter API](https://apps.twitter.com/).
 
-Time spent: **20** hours spent in total
+Time spent: **80** hours spent in total
 
 ## User Stories
 
@@ -13,99 +13,45 @@ The following **required** functionality is completed:
 - [x] The current signed in user will be persisted across restarts
 - [x] In the home timeline, user can view tweet with the user profile picture, username, tweet text, and timestamp.
 - [x] Retweeting and favoriting should increment the retweet and favorite count.
-
-The following **optional** features are implemented:
-
-- [ ] User can load more tweets once they reach the bottom of the feed using infinite loading similar to the actual Twitter client.
-- [x] User should be able to unretweet and unfavorite and should decrement the retweet and favorite count.
-- [x] User can pull to refresh.
-
-The following **additional** features are implemented:
-
-- [x] user can see dynamic change of time interval units i.e. either hours or minutes or seconds as applicable 
-
-Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
-
-1. How to futher optimize API Client
-2. infinite scrolling list
-3. how can we enable videos and images be loaded dynamically in the cell
-4. how can be identify urls in the text and provide a clickable link
-
-## Video Walkthrough 
-
-Here's a walkthrough of implemented user stories:
-
-<img src='http://i.imgur.com/rGx7cmo.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-
-GIF created with [LiceCap](http://www.cockos.com/licecap/).
-
-## Notes
-
-- I'm still confused with infinite scroll
-- Remembering steps for creating an API client was difficult to me
-
-## License
-
-    Copyright [2016] [Satyam Jaiswal]
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-    
-    
-    
-# Project 5 - *Twitter Twitz*
-
-Time spent: **18** hours spent in total
-
-## User Stories
-
-The following **required** functionality is completed:
-
 - [x] Tweet Details Page: User can tap on a tweet to view it, with controls to retweet, favorite, and reply.
 - [x] Profile page:
-   - [x] Contains the user header view
-   - [x] Contains a section with the users basic stats: # tweets, # following, # followers
+    - [x] Contains the user header view
+    - [x] Contains a section with the users basic stats: # tweets, # following, # followers
 - [x] Home Timeline: Tapping on a user image should bring up that user's profile page
 - [x] Compose Page: User can compose a new tweet by tapping on a compose button.
 
 The following **optional** features are implemented:
 
-- [ ] When composing, you should have a countdown in the upper right for the tweet limit.
-- [ ] After creating a new tweet, a user should be able to view it in the timeline immediately without refetching the timeline from the network.
+- [x] User can load more tweets once they reach the bottom of the feed using infinite loading similar to the actual Twitter client.
+- [x] User should be able to unretweet and unfavorite and should decrement the retweet and favorite count.
+- [x] User can pull to refresh.
+- [x] When composing, you should have a countdown in the upper right for the tweet limit.
+- [x] After creating a new tweet, a user should be able to view it in the timeline immediately without refetching the timeline from the network.
 - [ ] Profile Page
-   - [ ] Implement the paging view for the user description.
-   - [ ] As the paging view moves, increase the opacity of the background screen. See the actual Twitter app for this effect
-   - [ ] Pulling down the profile page should blur and resize the header image.
+    - [ ] Implement the paging view for the user description.
+    - [ ] As the paging view moves, increase the opacity of the background screen. See the actual Twitter app for this effect
+    - [ ] Pulling down the profile page should blur and resize the header image.
 - [ ] Account switching
-   - [ ] Long press on tab bar to bring up Account view with animation
-   - [ ] Tap account to switch to
-   - [ ] Include a plus button to Add an Account
-   - [ ] Swipe to delete an account
+    - [ ] Long press on tab bar to bring up Account view with animation
+    - [ ] Tap account to switch to
+    - [ ] Include a plus button to Add an Account
+    - [ ] Swipe to delete an account
 
 The following **additional** features are implemented:
 
-- [ ] List anything else that you can get done to improve the app functionality!
+- [x] User can see dynamic change of time interval units i.e. either hours or minutes or seconds as applicable 
+- [x] Tweet with images and dynamic resizing of table cells
+- [x] Identifying the embedded links in the tweet and making it clickable
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1. opening a view controller with any element click
-2. tab bar controller
-3. API usage
+1. how can we enable videos and images be loaded dynamically in the cell
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/J07Wtbd.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 

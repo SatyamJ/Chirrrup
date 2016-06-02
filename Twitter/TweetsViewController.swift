@@ -50,6 +50,10 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         
     }
     
+    override func viewDidAppear(animated: Bool) {
+        self.tableView.reloadData()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -249,6 +253,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                     if let destinationViewController = segue.destinationViewController as? ComposeTweetViewController{
                         destinationViewController.tweetId = String(tweets![(indexPath?.row)!].tweetId!)
                         destinationViewController.replyTo = String(tweets![(indexPath?.row)!].user_screenname!)
+                        destinationViewController.tweets = self.tweets
                     }
                 }
             }else{
@@ -256,6 +261,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                     //print("segue for new tweet")
                     destinationViewController.tweetId = ""
                     destinationViewController.replyTo = ""
+                    destinationViewController.temp = self.tweets![0]
                 }
             }
         }
