@@ -18,7 +18,7 @@ protocol CellDelegate {
 
 class TweetCell: UITableViewCell {
 
-    @IBOutlet weak var nameLabek: UILabel!
+    @IBOutlet weak var nameLabel: UILabel!
     
     @IBOutlet weak var userHandleLabel: UILabel!
     
@@ -55,7 +55,7 @@ class TweetCell: UITableViewCell {
     
     var tweet:Tweet? {
         didSet{
-            self.nameLabek.text = tweet!.username as? String
+            self.nameLabel.text = tweet!.username as? String
             self.userHandleLabel.text = "@\(tweet!.user_screenname!)" //as String
             
             if let date = tweet!.timestamp {

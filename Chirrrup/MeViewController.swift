@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import MBProgressHUD
 
-class MeViewController: UIViewController {
+class MeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var user: User?
+    var myTweets: [Tweet]?
     
     @IBOutlet weak var coverImageView: UIImageView!
     
@@ -28,6 +30,8 @@ class MeViewController: UIViewController {
     
     @IBOutlet weak var menuBarButton: UIBarButtonItem!
     
+    @IBOutlet weak var userTweetsTableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.barTintColor = UIColor(red: 0.2, green: 0.5, blue: 0.7, alpha: 1.0)
@@ -35,6 +39,10 @@ class MeViewController: UIViewController {
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         
         setupUIElements()
+        requestNetworkData()
+        
+        self.userTweetsTableView.delegate = self
+        self.userTweetsTableView.dataSource = self
         
         self.menuBarButton.target = self.revealViewController()
         self.menuBarButton.action = #selector(SWRevealViewController.revealToggle(_:))
@@ -108,6 +116,32 @@ class MeViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let tweets = myTweets {
+            return tweets.count
+        }else{
+            return 0
+        }
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as! TweetCell
+        cell.tweet = self.myTweets![indexPath.row]
+        //cell.delegate = self
+        return cell
+    }
+    
+    func requestNetworkData(){
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        TwitterClient.sharedInstance.userTimeline(self.user?.screen_name as! String, success: { (tweets: [Tweet]) in
+            self.myTweets = tweets
+            self.userTweetsTableView.reloadData()
+            MBProgressHUD.hideHUDForView(self.view, animated: true)
+            }, failure: { (error: NSError) in
+                print("Error: \(error.localizedDescription)")
+        })
     }
 
     /*

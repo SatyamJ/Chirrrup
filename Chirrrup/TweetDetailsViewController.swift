@@ -34,6 +34,9 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
     
     @IBOutlet weak var tweetPosterView: UIImageView!
     
+    @IBOutlet weak var retweetedByImageView: UIImageView!
+    
+    @IBOutlet weak var retweetedByLabel: UILabel!
     
     var tweet: Tweet?
     //var retweeted: Bool?
@@ -111,6 +114,15 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
             self.tweetPosterView.setImageWithURL(tweetPosterUrl)
         }else{
             self.tweetPosterView.hidden = true
+        }
+        
+        if let retweetBy = tweet?.retweetedBy{
+            self.retweetedByLabel.hidden = false
+            self.retweetedByImageView.hidden = false
+            self.retweetedByLabel.text = retweetBy as String
+        }else{
+            self.retweetedByLabel.hidden = true
+            self.retweetedByImageView.hidden = true
         }
     }
     
