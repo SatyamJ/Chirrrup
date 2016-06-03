@@ -1,8 +1,8 @@
-# Project 5 - *Chirrup - Twitter Clone*
+# Project 5 - *Chirrrup - Twitter Clone*
 
-**Chirrup - Twitter Clone** is a basic twitter app to read and compose tweets the [Twitter API](https://apps.twitter.com/).
+**Chirrrup - Twitter Clone** is a basic twitter app to read and compose tweets the [Twitter API](https://apps.twitter.com/).
 
-Time spent: **80** hours spent in total
+Time spent: **85** hours spent in total
 
 ## User Stories
 
@@ -39,19 +39,21 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-- [x] User can see dynamic change of time interval units i.e. either hours or minutes or seconds as applicable 
 - [x] Tweet with images and dynamic resizing of table cells
+- [x] Slide-out menu to sign-out and switch between home and profile screen 
+- [x] Tweets on user profile page
+- [x] User can see dynamic change of time interval units i.e. either hours or minutes or seconds as applicable 
 - [x] Identifying the embedded links in the tweet and making it clickable
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1. how can we enable videos and images be loaded dynamically in the cell
+1. Enabling videos dynamically in the cell
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
 
-<img src='' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://i.imgur.com/B8LtPdQ.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
