@@ -11,9 +11,9 @@ import UIKit
 class User: NSObject {
     var name: NSString?
     var screen_name: NSString?
-    var user_profile_image_url: NSURL?
+    var user_profile_image_url: URL?
     var tagline: NSString?
-    var profile_banner_url: NSURL?
+    var profile_banner_url: URL?
     var tweetsCount: String?
     var followersCount: String?
     var followingCount: String?
@@ -25,10 +25,10 @@ class User: NSObject {
     class var currentUser: User?{
         get{
             if(_currentUser == nil){
-                let defaults = NSUserDefaults.standardUserDefaults()
-                let userData = defaults.objectForKey("currentUser") as? NSData
+                let defaults = UserDefaults.standard
+                let userData = defaults.object(forKey: "currentUser") as? Data
                 if let userData = userData{
-                    let dictionary = try! NSJSONSerialization.JSONObjectWithData(userData, options: []) as! NSDictionary
+                    let dictionary = try! JSONSerialization.jsonObject(with: userData, options: []) as! NSDictionary
                     _currentUser = User(user_dictionary: dictionary)
                 }
             }
@@ -36,14 +36,14 @@ class User: NSObject {
         }
         set(user){
             _currentUser = user
-            let defaults = NSUserDefaults.standardUserDefaults()
+            let defaults = UserDefaults.standard
             if let user = user {
-                let data = try! NSJSONSerialization.dataWithJSONObject(user.dictionary!, options: [])
-                defaults.setObject(data, forKey: "currentUser")
+                let data = try! JSONSerialization.data(withJSONObject: user.dictionary!, options: [])
+                defaults.set(data, forKey: "currentUser")
                 //defaults.arrayForKey(<#T##defaultName: String##String#>)
             }
             else{
-                defaults.setObject(nil, forKey: "currentUser")
+                defaults.set(nil, forKey: "currentUser")
             }
             
             defaults.synchronize()
@@ -54,18 +54,18 @@ class User: NSObject {
         
         self.dictionary = user_dictionary
         
-        name = user_dictionary["name"] as? String
+        name = user_dictionary["name"] as? String as NSString?
         
-        screen_name = user_dictionary["screen_name"] as? String
+        screen_name = user_dictionary["screen_name"] as? String as NSString?
         
         if let user_profile_image_url_String = user_dictionary["profile_image_url_https"] as? String{
-            user_profile_image_url = NSURL(string: user_profile_image_url_String)
+            user_profile_image_url = URL(string: user_profile_image_url_String)
         }
         
-        tagline = user_dictionary["description"] as? String
+        tagline = user_dictionary["description"] as? String as NSString?
         
         if let profile_banner_url = user_dictionary["profile_banner_url"] as? String{
-            self.profile_banner_url = NSURL(string: profile_banner_url)
+            self.profile_banner_url = URL(string: profile_banner_url)
         }
         
         if let tweets_count = user_dictionary["statuses_count"]{

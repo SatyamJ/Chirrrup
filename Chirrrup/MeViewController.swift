@@ -8,6 +8,30 @@
 
 import UIKit
 import MBProgressHUD
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l >= r
+  default:
+    return !(lhs < rhs)
+  }
+}
+
 
 class MeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -35,8 +59,8 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.barTintColor = UIColor(red: 0.2, green: 0.5, blue: 0.7, alpha: 1.0)
-        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        navigationController?.navigationBar.tintColor = UIColor.white
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
         
         setupUIElements()
         requestNetworkData()
@@ -58,7 +82,7 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
         if let user = self.user{
             
             if let profileImageUrl = user.user_profile_image_url{
-                self.profileImageView.setImageWithURL(profileImageUrl)
+                self.profileImageView.setImageWith(profileImageUrl as URL)
             }
             
             if let name = user.name as? String{
@@ -71,7 +95,7 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
             }
             
             if let bannerUrl = user.profile_banner_url{
-                self.coverImageView.setImageWithURL(bannerUrl)
+                self.coverImageView.setImageWith(bannerUrl as URL)
             }
             
             if let tweetCount = user.tweetsCount{
@@ -118,7 +142,7 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
         }
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let tweets = myTweets {
             return tweets.count
         }else{
@@ -126,19 +150,19 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as! TweetCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
         cell.tweet = self.myTweets![indexPath.row]
         //cell.delegate = self
         return cell
     }
     
     func requestNetworkData(){
-        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        TwitterClient.sharedInstance.userTimeline(self.user?.screen_name as! String, success: { (tweets: [Tweet]) in
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        TwitterClient.sharedInstance?.userTimeline(self.user?.screen_name as! String, success: { (tweets: [Tweet]) in
             self.myTweets = tweets
             self.userTweetsTableView.reloadData()
-            MBProgressHUD.hideHUDForView(self.view, animated: true)
+            MBProgressHUD.hide(for: self.view, animated: true)
             }, failure: { (error: NSError) in
                 print("Error: \(error.localizedDescription)")
         })

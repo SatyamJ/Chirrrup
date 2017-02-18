@@ -24,22 +24,22 @@ class InfiniteScrollActivityView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        activityIndicatorView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2)
+        activityIndicatorView.center = CGPoint(x: self.bounds.size.width/2, y: self.bounds.size.height/2)
     }
     
     func setupActivityIndicator() {
-        activityIndicatorView.activityIndicatorViewStyle = .Gray
+        activityIndicatorView.activityIndicatorViewStyle = .gray
         activityIndicatorView.hidesWhenStopped = true
         self.addSubview(activityIndicatorView)
     }
     
     func stopAnimating() {
         self.activityIndicatorView.stopAnimating()
-        self.hidden = true
+        self.isHidden = true
     }
     
     func startAnimating() {
-        self.hidden = false
+        self.isHidden = false
         self.activityIndicatorView.startAnimating()
     }
 }

@@ -29,11 +29,11 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         self.menuBarButton.action = #selector(SWRevealViewController.revealToggle(_:))
         self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         
-        self.composeBarButton.image = UIImage(named: "twitter_quill_30")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
+        self.composeBarButton.image = UIImage(named: "twitter_quill_30")?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
         //navigationController?.navigationBar.barTintColor = UIColor(red: 0.2118, green: 0.549, blue: 0.7098, alpha: 1.0)
         navigationController?.navigationBar.barTintColor = UIColor(red: 0.2, green: 0.5, blue: 0.7, alpha: 1.0)
-        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        navigationController?.navigationBar.tintColor = UIColor.white
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -43,14 +43,14 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         requestNetworkData()
         
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(TweetsViewController.refreshControlAction(_:)), forControlEvents: UIControlEvents.ValueChanged)
-        tableView.insertSubview(refreshControl, atIndex: 0)
+        refreshControl.addTarget(self, action: #selector(TweetsViewController.refreshControlAction(_:)), for: UIControlEvents.valueChanged)
+        tableView.insertSubview(refreshControl, at: 0)
         
         setupInfiniteScrollView()
         
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         self.tableView.reloadData()
     }
     
@@ -60,7 +60,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if let tweets = tweets {
             return tweets.count
@@ -70,8 +70,8 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as! TweetCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
         cell.tweet = self.tweets![indexPath.row]
         cell.delegate = self
         return cell
@@ -79,9 +79,9 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     
     func setupInfiniteScrollView(){
         // Set up Infinite Scroll loading indicator
-        let frame = CGRectMake(0, tableView.contentSize.height, tableView.bounds.size.width, InfiniteScrollActivityView.defaultHeight)
+        let frame = CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
         loadingMoreView = InfiniteScrollActivityView(frame: frame)
-        loadingMoreView!.hidden = true
+        loadingMoreView!.isHidden = true
         tableView.addSubview(loadingMoreView!)
         
         var insets = tableView.contentInset;
@@ -89,33 +89,33 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.contentInset = insets
     }
     
-    func refreshControlAction(refreshControl: UIRefreshControl){
+    func refreshControlAction(_ refreshControl: UIRefreshControl){
         requestNetworkData()
         refreshControl.endRefreshing()
     }
     
     func requestNetworkData(){
-        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        TwitterClient.sharedInstance.homeTimeline({ (tweets:[Tweet]) -> () in
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        TwitterClient.sharedInstance?.homeTimeline({ (tweets:[Tweet]) -> () in
             self.tweets = tweets
             self.tableView.reloadData()
-            MBProgressHUD.hideHUDForView(self.view, animated: true)
+            MBProgressHUD.hide(for: self.view, animated: true)
         }) { (error: NSError) -> () in
             print("Error: \(error.localizedDescription)")
         }
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if (!moreDataRequested){
             
             let scrollViewContentHeight = self.tableView.contentSize.height
             let scrollOffsetThreshold = scrollViewContentHeight - self.tableView.bounds.size.height
             
-            if scrollView.contentOffset.y > scrollOffsetThreshold && tableView.dragging {
+            if scrollView.contentOffset.y > scrollOffsetThreshold && tableView.isDragging {
                 moreDataRequested = true
                 
                 // Update position of loadingMoreView, and start loading indicator
-                let frame = CGRectMake(0, tableView.contentSize.height, tableView.bounds.size.width, InfiniteScrollActivityView.defaultHeight)
+                let frame = CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
                 loadingMoreView?.frame = frame
                 loadingMoreView!.startAnimating()
                 
@@ -127,8 +127,8 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     
     func loadMoreData(){
         if let lastTweetId = Int((self.tweets?.last?.tweetId)! as String){
-            TwitterClient.sharedInstance.homeTimelineOnScroll(lastTweetId-1, success: { (moreTweets: [Tweet]) in
-                self.tweets?.appendContentsOf(moreTweets)
+            TwitterClient.sharedInstance?.homeTimelineOnScroll(lastTweetId-1, success: { (moreTweets: [Tweet]) in
+                self.tweets?.append(contentsOf: moreTweets)
                 self.loadingMoreView!.stopAnimating()
                 self.tableView.reloadData()
                 self.moreDataRequested = false
@@ -138,28 +138,28 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
-    func onTapCellProfileImage(sender: AnyObject?){
+    func onTapCellProfileImage(_ sender: AnyObject?){
         //print("onTapCellProfileImage")
         let recog = sender as! UITapGestureRecognizer
         let view = recog.view
         let cell = view!.superview?.superview as! TweetCell
-        let indexPath = tableView.indexPathForCell(cell)
+        let indexPath = tableView.indexPath(for: cell)
         self.user = tweets![indexPath!.row].user
-        performSegueWithIdentifier("showUserProfileSegue", sender: nil)
+        performSegue(withIdentifier: "showUserProfileSegue", sender: nil)
     }
     
-    func onTapCellLike(sender: AnyObject?) {
+    func onTapCellLike(_ sender: AnyObject?) {
         //print("onTapCellLike called")
         if let recognizer = sender as? UITapGestureRecognizer{
             let imageView = recognizer.view
             if let cellView = imageView?.superview?.superview as? TweetCell {
-                let indexPath = self.tableView.indexPathForCell(cellView)
+                let indexPath = self.tableView.indexPath(for: cellView)
                 if let row = indexPath?.row{
                     if let tweet = self.tweets?[row]{
                         //print("processing tweet id: \(tweet.tweetId)")
                         if tweet.liked == true{
                             //self.tweets![(indexPath?.row)!].liked = false
-                            TwitterClient.sharedInstance.unlike(String(tweet.tweetId!),
+                            TwitterClient.sharedInstance?.unlike(String(tweet.tweetId!),
                                 success: { () -> () in
                                     self.tweets![(indexPath?.row)!].liked = false
                                     self.tweets![(indexPath?.row)!].likes_count -= 1
@@ -169,7 +169,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                             })
                         }else{
                             //self.tweets![(indexPath?.row)!].liked = true
-                            TwitterClient.sharedInstance.like(String(tweet.tweetId!),
+                            TwitterClient.sharedInstance?.like(String(tweet.tweetId!),
                                 success: { () -> () in
                                     self.tweets![(indexPath?.row)!].liked = true
                                     self.tweets![(indexPath?.row)!].likes_count += 1
@@ -184,21 +184,21 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
-    func onTapCellReply(sender: AnyObject?) {
-        performSegueWithIdentifier("tweetSegue", sender: sender)
+    func onTapCellReply(_ sender: AnyObject?) {
+        performSegue(withIdentifier: "tweetSegue", sender: sender)
     }
     
-    func onTapCellRetweet(sender: AnyObject?) {
+    func onTapCellRetweet(_ sender: AnyObject?) {
         //print("onTapCellRetweet called")
         if let recognizer = sender as? UITapGestureRecognizer{
             let imageView = recognizer.view
             if let cellView = imageView?.superview?.superview as? TweetCell {
-                let indexPath = self.tableView.indexPathForCell(cellView)
+                let indexPath = self.tableView.indexPath(for: cellView)
                 if let row = indexPath?.row{
                     if let tweet = self.tweets?[row]{
                         //print("processing tweet id: \(tweet.tweetId!)")
                         if tweet.retweeted == true{
-                            TwitterClient.sharedInstance.unretweet(String(tweet.tweetId!),
+                            TwitterClient.sharedInstance?.unretweet(String(tweet.tweetId!),
                                 success: { () -> () in
                                     self.tweets![(indexPath?.row)!].retweeted = false
                                     self.tweets![(indexPath?.row)!].retweet_count -= 1
@@ -207,7 +207,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                                     print("Un-retweet error: \(error.localizedDescription)")
                             })
                         }else{
-                            TwitterClient.sharedInstance.retweet(String(tweet.tweetId!),
+                            TwitterClient.sharedInstance?.retweet(String(tweet.tweetId!),
                               success: { () -> () in
                                 self.tweets![(indexPath?.row)!].retweeted = true
                                 self.tweets![(indexPath?.row)!].retweet_count += 1
@@ -227,37 +227,37 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "TweetDetailsSegue"{
             if let cell = sender as? TweetCell{
-                let indexPath = tableView.indexPathForCell(cell)
-                if let destinationViewController = segue.destinationViewController as? TweetDetailsViewController{
+                let indexPath = tableView.indexPath(for: cell)
+                if let destinationViewController = segue.destination as? TweetDetailsViewController{
                     destinationViewController.tweet = self.tweets![indexPath!.row] as Tweet
                     destinationViewController.row = indexPath!.row
                     let bgView = UIView()
-                    bgView.backgroundColor = UIColor.grayColor()
+                    bgView.backgroundColor = UIColor.gray
                     cell.selectedBackgroundView = bgView
                     
-                    tableView.deselectRowAtIndexPath(indexPath!, animated: true)
+                    tableView.deselectRow(at: indexPath!, animated: true)
                 }
             }
         } else if segue.identifier == "showUserProfileSegue" {
-            if let destinationViewController = segue.destinationViewController as? MeViewController {
+            if let destinationViewController = segue.destination as? MeViewController {
                 destinationViewController.user = self.user
             }
         } else if segue.identifier == "tweetSegue" {
             if let recognizer = sender as? UIGestureRecognizer{
                 let view = recognizer.view
                 if let cell = view?.superview?.superview as? TweetCell{
-                    let indexPath = tableView.indexPathForCell(cell)
-                    if let destinationViewController = segue.destinationViewController as? ComposeTweetViewController{
+                    let indexPath = tableView.indexPath(for: cell)
+                    if let destinationViewController = segue.destination as? ComposeTweetViewController{
                         destinationViewController.tweetId = String(tweets![(indexPath?.row)!].tweetId!)
                         destinationViewController.replyTo = String(tweets![(indexPath?.row)!].user_screenname!)
                         destinationViewController.tweets = self.tweets
                     }
                 }
             }else{
-                if let destinationViewController = segue.destinationViewController as? ComposeTweetViewController{
+                if let destinationViewController = segue.destination as? ComposeTweetViewController{
                     //print("segue for new tweet")
                     destinationViewController.tweetId = ""
                     destinationViewController.replyTo = ""

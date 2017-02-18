@@ -200,6 +200,7 @@
 				TargetAttributes = {
 					4A8840901C729A7D00A1D7A0 = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0810;
 					};
 				};
 			};
@@ -412,6 +413,7 @@
 				PRODUCT_NAME = Chirrrup;
 				SWIFT_OBJC_BRIDGING_HEADER = "Chirrrup/Chirrrup-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -426,6 +428,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.codepath.Chirrrup;
 				PRODUCT_NAME = Chirrrup;
 				SWIFT_OBJC_BRIDGING_HEADER = "Chirrrup/Chirrrup-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

@@ -49,8 +49,8 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
         
         navigationController?.delegate = self
         navigationController?.navigationBar.barTintColor = UIColor(red: 0.2, green: 0.5, blue: 0.7, alpha: 1.0)
-        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        navigationController?.navigationBar.tintColor = UIColor.white
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
         
         setupUIElements()
         addGestures()
@@ -59,7 +59,7 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
     
     func setupUIElements(){
         if let profile_image_url = tweet?.profile_image_url{
-            tweetProfileImageView.setImageWithURL(profile_image_url)
+            tweetProfileImageView.setImageWith(profile_image_url as URL)
         }
         
         tweetUsernameLabel.text = tweet?.username as? String ?? ""
@@ -71,11 +71,11 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
         tweetTextLabel.text = tweet?.text as? String ?? ""
         
         if let tweet_timestamp = tweet?.timestamp{
-            let formatter = NSDateFormatter()
-            formatter.dateStyle = .MediumStyle
-            formatter.timeStyle = .ShortStyle
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            formatter.timeStyle = .short
             
-            let dateString = formatter.stringFromDate(tweet_timestamp)
+            let dateString = formatter.string(from: tweet_timestamp as Date)
             tweetTimestampLabel.text = "\(dateString)"
         }
         
@@ -110,34 +110,34 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
         }
         
         if let tweetPosterUrl = tweet?.tweetMediaUrl{
-            self.tweetPosterView.hidden = false
-            self.tweetPosterView.setImageWithURL(tweetPosterUrl)
+            self.tweetPosterView.isHidden = false
+            self.tweetPosterView.setImageWith(tweetPosterUrl as URL)
         }else{
-            self.tweetPosterView.hidden = true
+            self.tweetPosterView.isHidden = true
         }
         
         if let retweetBy = tweet?.retweetedBy{
-            self.retweetedByLabel.hidden = false
-            self.retweetedByImageView.hidden = false
+            self.retweetedByLabel.isHidden = false
+            self.retweetedByImageView.isHidden = false
             self.retweetedByLabel.text = retweetBy as String
         }else{
-            self.retweetedByLabel.hidden = true
-            self.retweetedByImageView.hidden = true
+            self.retweetedByLabel.isHidden = true
+            self.retweetedByImageView.isHidden = true
         }
     }
     
     func addGestures(){
         let tapRetweet = UITapGestureRecognizer(target: self, action: #selector(TweetDetailsViewController.tappedRetweet(_:)))
         self.retweetImageView.addGestureRecognizer(tapRetweet)
-        self.retweetImageView.userInteractionEnabled = true
+        self.retweetImageView.isUserInteractionEnabled = true
         
         let tapLike = UITapGestureRecognizer(target: self, action: #selector(TweetDetailsViewController.tappedLike(_:)))
         self.likeImageView.addGestureRecognizer(tapLike)
-        self.likeImageView.userInteractionEnabled = true
+        self.likeImageView.isUserInteractionEnabled = true
         
         let tapReply = UITapGestureRecognizer(target: self, action: #selector(TweetDetailsViewController.tappedReply(_:)))
         self.replyImageView.addGestureRecognizer(tapReply)
-        self.replyImageView.userInteractionEnabled = true
+        self.replyImageView.isUserInteractionEnabled = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -145,9 +145,9 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
         // Dispose of any resources that can be recreated.
     }
     
-    func tappedRetweet(sender: AnyObject){
+    func tappedRetweet(_ sender: AnyObject){
         if self.tweet?.retweeted == true{
-            TwitterClient.sharedInstance.unretweet(self.tweetId!,
+            TwitterClient.sharedInstance?.unretweet(self.tweetId!,
                 success: { () -> () in
                     self.retweetImageView.image = UIImage(named: "retweet")
                     //self.retweeted = false
@@ -162,7 +162,7 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
                     print("Unretweet Error: \(error.localizedDescription)")
             })
         }else{
-            TwitterClient.sharedInstance.retweet(self.tweetId!,
+            TwitterClient.sharedInstance?.retweet(self.tweetId!,
                 success: { () -> () in
                     self.retweetImageView.image = UIImage(named: "retweeted")
                     //self.retweeted = true
@@ -178,9 +178,9 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
         }
     }
     
-    func tappedLike(sender: AnyObject){
+    func tappedLike(_ sender: AnyObject){
         if self.tweet?.liked == true{
-            TwitterClient.sharedInstance.unlike(self.tweetId!,
+            TwitterClient.sharedInstance?.unlike(self.tweetId!,
                 success: { () -> () in
                     self.likeImageView.image = UIImage(named: "like")
                     //self.liked = false
@@ -194,7 +194,7 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
                     print("Tweet Unlike error: \(error.localizedDescription)")
             })
         }else{
-            TwitterClient.sharedInstance.like(self.tweetId!,
+            TwitterClient.sharedInstance?.like(self.tweetId!,
                 success: { () -> () in
                     self.likeImageView.image = UIImage(named: "liked")
                     //self.liked = true
@@ -210,25 +210,25 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
         }
     }
     
-    func tappedReply(sender: AnyObject){
-        performSegueWithIdentifier("replySegue", sender: sender)
+    func tappedReply(_ sender: AnyObject){
+        performSegue(withIdentifier: "replySegue", sender: sender)
     }
     
     
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == "replySegue" {
-            let destinationViewController = segue.destinationViewController as? ComposeTweetViewController
-            destinationViewController?.tweetId = String(self.tweet?.tweetId!)
+            let destinationViewController = segue.destination as? ComposeTweetViewController
+            destinationViewController?.tweetId = String(describing: self.tweet?.tweetId!)
             destinationViewController?.replyTo = String((self.tweet?.user_screenname)!)
         }
     }
     
-    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         if let destinationViewController = viewController as? TweetsViewController{
             destinationViewController.tweets![row!] = self.tweet!
         }

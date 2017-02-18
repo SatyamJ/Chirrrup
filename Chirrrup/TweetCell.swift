@@ -10,10 +10,10 @@ import UIKit
 import AFNetworking
 
 protocol CellDelegate {
-    func onTapCellProfileImage(sender: AnyObject?)
-    func onTapCellLike(sender: AnyObject?)
-    func onTapCellReply(sender: AnyObject?)
-    func onTapCellRetweet(sender: AnyObject?)
+    func onTapCellProfileImage(_ sender: AnyObject?)
+    func onTapCellLike(_ sender: AnyObject?)
+    func onTapCellReply(_ sender: AnyObject?)
+    func onTapCellRetweet(_ sender: AnyObject?)
 }
 
 class TweetCell: UITableViewCell {
@@ -50,7 +50,7 @@ class TweetCell: UITableViewCell {
     //var liked: Bool?
     var tweetId: String?
     var table: UITableView?
-    var index: NSIndexPath?
+    var index: IndexPath?
     var row: Int?
     
     var tweet:Tweet? {
@@ -59,7 +59,7 @@ class TweetCell: UITableViewCell {
             self.userHandleLabel.text = "@\(tweet!.user_screenname!)" //as String
             
             if let date = tweet!.timestamp {
-                self.timeLabel.text = NSDate().offsetFrom(date)
+                self.timeLabel.text = Date().offsetFrom(date as Date)
             }
             
             self.tweetTextView.text = tweet!.text! as String
@@ -68,16 +68,16 @@ class TweetCell: UITableViewCell {
             
             if let url = tweet!.profile_image_url {
                 //print("profile: \(url)")
-                self.userProfileImageView.setImageWithURL(url)
+                self.userProfileImageView.setImageWith(url as URL)
             }
             
             if let retweetBy = tweet?.retweetedBy{
-                self.retweetedByLabel.hidden = false
-                self.retweetedByImage.hidden = false
+                self.retweetedByLabel.isHidden = false
+                self.retweetedByImage.isHidden = false
                 self.retweetedByLabel.text = retweetBy as String
             }else{
-                self.retweetedByLabel.hidden = true
-                self.retweetedByImage.hidden = true
+                self.retweetedByLabel.isHidden = true
+                self.retweetedByImage.isHidden = true
             }
             
             if let retweeted = tweet?.retweeted{
@@ -104,11 +104,11 @@ class TweetCell: UITableViewCell {
             
             if let tweetMedia = tweet?.tweetMediaUrl{
                 //print("media: \(tweetMedia)")
-                self.tweetPosterView.hidden = false
-                self.tweetPosterView.setImageWithURL(tweetMedia)
+                self.tweetPosterView.isHidden = false
+                self.tweetPosterView.setImageWith(tweetMedia as URL)
             }else{
                 //print("No media found")
-                self.tweetPosterView.hidden = true
+                self.tweetPosterView.isHidden = true
             }
             
         }
@@ -119,19 +119,19 @@ class TweetCell: UITableViewCell {
         // Initialization code
         let tapRetweet = UITapGestureRecognizer(target: self, action: #selector(TweetCell.tappedRetweet(_:)))
         self.retweetImage.addGestureRecognizer(tapRetweet)
-        self.retweetImage.userInteractionEnabled = true
+        self.retweetImage.isUserInteractionEnabled = true
         
         let tapLike = UITapGestureRecognizer(target: self, action: #selector(TweetCell.tappedLike(_:)))
         self.likeImage.addGestureRecognizer(tapLike)
-        self.likeImage.userInteractionEnabled = true
+        self.likeImage.isUserInteractionEnabled = true
         
         let tapReply = UITapGestureRecognizer(target: self, action: #selector(TweetCell.tappedReply(_:)))
         self.replyImageView.addGestureRecognizer(tapReply)
-        self.replyImageView.userInteractionEnabled = true
+        self.replyImageView.isUserInteractionEnabled = true
         
         profileImageTapGes.addTarget(self, action: #selector(TweetCell.profileImageTapGestureAction(_:)))
         userProfileImageView.addGestureRecognizer(profileImageTapGes)
-        userProfileImageView.userInteractionEnabled = true
+        userProfileImageView.isUserInteractionEnabled = true
         
     }
 
@@ -143,49 +143,49 @@ class TweetCell: UITableViewCell {
     }
     */
     
-    func profileImageTapGestureAction(sender: AnyObject) {
+    func profileImageTapGestureAction(_ sender: AnyObject) {
         //print("profileImageTapGestureAction method called")
         delegate?.onTapCellProfileImage(sender)
     }
     
-    func tappedRetweet(sender: AnyObject){
+    func tappedRetweet(_ sender: AnyObject){
         delegate?.onTapCellRetweet(sender)
         
     }
     
-    func tappedLike(sender: AnyObject){
+    func tappedLike(_ sender: AnyObject){
         delegate?.onTapCellLike(sender)
         
     }
     
-    func tappedReply(sender: AnyObject){
+    func tappedReply(_ sender: AnyObject){
         delegate?.onTapCellReply(sender)
     }
 }
 
-extension NSDate {
-    func yearsFrom(date:NSDate) -> Int{
-        return NSCalendar.currentCalendar().components(.Year, fromDate: date, toDate: self, options: []).year
+extension Date {
+    func yearsFrom(_ date:Date) -> Int{
+        return (Calendar.current as NSCalendar).components(.year, from: date, to: self, options: []).year!
     }
-    func monthsFrom(date:NSDate) -> Int{
-        return NSCalendar.currentCalendar().components(.Month, fromDate: date, toDate: self, options: []).month
+    func monthsFrom(_ date:Date) -> Int{
+        return (Calendar.current as NSCalendar).components(.month, from: date, to: self, options: []).month!
     }
-    func weeksFrom(date:NSDate) -> Int{
-        return NSCalendar.currentCalendar().components(.WeekOfYear, fromDate: date, toDate: self, options: []).weekOfYear
+    func weeksFrom(_ date:Date) -> Int{
+        return (Calendar.current as NSCalendar).components(.weekOfYear, from: date, to: self, options: []).weekOfYear!
     }
-    func daysFrom(date:NSDate) -> Int{
-        return NSCalendar.currentCalendar().components(.Day, fromDate: date, toDate: self, options: []).day
+    func daysFrom(_ date:Date) -> Int{
+        return (Calendar.current as NSCalendar).components(.day, from: date, to: self, options: []).day!
     }
-    func hoursFrom(date:NSDate) -> Int{
-        return NSCalendar.currentCalendar().components(.Hour, fromDate: date, toDate: self, options: []).hour
+    func hoursFrom(_ date:Date) -> Int{
+        return (Calendar.current as NSCalendar).components(.hour, from: date, to: self, options: []).hour!
     }
-    func minutesFrom(date:NSDate) -> Int{
-        return NSCalendar.currentCalendar().components(.Minute, fromDate: date, toDate: self, options: []).minute
+    func minutesFrom(_ date:Date) -> Int{
+        return (Calendar.current as NSCalendar).components(.minute, from: date, to: self, options: []).minute!
     }
-    func secondsFrom(date:NSDate) -> Int{
-        return NSCalendar.currentCalendar().components(.Second, fromDate: date, toDate: self, options: []).second
+    func secondsFrom(_ date:Date) -> Int{
+        return (Calendar.current as NSCalendar).components(.second, from: date, to: self, options: []).second!
     }
-    func offsetFrom(date:NSDate) -> String {
+    func offsetFrom(_ date:Date) -> String {
         
         if yearsFrom(date)   > 0 { return "\(yearsFrom(date))y"   }
         if monthsFrom(date)  > 0 { return "\(monthsFrom(date))M"  }
