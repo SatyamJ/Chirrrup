@@ -67,6 +67,8 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
         
         self.userTweetsTableView.delegate = self
         self.userTweetsTableView.dataSource = self
+        self.userTweetsTableView.estimatedRowHeight = 120
+        self.userTweetsTableView.rowHeight = UITableViewAutomaticDimension
         
         self.menuBarButton.target = self.revealViewController()
         self.menuBarButton.action = #selector(SWRevealViewController.revealToggle(_:))
