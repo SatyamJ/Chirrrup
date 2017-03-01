@@ -43,7 +43,7 @@ class User: NSObject {
                 //defaults.arrayForKey(<#T##defaultName: String##String#>)
             }
             else{
-                defaults.set(nil, forKey: "currentUser")
+                defaults.removeObject(forKey: "currentUser")
             }
             
             defaults.synchronize()

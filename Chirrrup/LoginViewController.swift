@@ -11,6 +11,8 @@ import BDBOAuth1Manager
 
 class LoginViewController: UIViewController {
 
+    var authorizationUrl: URL?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -24,7 +26,7 @@ class LoginViewController: UIViewController {
     
   
     @IBAction func onClickLoginButton(_ sender: AnyObject) {
-        
+        /*
         let twitterClient = TwitterClient.sharedInstance
         twitterClient?.login({ () -> () in
                 print("Login successful")
@@ -32,16 +34,41 @@ class LoginViewController: UIViewController {
             }) { (error: Error?) -> () in
                 print("Login error: \(error?.localizedDescription)")
         }
+        */
+        self.setupCallbacks()
+        
+        TwitterClient.sharedInstance?.getRequestToken(success: { (requestToken: BDBOAuth1Credential) in
+            if let oauth_token = requestToken.token{
+                if let authorizeUrl = URL(string: "https://api.twitter.com/oauth/authorize?oauth_token=\(oauth_token)"){
+                    self.authorizationUrl = authorizeUrl
+                    self.performSegue(withIdentifier: "authorizationSegue", sender: sender)
+                }else{
+                    print("Can't open web view! Invalid authorization url.")
+                }
+            }
+        }, failure: { (error: Error) in
+            print("Error fetching request token: \(error.localizedDescription)")
+        })
+    }
+    
+    func setupCallbacks(){
+        TwitterClient.sharedInstance?.setupLoginCallbacks(success: {
+            self.performSegue(withIdentifier: "loginSegue", sender: self)
+            
+        }, failure: { (error: Error) in
+            print(error.localizedDescription)
+        })
     }
 
-    /*
     // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "authorizationSegue"{
+            if let vc = segue.destination as? AuthorizationViewController{
+                vc.loadUrl = self.authorizationUrl
+            }
+        }
     }
-    */
-
 }

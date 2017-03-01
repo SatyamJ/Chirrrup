@@ -40,6 +40,22 @@ class TwitterClient: BDBOAuth1SessionManager {
         })
     }
     
+    func getRequestToken(success: @escaping (BDBOAuth1Credential) -> Void, failure: @escaping (Error) -> Void){
+        print("Fetching request token...")
+        TwitterClient.sharedInstance?.deauthorize()
+        TwitterClient.sharedInstance?.fetchRequestToken(withPath: "oauth/request_token", method: "GET", callbackURL: URL(string: "myTwitterApp://oauth"), scope: nil, success: { (requestToken: BDBOAuth1Credential?) in
+            print("Got request token!")
+            success(requestToken!)
+        }, failure: { (error: Error?) in
+            failure(error!)
+        })
+    }
+    
+    func setupLoginCallbacks(success: @escaping ()->Void, failure: @escaping (Error)->Void){
+        self.loginsuccess = success
+        self.loginfailure = failure
+    }
+    
     func logout(){
         User.currentUser = nil
         TwitterClient.sharedInstance?.deauthorize()
