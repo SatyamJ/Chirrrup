@@ -26,11 +26,11 @@ class SlideoutMenuViewController: UIViewController, UIGestureRecognizerDelegate 
             self.userProfileImageView.setImageWith(imageUrl as URL)
         }
         
-        if let name = User.currentUser?.name as? String{
+        if let name = User.currentUser?.name{
             self.usernameLabel.text = name
         }
         
-        if let handle = User.currentUser?.screen_name as? String{
+        if let handle = User.currentUser?.screen_name{
             self.userHandleLabel.text = "@\(handle)"
         }
     }

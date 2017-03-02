@@ -87,12 +87,12 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
                 self.profileImageView.setImageWith(profileImageUrl as URL)
             }
             
-            if let name = user.name as? String{
+            if let name = user.name{
                 self.usernameLabel.text = name
                 self.title = name
             }
             
-            if let handle = user.screen_name as? String{
+            if let handle = user.screen_name{
                 self.screennameLabel.text = "@\(handle)"
             }
             
@@ -103,13 +103,13 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
             if let tweetCount = user.tweetsCount{
                 let count = Int(tweetCount)
                 if count >= 1000000 {
-                    let million = Float(count!)/1000000
+                    let million = Float(count)/1000000
                     self.tweetsCountLabel.text = String(format: "%.1f M", million)
                 }else if count >= 1000{
-                    let grand = Float(count!)/1000
+                    let grand = Float(count)/1000
                     self.tweetsCountLabel.text = String(format: "%.1f K", grand)
                 }else{
-                    self.tweetsCountLabel.text = tweetCount
+                    self.tweetsCountLabel.text = "\(tweetCount)"
                 }
             }
             
@@ -118,13 +118,13 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
             if let followersCount = user.followersCount{
                 let count = Int(followersCount)
                 if count >= 1000000 {
-                    let million = Float(count!)/1000000
+                    let million = Float(count)/1000000
                     self.followersCount.text = String(format: "%.1f M", million)
                 }else if count >= 1000{
-                    let grand = Float(count!)/1000
+                    let grand = Float(count)/1000
                     self.followersCount.text = String(format: "%.1f K", grand)
                 }else{
-                    self.followersCount.text = followersCount
+                    self.followersCount.text = "\(followersCount)"
                 }
             }
             
@@ -132,13 +132,13 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
             if let followingCount = user.followingCount{
                 let count = Int(followingCount)
                 if count >= 1000000 {
-                    let million = Float(count!)/1000000
+                    let million = Float(count)/1000000
                     self.followingCountLabel.text = String(format: "%.1f M", million)
                 }else if count >= 1000{
-                    let grand = Float(count!)/1000
+                    let grand = Float(count)/1000
                     self.followingCountLabel.text = String(format: "%.1f K", grand)
                 }else{
-                    self.followingCountLabel.text = followingCount
+                    self.followingCountLabel.text = "\(followingCount)"
                 }
             }
         }
@@ -161,7 +161,7 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
     
     func requestNetworkData(){
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        TwitterClient.sharedInstance?.userTimeline(self.user?.screen_name as! String, success: { (tweets: [Tweet]) in
+        TwitterClient.sharedInstance?.userTimeline((self.user?.screen_name)!, success: { (tweets: [Tweet]) in
             self.myTweets = tweets
             self.userTweetsTableView.reloadData()
             MBProgressHUD.hide(for: self.view, animated: true)

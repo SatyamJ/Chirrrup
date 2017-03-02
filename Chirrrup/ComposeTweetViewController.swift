@@ -19,6 +19,10 @@ class ComposeTweetViewController: UIViewController, UITextViewDelegate, UINaviga
     
     @IBOutlet weak var replyInfoLabel: UILabel!
     
+    @IBOutlet weak var nameLabel: UILabel!
+    
+    @IBOutlet weak var handleLabel: UILabel!
+    
     var placeholderLabel : UILabel!
     
     //var newStatus: String?
@@ -32,13 +36,10 @@ class ComposeTweetViewController: UIViewController, UITextViewDelegate, UINaviga
     override func viewDidLoad() {
         super.viewDidLoad()
         tweets = []
-        navigationController?.delegate = self
         
-        self.userProfileImageView.setImageWith((User.currentUser?.user_profile_image_url)! as URL)
+        self.setupUserFields()
 
-        navigationController?.navigationBar.barTintColor = UIColor(red: 0.2, green: 0.5, blue: 0.7, alpha: 1.0)
-        navigationController?.navigationBar.tintColor = UIColor.white
-        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        self.setupNavigationBar()
         
         configureTextView()
         
@@ -53,6 +54,19 @@ class ComposeTweetViewController: UIViewController, UITextViewDelegate, UINaviga
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func setupUserFields(){
+        self.userProfileImageView.setImageWith((User.currentUser?.user_profile_image_url)! as URL)
+        self.nameLabel.text = User.currentUser?.name as String?
+        self.handleLabel.text = User.currentUser?.screen_name as String?
+    }
+    
+    func setupNavigationBar(){
+        navigationController?.delegate = self
+        navigationController?.navigationBar.barTintColor = UIColor(red: 0.2, green: 0.5, blue: 0.7, alpha: 1.0)
+        navigationController?.navigationBar.tintColor = UIColor.white
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
     }
     
     func configureTextView(){
@@ -111,6 +125,28 @@ class ComposeTweetViewController: UIViewController, UITextViewDelegate, UINaviga
         }
         
     }
+    
+    @IBAction func onTweetButtonTapped(_ sender: Any) {
+        self.tweetTextView.resignFirstResponder()
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hud?.mode = MBProgressHUDMode.text
+        hud?.labelText = "Posting..."
+        let status = self.tweetTextView.text
+        //print(status)
+        TwitterClient.sharedInstance?.tweet(self.tweetId!, status: status! ,success: { (response: Tweet) -> () in
+            //print("response received")
+            self.tweets?.append(response)
+            
+            hud?.labelText = "Post successful!"
+            self.tweetTextView.text = ""
+            self.replyInfoLabel.isHidden = true
+            self.placeholderLabel.isHidden = false
+            MBProgressHUD.hide(for: self.view, animated: true)
+        }) { (error: NSError) -> () in
+            print("Error in tweet reply: \(error.localizedDescription)")
+        }
+    }
+    
     
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         if let destinationViewController = viewController as? TweetsViewController{

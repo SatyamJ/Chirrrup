@@ -58,17 +58,16 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
     }
     
     func setupUIElements(){
-        if let profile_image_url = tweet?.profile_image_url{
+        if let profile_image_url = tweet?.user?.user_profile_image_url{
             tweetProfileImageView.setImageWith(profile_image_url as URL)
         }
         
-        tweetUsernameLabel.text = tweet?.username as? String ?? ""
-        //tweetHandleLabel.text = tweet?.user_screenname as? String ?? ""
+        tweetUsernameLabel.text = self.tweet?.user?.name
         
-        if let tweet_handle = tweet?.user_screenname{
+        if let tweet_handle = tweet?.user?.screen_name{
             tweetHandleLabel.text = "@\(tweet_handle)"
         }
-        tweetTextLabel.text = tweet?.text as? String ?? ""
+        tweetTextLabel.text = tweet?.text
         
         if let tweet_timestamp = tweet?.timestamp{
             let formatter = DateFormatter()
@@ -223,8 +222,8 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
         // Pass the selected object to the new view controller.
         if segue.identifier == "replySegue" {
             let destinationViewController = segue.destination as? ComposeTweetViewController
-            destinationViewController?.tweetId = String(describing: self.tweet?.tweetId!)
-            destinationViewController?.replyTo = String((self.tweet?.user_screenname)!)
+            destinationViewController?.tweetId = self.tweet?.tweetId
+            destinationViewController?.replyTo = self.tweet?.user?.screen_name
         }
     }
     

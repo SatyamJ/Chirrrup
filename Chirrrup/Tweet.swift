@@ -9,18 +9,15 @@
 import UIKit
 
 class Tweet: NSObject {
-    var text: NSString?
+    var text: String?
     var timestamp: Date?
     var retweet_count: Int = 0
     var likes_count: Int = 0
-    var profile_image_url: URL?
-    var username: NSString?
-    var user_screenname: NSString?
     var user:User?
-    var retweetedBy: NSString?
+    var retweetedBy: String?
     var retweeted: Bool?
     var liked: Bool?
-    var tweetId: NSString?
+    var tweetId: String?
     var tweetMediaUrl: URL?
     
     init(tweet_dictionary: NSDictionary){
@@ -28,76 +25,71 @@ class Tweet: NSObject {
         if let retweetedBlock = tweet_dictionary["retweeted_status"] as? NSDictionary{
             
             if let text = retweetedBlock["text"]{
-                self.text = text as? String as NSString?
-            }else{
-                print("text tag not found")
+                self.text = text as? String
             }
             
             if let userBlock = retweetedBlock["user"] as? NSDictionary{
                 self.user = User(user_dictionary: userBlock)
-                
-                if let profile_image_url = userBlock["profile_image_url"] as? String{
-                    self.profile_image_url = URL(string: profile_image_url)
-                }else{
-                    print("profile_image_url tag not found")
-                }
-                
-                if let username = userBlock["name"] as? String{
-                    self.username = username as NSString?
-                }else{
-                    print("name tag not found")
-                }
-                
-                if let user_screenname = userBlock["screen_name"] as? String{
-                    self.user_screenname = user_screenname as NSString?
-                }else{
-                    print("screen_name tag not found")
-                }
             }
             
             if let retweetedByUserBlock = tweet_dictionary["user"] as? NSDictionary{
                 if let retweetedBy = retweetedByUserBlock["name"] as? String{
-                    self.retweetedBy = "\(retweetedBy) Retweeted" as NSString?
+                    self.retweetedBy = "\(retweetedBy) Retweeted"
+                }
+            }
+            
+            if let retweet_count = retweetedBlock["retweet_count"] as? Int{
+                self.retweet_count = retweet_count
+            }else{
+                print("retweet_count tag not found")
+            }
+            
+            if let favoriteCount = retweetedBlock["favorite_count"] as? Int{
+                self.likes_count = favoriteCount
+            }else{
+                print("favorite_count tag not found")
+            }
+            
+            if let entityBlock = retweetedBlock["entities"]as? NSDictionary{
+                if let mediaBlockArray = entityBlock["media"] as? [NSDictionary]{
+                    if let mediaUrl = mediaBlockArray[0]["media_url"] as? String{
+                        self.tweetMediaUrl = URL(string: mediaUrl)
+                    }
                 }
             }
         }else{
             
-            if let text = tweet_dictionary["text"]{
-                self.text = text as? String as NSString?
+            if let text = tweet_dictionary["text"] as? String{
+                self.text = text
             }else{
                 print("text tag not found")
             }
             
             if let user = tweet_dictionary["user"] as? NSDictionary{
                 self.user = User(user_dictionary: user)
-                
-                if let profile_image_url = user["profile_image_url"] as? String{
-                    self.profile_image_url = URL(string: profile_image_url)
-                }else{
-                    print("profile_image_url tag not found")
-                }
-                
-                if let username = user["name"] as? String{
-                    self.username = username as NSString?
-                }else{
-                    print("name tag not found")
-                }
-                
-                if let user_screenname = user["screen_name"] as? String{
-                    self.user_screenname = user_screenname as NSString?
-                }else{
-                    print("screen_name tag not found")
-                }
-                
             }else{
                 print("user tag not found")
             }
-        }
         
-        if let retweet_count = tweet_dictionary["retweet_count"] as? Int{
-            self.retweet_count = retweet_count
-        }else{
-            print("retweet_count tag not found")
+            if let retweet_count = tweet_dictionary["retweet_count"] as? Int{
+                self.retweet_count = retweet_count
+            }else{
+                print("retweet_count tag not found")
+            }
+            
+            if let favoriteCount = tweet_dictionary["favorite_count"] as? Int{
+                self.likes_count = favoriteCount
+            }else{
+                print("favorite_count tag not found")
+            }
+            
+            if let entityBlock = tweet_dictionary["entities"]as? NSDictionary{
+                if let mediaBlockArray = entityBlock["media"] as? [NSDictionary]{
+                    if let mediaUrl = mediaBlockArray[0]["media_url"] as? String{
+                        self.tweetMediaUrl = URL(string: mediaUrl)
+                    }
+                }
+            }
         }
         
         if let timestampString = tweet_dictionary["created_at"] as? String{
@@ -120,24 +112,10 @@ class Tweet: NSObject {
             print("favorited tag not found")
         }
         
-        if let favoriteCount = tweet_dictionary["favorite_count"] as? Int{
-            self.likes_count = favoriteCount
-        }else{
-            print("favorite_count tag not found")
-        }
-        
-        if let tweetId = tweet_dictionary["id_str"]{
-            self.tweetId = tweetId as! String as NSString?
+        if let tweetId = tweet_dictionary["id_str"] as? String{
+            self.tweetId = tweetId
         }else{
             print("id_str tag not found")
-        }
-        
-        if let entityBlock = tweet_dictionary["entities"]as? NSDictionary{
-            if let mediaBlockArray = entityBlock["media"] as? [NSDictionary]{
-                if let mediaUrl = mediaBlockArray[0]["media_url"] as? String{
-                    self.tweetMediaUrl = URL(string: mediaUrl)
-                }
-            }
         }
     }
     

@@ -31,7 +31,8 @@ class TwitterClient: BDBOAuth1SessionManager {
             print("Got request token")
             if let token = requestToken?.token{
                 let url = URL(string: "https://api.twitter.com/oauth/authorize?oauth_token=\(token)")
-                UIApplication.shared.openURL(url!)
+//                UIApplication.shared.openURL(url!)
+                UIApplication.shared.open(url!, options: [:], completionHandler: nil)
             }
             
         }, failure: { (error: Error?) in

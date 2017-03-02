@@ -262,8 +262,8 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                 if let cell = view?.superview?.superview as? TweetCell{
                     let indexPath = tableView.indexPath(for: cell)
                     if let destinationViewController = segue.destination as? ComposeTweetViewController{
-                        destinationViewController.tweetId = String(tweets![(indexPath?.row)!].tweetId!)
-                        destinationViewController.replyTo = String(tweets![(indexPath?.row)!].user_screenname!)
+                        destinationViewController.tweetId = tweets?[(indexPath?.row)!].tweetId!
+                        destinationViewController.replyTo = tweets?[(indexPath?.row)!].user?.screen_name
                         destinationViewController.tweets = self.tweets
                     }
                 }

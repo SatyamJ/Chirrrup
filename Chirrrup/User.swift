@@ -9,14 +9,14 @@
 import UIKit
 
 class User: NSObject {
-    var name: NSString?
-    var screen_name: NSString?
+    var name: String?
+    var screen_name: String?
     var user_profile_image_url: URL?
-    var tagline: NSString?
+    var tagline: String?
     var profile_banner_url: URL?
-    var tweetsCount: String?
-    var followersCount: String?
-    var followingCount: String?
+    var tweetsCount: Int?
+    var followersCount: Int?
+    var followingCount: Int?
     
     var dictionary: NSDictionary?
     
@@ -40,7 +40,6 @@ class User: NSObject {
             if let user = user {
                 let data = try! JSONSerialization.data(withJSONObject: user.dictionary!, options: [])
                 defaults.set(data, forKey: "currentUser")
-                //defaults.arrayForKey(<#T##defaultName: String##String#>)
             }
             else{
                 defaults.removeObject(forKey: "currentUser")
@@ -54,30 +53,30 @@ class User: NSObject {
         
         self.dictionary = user_dictionary
         
-        name = user_dictionary["name"] as? String as NSString?
+        name = user_dictionary.value(forKey: "name") as? String
         
-        screen_name = user_dictionary["screen_name"] as? String as NSString?
+        screen_name = user_dictionary.value(forKey: "screen_name") as? String
         
         if let user_profile_image_url_String = user_dictionary["profile_image_url_https"] as? String{
             user_profile_image_url = URL(string: user_profile_image_url_String)
         }
         
-        tagline = user_dictionary["description"] as? String as NSString?
+        tagline = user_dictionary["description"] as? String
         
         if let profile_banner_url = user_dictionary["profile_banner_url"] as? String{
             self.profile_banner_url = URL(string: profile_banner_url)
         }
         
-        if let tweets_count = user_dictionary["statuses_count"]{
-            self.tweetsCount = "\(tweets_count)"
+        if let tweets_count = user_dictionary.value(forKey: "statuses_count") as? Int{
+            self.tweetsCount = tweets_count
         }
         
-        if let followers_count = user_dictionary["followers_count"]{
-            self.followersCount = "\(followers_count)"
+        if let followers_count = user_dictionary.value(forKey: "followers_count") as? Int{
+            self.followersCount = followers_count
         }
         
-        if let following_count = user_dictionary["friends_count"]{
-            self.followingCount = "\(following_count )"
+        if let following_count = user_dictionary.value(forKey: "friends_count") as? Int{
+            self.followingCount = following_count
         }
     }
     

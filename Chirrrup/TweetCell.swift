@@ -55,26 +55,51 @@ class TweetCell: UITableViewCell {
     
     var tweet:Tweet? {
         didSet{
-            self.nameLabel.text = tweet!.username as? String
-            self.userHandleLabel.text = "@\(tweet!.user_screenname!)" //as String
+            if let name = tweet?.user?.name{
+                self.nameLabel.text = name
+            }
+            
+            if let handle = self.tweet?.user?.screen_name{
+                self.userHandleLabel.text = "@\(handle)"
+            }
             
             if let date = tweet!.timestamp {
                 self.timeLabel.text = Date().offsetFrom(date as Date)
             }
             
-            self.tweetTextView.text = tweet!.text! as String
-            self.retweetCountLabel.text = "\(tweet!.retweet_count)"
-            self.likesCountLabel.text = "\(tweet!.likes_count)"
+            if let text = tweet?.text{
+                self.tweetTextView.text = text
+            }
             
-            if let url = tweet!.profile_image_url {
-                //print("profile: \(url)")
+            if let retweetCount = tweet?.retweet_count{
+                if retweetCount == 0{
+                    self.retweetCountLabel.isHidden = true
+                }else{
+                    self.retweetCountLabel.isHidden = false
+                    self.retweetCountLabel.text = "\(retweetCount)"
+                }
+                
+            }
+            
+            if let favouriteCount = tweet?.likes_count{
+                if favouriteCount == 0{
+                    self.likesCountLabel.isHidden = true
+                }else{
+                    self.likesCountLabel.isHidden = false
+                    self.likesCountLabel.text = "\(favouriteCount)"
+                }
+                
+            }
+            
+            
+            if let url = tweet?.user?.user_profile_image_url{
                 self.userProfileImageView.setImageWith(url as URL)
             }
             
             if let retweetBy = tweet?.retweetedBy{
                 self.retweetedByLabel.isHidden = false
                 self.retweetedByImage.isHidden = false
-                self.retweetedByLabel.text = retweetBy as String
+                self.retweetedByLabel.text = retweetBy
             }else{
                 self.retweetedByLabel.isHidden = true
                 self.retweetedByImage.isHidden = true
