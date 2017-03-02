@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate {
+class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIScrollViewDelegate {
     
     var tweetid: String?
     
@@ -38,6 +38,8 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
     
     @IBOutlet weak var retweetedByLabel: UILabel!
     
+    @IBOutlet weak var detailsScrollView: UIScrollView!
+    
     var tweet: Tweet?
     //var retweeted: Bool?
     //var liked: Bool?
@@ -46,15 +48,22 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.setupScrollView()
+        self.setupNavigationBar()
+        self.setupUIElements()
+        self.addGestures()
+    }
+    
+    func setupScrollView(){
+        self.detailsScrollView.delegate = self
+        self.detailsScrollView.contentSize.height = 1000
+    }
+    
+    func setupNavigationBar(){
         navigationController?.delegate = self
         navigationController?.navigationBar.barTintColor = UIColor(red: 0.2, green: 0.5, blue: 0.7, alpha: 1.0)
         navigationController?.navigationBar.tintColor = UIColor.white
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
-        
-        setupUIElements()
-        addGestures()
-
     }
     
     func setupUIElements(){
