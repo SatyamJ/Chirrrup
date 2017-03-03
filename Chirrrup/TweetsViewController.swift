@@ -113,6 +113,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
             MBProgressHUD.hide(for: self.view, animated: true)
         }) { (error: NSError) -> () in
             print("Error: \(error.localizedDescription)")
+            MBProgressHUD.hide(for: self.view, animated: true)
         }
     }
     

@@ -40,6 +40,8 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
     
     @IBOutlet weak var detailsScrollView: UIScrollView!
     
+    @IBOutlet weak var bottommostView: UIView!
+    
     var tweet: Tweet?
     //var retweeted: Bool?
     //var liked: Bool?
@@ -54,9 +56,19 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
         self.addGestures()
     }
     
+    override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
+        print("willRotate called")
+        print(self.bottommostView.frame.maxY)
+        let contentWidth = self.detailsScrollView.bounds.width
+//        let contentHeight = self.detailsScrollView.bounds.height * 3
+        self.detailsScrollView.contentSize = CGSize(width: contentWidth, height: self.bottommostView.frame.maxY)
+    }
+    
     func setupScrollView(){
         self.detailsScrollView.delegate = self
-        self.detailsScrollView.contentSize.height = 1000
+        let contentWidth = self.detailsScrollView.bounds.width
+//        let contentHeight = self.detailsScrollView.bounds.height * 3
+        self.detailsScrollView.contentSize = CGSize(width: contentWidth, height: self.bottommostView.frame.maxY)
     }
     
     func setupNavigationBar(){
