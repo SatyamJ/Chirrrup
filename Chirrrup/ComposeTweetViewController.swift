@@ -30,19 +30,15 @@ class ComposeTweetViewController: UIViewController, UITextViewDelegate, UINaviga
     var tweetId: String?
     var replyTo: String?
     var delegate: CellDelegate?
-    var tweets: [Tweet]? = []
+    var tweets: [Tweet] = []
     var temp: Tweet?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tweets = []
-        
         self.setupUserFields()
-
         self.setupNavigationBar()
-        
         configureTextView()
-        
         let tweetCharacterCount = NSString(string: self.tweetTextView.text).length
         self.characterCountLabel.text = "\(140 - tweetCharacterCount)"
     }
@@ -57,16 +53,25 @@ class ComposeTweetViewController: UIViewController, UITextViewDelegate, UINaviga
     }
     
     func setupUserFields(){
-        self.userProfileImageView.setImageWith((User.currentUser?.user_profile_image_url)! as URL)
-        self.nameLabel.text = User.currentUser?.name as String?
-        self.handleLabel.text = User.currentUser?.screen_name as String?
+        if let user = User.currentUser{
+            if let profileImageUrl = user.user_profile_image_url{
+                self.userProfileImageView.setImageWith(profileImageUrl)
+            }
+            self.userProfileImageView.layer.cornerRadius = 5
+            self.userProfileImageView.layer.masksToBounds = true
+            
+            if let name = user.name{
+                self.nameLabel.text = name
+            }
+            
+            if let handle = user.screen_name{
+                self.handleLabel.text = handle
+            }
+        }
     }
     
     func setupNavigationBar(){
         navigationController?.delegate = self
-        navigationController?.navigationBar.barTintColor = UIColor(red: 0.2, green: 0.5, blue: 0.7, alpha: 1.0)
-        navigationController?.navigationBar.tintColor = UIColor.white
-        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
     }
     
     func configureTextView(){
@@ -113,7 +118,7 @@ class ComposeTweetViewController: UIViewController, UITextViewDelegate, UINaviga
         //print(status)
         TwitterClient.sharedInstance?.tweet(self.tweetId!, status: status! ,success: { (response: Tweet) -> () in
             //print("response received")
-            self.tweets?.append(response)
+            self.tweets.append(response)
             
             hud?.labelText = "Post successful!"
             self.tweetTextView.text = ""
@@ -135,7 +140,7 @@ class ComposeTweetViewController: UIViewController, UITextViewDelegate, UINaviga
         //print(status)
         TwitterClient.sharedInstance?.tweet(self.tweetId!, status: status! ,success: { (response: Tweet) -> () in
             //print("response received")
-            self.tweets?.append(response)
+            self.tweets.append(response)
             
             hud?.labelText = "Post successful!"
             self.tweetTextView.text = ""
@@ -150,11 +155,9 @@ class ComposeTweetViewController: UIViewController, UITextViewDelegate, UINaviga
     
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         if let destinationViewController = viewController as? TweetsViewController{
-            if let feeds = self.tweets{
-                for tweet in feeds{
-                    //print("inserting")
-                    destinationViewController.tweets?.insert(tweet, at: 0)
-                }
+            for tweet in self.tweets{
+                //print("inserting")
+                destinationViewController.tweets?.insert(tweet, at: 0)
             }
         }
     }

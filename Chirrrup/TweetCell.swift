@@ -94,6 +94,8 @@ class TweetCell: UITableViewCell {
             
             if let url = tweet?.user?.user_profile_image_url{
                 self.userProfileImageView.setImageWith(url as URL)
+                self.userProfileImageView.layer.cornerRadius = 5
+                self.userProfileImageView.layer.masksToBounds = true
             }
             
             if let retweetBy = tweet?.retweetedBy{

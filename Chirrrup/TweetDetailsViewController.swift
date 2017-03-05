@@ -10,7 +10,7 @@ import UIKit
 
 class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIScrollViewDelegate {
     
-    var tweetid: String?
+//    var tweetid: String?
     
     @IBOutlet weak var tweetProfileImageView: UIImageView!
     
@@ -43,8 +43,6 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
     @IBOutlet weak var bottommostView: UIView!
     
     var tweet: Tweet?
-    //var retweeted: Bool?
-    //var liked: Bool?
     var tweetId: String?
     var row: Int?
     
@@ -73,38 +71,54 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
     
     func setupNavigationBar(){
         navigationController?.delegate = self
-        navigationController?.navigationBar.barTintColor = UIColor(red: 0.2, green: 0.5, blue: 0.7, alpha: 1.0)
-        navigationController?.navigationBar.tintColor = UIColor.white
-        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        
     }
     
     func setupUIElements(){
-        if let profile_image_url = tweet?.user?.user_profile_image_url{
-            tweetProfileImageView.setImageWith(profile_image_url as URL)
-        }
         
-        tweetUsernameLabel.text = self.tweet?.user?.name
-        
-        if let tweet_handle = tweet?.user?.screen_name{
-            tweetHandleLabel.text = "@\(tweet_handle)"
-        }
-        tweetTextLabel.text = tweet?.text
-        
-        if let tweet_timestamp = tweet?.timestamp{
-            let formatter = DateFormatter()
-            formatter.dateStyle = .medium
-            formatter.timeStyle = .short
+        if let user = tweet?.user{
+            if let profileImageUrl = user.user_profile_image_url{
+                self.tweetProfileImageView.setImageWith(profileImageUrl)
+            }
             
-            let dateString = formatter.string(from: tweet_timestamp as Date)
-            tweetTimestampLabel.text = "\(dateString)"
+            if let name = user.name{
+                self.tweetUsernameLabel.text = name
+            }
+            
+            
+            if let handle = user.screen_name{
+                tweetHandleLabel.text = "@\(handle)"
+            }
         }
         
-        if let tweet_retweet_count = tweet?.retweet_count{
-            retweetCountLabel.text = "\(tweet_retweet_count)"
+        if let text = tweet?.text {
+            self.tweetTextLabel.text = text
         }
         
-        if let tweet_likes_count = tweet?.likes_count{
-            likesCountLabel.text = "\(tweet_likes_count)"
+        if let timestamp = tweet?.timestamp{
+            var timestampText = ""
+            
+            let timeFormatter = DateFormatter()
+            timeFormatter.dateStyle = .none
+            timeFormatter.timeStyle = .short
+            timestampText.append(timeFormatter.string(from: timestamp))
+            
+            timestampText.append(" • ")
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .medium
+            dateFormatter.timeStyle = .none
+            timestampText.append(dateFormatter.string(from: timestamp))
+            
+            self.tweetTimestampLabel.text = timestampText
+        }
+        
+        if let retweetCount = tweet?.retweet_count{
+            retweetCountLabel.text = "\(retweetCount)"
+        }
+        
+        if let likesCount = tweet?.likes_count{
+            likesCountLabel.text = "\(likesCount)"
         }
         
         if let liked = tweet?.liked{

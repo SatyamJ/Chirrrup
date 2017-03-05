@@ -14,7 +14,6 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var menuBarButton: UIBarButtonItem!
-    @IBOutlet weak var composeBarButton: UIBarButtonItem!
     @IBOutlet weak var logoView: UIView!
     
     var tweets: [Tweet]?
@@ -63,12 +62,6 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         self.menuBarButton.target = self.revealViewController()
         self.menuBarButton.action = #selector(SWRevealViewController.revealToggle(_:))
         self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-        
-        self.composeBarButton.image = UIImage(named: "twitter_quill_30")?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
-        //navigationController?.navigationBar.barTintColor = UIColor(red: 0.2118, green: 0.549, blue: 0.7098, alpha: 1.0)
-        navigationController?.navigationBar.barTintColor = UIColor(red: 0.2, green: 0.5, blue: 0.7, alpha: 1.0)
-        navigationController?.navigationBar.tintColor = UIColor.white
-        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -234,6 +227,10 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
+    
+    @IBAction func onComposeTapped(_ sender: Any) {
+        performSegue(withIdentifier: "tweetSegue", sender: sender)
+    }
 
         // MARK: - Navigation
 
@@ -265,7 +262,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                     if let destinationViewController = segue.destination as? ComposeTweetViewController{
                         destinationViewController.tweetId = tweets?[(indexPath?.row)!].tweetId!
                         destinationViewController.replyTo = tweets?[(indexPath?.row)!].user?.screen_name
-                        destinationViewController.tweets = self.tweets
+                        destinationViewController.tweets = self.tweets!
                     }
                 }
             }else{

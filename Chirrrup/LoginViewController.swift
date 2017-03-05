@@ -26,15 +26,7 @@ class LoginViewController: UIViewController {
     
   
     @IBAction func onClickLoginButton(_ sender: AnyObject) {
-        /*
-        let twitterClient = TwitterClient.sharedInstance
-        twitterClient?.login({ () -> () in
-                print("Login successful")
-                self.performSegue(withIdentifier: "loginSegue", sender: nil)
-            }) { (error: Error?) -> () in
-                print("Login error: \(error?.localizedDescription)")
-        }
-        */
+        
         self.setupCallbacks()
         
         TwitterClient.sharedInstance?.getRequestToken(success: { (requestToken: BDBOAuth1Credential) in
