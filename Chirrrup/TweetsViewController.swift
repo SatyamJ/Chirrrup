@@ -45,20 +45,20 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         // Dispose of any resources that can be recreated.
     }
     
-    func setupTableView(){
+    fileprivate func setupTableView(){
         tableView.dataSource = self
         tableView.delegate = self
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 120
     }
     
-    func setupRefreshControl(){
+    fileprivate func setupRefreshControl(){
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(TweetsViewController.refreshControlAction(_:)), for: UIControlEvents.valueChanged)
+        refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
         tableView.insertSubview(refreshControl, at: 0)
     }
     
-    func setupNavigationBar(){
+    fileprivate func setupNavigationBar(){
         self.menuBarButton.target = self.revealViewController()
         self.menuBarButton.action = #selector(SWRevealViewController.revealToggle(_:))
         self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
@@ -81,7 +81,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         return cell
     }
     
-    func setupInfiniteScrollView(){
+    fileprivate func setupInfiniteScrollView(){
         // Set up Infinite Scroll loading indicator
         let frame = CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
         loadingMoreView = InfiniteScrollActivityView(frame: frame)
@@ -98,7 +98,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         refreshControl.endRefreshing()
     }
     
-    func requestNetworkData(){
+    fileprivate func requestNetworkData(){
         MBProgressHUD.showAdded(to: self.view, animated: true)
         TwitterClient.sharedInstance?.homeTimeline({ (tweets:[Tweet]) -> () in
             self.tweets = tweets
@@ -130,7 +130,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
-    func loadMoreData(){
+    fileprivate func loadMoreData(){
         if let lastTweetId = Int((self.tweets?.last?.tweetId)! as String){
             TwitterClient.sharedInstance?.homeTimelineOnScroll(lastTweetId-1, success: { (moreTweets: [Tweet]) in
                 self.tweets?.append(contentsOf: moreTweets)

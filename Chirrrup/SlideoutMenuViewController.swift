@@ -22,17 +22,7 @@ class SlideoutMenuViewController: UIViewController, UIGestureRecognizerDelegate 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let imageUrl = User.currentUser?.user_profile_image_url{
-            self.userProfileImageView.setImageWith(imageUrl as URL)
-        }
-        
-        if let name = User.currentUser?.name{
-            self.usernameLabel.text = name
-        }
-        
-        if let handle = User.currentUser?.screen_name{
-            self.userHandleLabel.text = "@\(handle)"
-        }
+        self.setupUserFields()
     }
     /*
     override func viewDidAppear(animated: Bool) {
@@ -40,6 +30,23 @@ class SlideoutMenuViewController: UIViewController, UIGestureRecognizerDelegate 
     }
     */
     
+    fileprivate func setupUserFields(){
+        if let user = User.currentUser{
+            if let imageUrl = user.user_profile_image_url{
+                self.userProfileImageView.setImageWith(imageUrl as URL)
+            }
+            self.userProfileImageView.layer.cornerRadius = 25
+            self.userProfileImageView.layer.masksToBounds = true
+            
+            if let name = user.name{
+                self.usernameLabel.text = name
+            }
+            
+            if let handle = user.screen_name{
+                self.userHandleLabel.text = "@\(handle)"
+            }
+        }
+    }
     
     @IBAction func showMyProfile(_ sender: AnyObject) {
         performSegue(withIdentifier: "showMyProfileSegue", sender: nil)
@@ -60,7 +67,7 @@ class SlideoutMenuViewController: UIViewController, UIGestureRecognizerDelegate 
         self.dismiss(animated: true, completion: nil)
     }
 
-    
+    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -75,6 +82,6 @@ class SlideoutMenuViewController: UIViewController, UIGestureRecognizerDelegate 
             }
         }
     }
-    
+    */
 
 }

@@ -133,6 +133,8 @@ class TweetCell: UITableViewCell {
                 //print("media: \(tweetMedia)")
                 self.tweetPosterView.isHidden = false
                 self.tweetPosterView.setImageWith(tweetMedia as URL)
+                self.tweetPosterView.layer.cornerRadius = 10
+                self.tweetPosterView.layer.masksToBounds = true
             }else{
                 //print("No media found")
                 self.tweetPosterView.isHidden = true
@@ -144,19 +146,19 @@ class TweetCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        let tapRetweet = UITapGestureRecognizer(target: self, action: #selector(TweetCell.tappedRetweet(_:)))
+        let tapRetweet = UITapGestureRecognizer(target: self, action: #selector(tappedRetweet(_:)))
         self.retweetImage.addGestureRecognizer(tapRetweet)
         self.retweetImage.isUserInteractionEnabled = true
         
-        let tapLike = UITapGestureRecognizer(target: self, action: #selector(TweetCell.tappedLike(_:)))
+        let tapLike = UITapGestureRecognizer(target: self, action: #selector(tappedLike(_:)))
         self.likeImage.addGestureRecognizer(tapLike)
         self.likeImage.isUserInteractionEnabled = true
         
-        let tapReply = UITapGestureRecognizer(target: self, action: #selector(TweetCell.tappedReply(_:)))
+        let tapReply = UITapGestureRecognizer(target: self, action: #selector(tappedReply(_:)))
         self.replyImageView.addGestureRecognizer(tapReply)
         self.replyImageView.isUserInteractionEnabled = true
         
-        profileImageTapGes.addTarget(self, action: #selector(TweetCell.profileImageTapGestureAction(_:)))
+        profileImageTapGes.addTarget(self, action: #selector(profileImageTapGestureAction(_:)))
         userProfileImageView.addGestureRecognizer(profileImageTapGes)
         userProfileImageView.isUserInteractionEnabled = true
         

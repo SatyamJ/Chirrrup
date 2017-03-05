@@ -146,6 +146,8 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
         if let tweetPosterUrl = tweet?.tweetMediaUrl{
             self.tweetPosterView.isHidden = false
             self.tweetPosterView.setImageWith(tweetPosterUrl as URL)
+            self.tweetPosterView.layer.cornerRadius = 10
+            self.tweetPosterView.layer.masksToBounds = true
         }else{
             self.tweetPosterView.isHidden = true
         }
@@ -161,15 +163,15 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
     }
     
     func addGestures(){
-        let tapRetweet = UITapGestureRecognizer(target: self, action: #selector(TweetDetailsViewController.tappedRetweet(_:)))
+        let tapRetweet = UITapGestureRecognizer(target: self, action: #selector(tappedRetweet(_:)))
         self.retweetImageView.addGestureRecognizer(tapRetweet)
         self.retweetImageView.isUserInteractionEnabled = true
         
-        let tapLike = UITapGestureRecognizer(target: self, action: #selector(TweetDetailsViewController.tappedLike(_:)))
+        let tapLike = UITapGestureRecognizer(target: self, action: #selector(tappedLike(_:)))
         self.likeImageView.addGestureRecognizer(tapLike)
         self.likeImageView.isUserInteractionEnabled = true
         
-        let tapReply = UITapGestureRecognizer(target: self, action: #selector(TweetDetailsViewController.tappedReply(_:)))
+        let tapReply = UITapGestureRecognizer(target: self, action: #selector(tappedReply(_:)))
         self.replyImageView.addGestureRecognizer(tapReply)
         self.replyImageView.isUserInteractionEnabled = true
     }
