@@ -58,8 +58,10 @@ class LoginViewController: UIViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == "authorizationSegue"{
-            if let vc = segue.destination as? AuthorizationViewController{
-                vc.loadUrl = self.authorizationUrl
+            if let nc = segue.destination as? UINavigationController{
+                if let vc = nc.topViewController as? AuthorizationViewController{
+                    vc.loadUrl = self.authorizationUrl
+                }
             }
         }
     }

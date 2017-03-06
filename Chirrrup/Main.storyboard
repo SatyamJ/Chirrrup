@@ -37,11 +37,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sjc-4I-eYc">
-                                <rect key="frame" x="113" y="546" width="149" height="39"/>
-                                <color key="backgroundColor" red="0.26897124183357135" green="0.68362853266641976" blue="0.86391524869109948" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <rect key="frame" x="75" y="535" width="225" height="50"/>
+                                <color key="backgroundColor" red="0.47453292749999998" green="0.75155068869999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="149" id="8Kn-4b-5Le"/>
-                                    <constraint firstAttribute="height" constant="39" id="Teg-q1-xAG"/>
+                                    <constraint firstAttribute="height" constant="50" id="Teg-q1-xAG"/>
                                 </constraints>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
@@ -65,7 +64,7 @@
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Twitter_logo" translatesAutoresizingMaskIntoConstraints="NO" id="wU0-QH-PAC">
-                                <rect key="frame" x="67" y="490" width="48" height="48"/>
+                                <rect key="frame" x="67" y="479" width="48" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="48" id="eoN-3f-qf4"/>
                                     <constraint firstAttribute="height" constant="48" id="oqk-hP-AwD"/>
@@ -81,6 +80,7 @@
                             <constraint firstItem="sjc-4I-eYc" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="NoJ-04-IOj"/>
                             <constraint firstItem="Seo-VZ-hU1" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="PCA-x0-cAc"/>
                             <constraint firstItem="qh8-DT-LJW" firstAttribute="top" secondItem="sjc-4I-eYc" secondAttribute="bottom" constant="40" id="Ub8-IR-UlM"/>
+                            <constraint firstItem="sjc-4I-eYc" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.6" id="UzA-Rm-4PQ"/>
                             <constraint firstItem="Seo-VZ-hU1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="age-oo-mSA"/>
                             <constraint firstItem="67Q-be-sze" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="gIz-ge-Vlo"/>
                             <constraint firstItem="sjc-4I-eYc" firstAttribute="top" secondItem="wU0-QH-PAC" secondAttribute="bottom" constant="8" id="geb-52-Yyq"/>
@@ -88,7 +88,7 @@
                     </view>
                     <connections>
                         <segue destination="82R-UU-AFV" kind="modal" identifier="loginSegue" id="9Wg-fD-tv1"/>
-                        <segue destination="aLg-Rq-MUc" kind="modal" identifier="authorizationSegue" id="Fiu-W4-F1r"/>
+                        <segue destination="aG5-Uh-BlI" kind="modal" identifier="authorizationSegue" id="Fiu-W4-F1r"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -433,7 +433,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rMP-yC-0Bc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2110.5" y="-420.5"/>
+            <point key="canvasLocation" x="2697.5" y="-420.5"/>
         </scene>
         <!--Tweets View Controller-->
         <scene sceneID="LNi-dH-K0d">
@@ -1046,13 +1046,20 @@
                             <constraint firstItem="hrz-cp-pnL" firstAttribute="centerX" secondItem="gPd-nb-9Xw" secondAttribute="centerX" id="eKJ-AJ-1Vb"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="hTE-Vt-8b3">
+                        <barButtonItem key="rightBarButtonItem" title="Cancel" id="e9e-2I-U3g">
+                            <connections>
+                                <action selector="onCancelTapped:" destination="aLg-Rq-MUc" id="TQ4-6o-l83"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="authorizationWebView" destination="hrz-cp-pnL" id="IBa-1y-gU4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Op-J0-eTq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="647.5" y="-416.5"/>
+            <point key="canvasLocation" x="648" y="-419"/>
         </scene>
         <!--Slideout Menu View Controller-->
         <scene sceneID="qbY-vS-ZHx">
@@ -1150,7 +1157,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1137.5" y="-419.5"/>
+            <point key="canvasLocation" x="1138" y="-465"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Ysp-hc-ikZ">
@@ -1207,7 +1214,25 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
             </objects>
-            <point key="canvasLocation" x="1586" y="-418"/>
+            <point key="canvasLocation" x="2172.5" y="-418.5"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="doU-p7-09d">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="aG5-Uh-BlI" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="4lE-Qd-02i">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="aLg-Rq-MUc" kind="relationship" relationship="rootViewController" id="MsG-L9-82x"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="g2O-WC-Rda" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="159" y="-421"/>
         </scene>
     </scenes>
     <resources>

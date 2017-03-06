@@ -65,21 +65,29 @@ class TwitterClient: BDBOAuth1SessionManager {
     }
     
     func handleOpenUrl(_ url: URL){
-        let requestToken = BDBOAuth1Credential(queryString: url.query)
+        let urlString = url.absoluteString
         
-        TwitterClient.sharedInstance?.fetchAccessToken(withPath: "oauth/access_token", method: "POST", requestToken: requestToken,
-                success: { (accessToken) in
-                    print("Got access token")
+        if urlString.contains("oauth_token") && urlString.contains("oauth_verifier") {
+            print("has tokens")
+            print("Authorization successful")
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Authorization_successful"), object: nil)
+            let requestToken = BDBOAuth1Credential(queryString: url.query)
+            TwitterClient.sharedInstance?.fetchAccessToken(withPath: "oauth/access_token", method: "POST", requestToken: requestToken, success: { (accessToken) in
+                print("Got access token")
                 
-                    self.currentAccount({ (user: User) -> () in
-                        User.currentUser = user
-                        self.loginsuccess?()
-                    }, failure: {(error: NSError) -> () in
-                        self.loginfailure?(error)
+                self.currentAccount({ (user: User) -> () in
+                    User.currentUser = user
+                    self.loginsuccess?()
+                }, failure: {(error: NSError) -> () in
+                    self.loginfailure?(error)
                 })
             }) { (error: Error?) -> Void in
                 print("Access token error: \(error)")
                 self.loginfailure?(error!)
+            }
+        }else{
+            print("Authorization failed")
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Authorization_failed"), object: nil)
         }
     }
     
