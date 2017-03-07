@@ -9,10 +9,7 @@
 import UIKit
 import MBProgressHUD
 
-class MeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CellDelegate {
-    
-    var user: User?
-    var myTweets: [Tweet]?
+class MeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CellDelegate, UIScrollViewDelegate {
     
     @IBOutlet weak var coverImageView: UIImageView!
     
@@ -30,6 +27,11 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
     
     @IBOutlet weak var userTweetsTableView: UITableView!
     
+    var user: User?
+    var myTweets: [Tweet]?
+    var loadingMoreView:InfiniteScrollActivityView?
+    var moreDataRequested: Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupUI()
@@ -38,11 +40,70 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
     fileprivate func setupUI(){
         self.setupUIElements()
         self.requestNetworkData()
+        self.setupInfiniteScrollView()
+        self.setupRefreshControl()
     }
 
+    fileprivate func setupRefreshControl(){
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
+        userTweetsTableView.insertSubview(refreshControl, at: 0)
+    }
+    
+    func refreshControlAction(_ refreshControl: UIRefreshControl){
+        requestNetworkData()
+        refreshControl.endRefreshing()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    fileprivate func setupInfiniteScrollView(){
+        // Set up Infinite Scroll loading indicator
+        let frame = CGRect(x: 0, y: userTweetsTableView.contentSize.height, width: userTweetsTableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+        loadingMoreView = InfiniteScrollActivityView(frame: frame)
+        loadingMoreView!.isHidden = true
+        userTweetsTableView.addSubview(loadingMoreView!)
+        
+        var insets = userTweetsTableView.contentInset;
+        insets.bottom += InfiniteScrollActivityView.defaultHeight;
+        userTweetsTableView.contentInset = insets
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (!moreDataRequested){
+            
+            let scrollViewContentHeight = self.userTweetsTableView.contentSize.height
+            let scrollOffsetThreshold = scrollViewContentHeight - self.userTweetsTableView.bounds.size.height
+            
+            if scrollView.contentOffset.y > scrollOffsetThreshold && userTweetsTableView.isDragging {
+                moreDataRequested = true
+                
+                // Update position of loadingMoreView, and start loading indicator
+                let frame = CGRect(x: 0, y: userTweetsTableView.contentSize.height, width: userTweetsTableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+                if let progressView = self.loadingMoreView{
+                    progressView.frame = frame
+                    progressView.startAnimating()
+                }
+                loadMoreData()
+            }
+            
+        }
+    }
+    
+    fileprivate func loadMoreData(){
+        if let lastTweetId = Int((self.myTweets?.last?.tweetId)! as String){
+            TwitterClient.sharedInstance?.homeTimelineOnScroll(lastTweetId-1, success: { (moreTweets: [Tweet]) in
+                self.myTweets?.append(contentsOf: moreTweets)
+                self.loadingMoreView!.stopAnimating()
+                self.userTweetsTableView.reloadData()
+                self.moreDataRequested = false
+            }) { (error: NSError) in
+                print("Error in loading more feeds: \(error.localizedDescription)")
+            }
+        }
     }
     
     fileprivate func setupTableView(){
@@ -268,6 +329,4 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
             }
         }
     }
-    
-
 }

@@ -46,8 +46,6 @@ class TweetCell: UITableViewCell {
     
     var delegate: CellDelegate?
     let profileImageTapGes = UITapGestureRecognizer()
-    //var retweeted: Bool?
-    //var liked: Bool?
     var tweetId: String?
     var table: UITableView?
     var index: IndexPath?

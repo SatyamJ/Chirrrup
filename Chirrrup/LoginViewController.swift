@@ -43,7 +43,7 @@ class LoginViewController: UIViewController {
         })
     }
     
-    func setupCallbacks(){
+    fileprivate func setupCallbacks(){
         TwitterClient.sharedInstance?.setupLoginCallbacks(success: {
             self.performSegue(withIdentifier: "loginSegue", sender: self)
             
