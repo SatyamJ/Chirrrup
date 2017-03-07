@@ -15,6 +15,8 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var menuBarButton: UIBarButtonItem!
     @IBOutlet weak var logoView: UIView!
+    @IBOutlet weak var networkErrorImageView: UIImageView!
+    @IBOutlet weak var ntwkErrStackView: UIStackView!
     
     var tweets: [Tweet]?
     var moreDataRequested: Bool = false
@@ -22,11 +24,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupNavigationBar()
-        self.setupTableView()
-        requestNetworkData()
-        self.setupRefreshControl()
-        setupInfiniteScrollView()
+        self.setupUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -36,6 +34,30 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    fileprivate func setupUI(){
+        self.setupNavigationBar()
+        self.setupTableView()
+        self.requestNetworkData()
+        self.setupRefreshControl()
+        self.setupInfiniteScrollView()
+        
+        self.networkErrorImageView.isHidden = true
+        self.setupGestureRecognizers()
+    }
+    
+    fileprivate func setupGestureRecognizers(){
+        let networkGesture = UITapGestureRecognizer()
+        networkGesture.addTarget(self, action: #selector(onTapNetworkError))
+        self.ntwkErrStackView.addGestureRecognizer(networkGesture)
+        self.ntwkErrStackView.isUserInteractionEnabled = true
+    }
+    
+    func onTapNetworkError(_ sender: AnyObject){
+//        print("onTapNetworkError called")
+        self.networkErrorImageView.isHidden = true
+        self.requestNetworkData()
     }
     
     fileprivate func setupTableView(){
@@ -96,9 +118,11 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
             self.tweets = tweets
             self.tableView.reloadData()
             MBProgressHUD.hide(for: self.view, animated: true)
+            self.networkErrorImageView.isHidden = true
         }) { (error: NSError) -> () in
             print("Error: \(error.localizedDescription)")
             MBProgressHUD.hide(for: self.view, animated: true)
+            self.networkErrorImageView.isHidden = false
         }
     }
     
