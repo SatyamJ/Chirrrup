@@ -258,10 +258,14 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == "replySegue" {
-            let destinationViewController = segue.destination as? ComposeTweetViewController
-            destinationViewController?.tweetId = self.tweet?.tweetId
-            destinationViewController?.replyTo = self.tweet?.user?.screen_name
+            if let destinationViewController = segue.destination as? ComposeTweetViewController {
+                destinationViewController.recepientTweetId = self.tweet?.tweetId
+                destinationViewController.recepientUser = self.tweet?.user
+            }
+        }else if segue.identifier == "showProfileSegue" {
+            
         }
+        
     }
     
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {

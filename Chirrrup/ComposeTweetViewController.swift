@@ -9,42 +9,35 @@
 import UIKit
 import MBProgressHUD
 
+protocol ComposeTweetDelegate{
+    func onNewTweet(status: Tweet)
+}
+
 class ComposeTweetViewController: UIViewController, UITextViewDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var tweetTextView: UITextView!
-    
     @IBOutlet weak var userProfileImageView: UIImageView!
-    
-    @IBOutlet weak var characterCountLabel: UILabel!
-    
     @IBOutlet weak var replyInfoLabel: UILabel!
-    
     @IBOutlet weak var nameLabel: UILabel!
-    
     @IBOutlet weak var handleLabel: UILabel!
     
+    let tweetButton = UIButton(type: UIButtonType.system)
     var placeholderLabel : UILabel!
-    
-    //var newStatus: String?
-    
-    var tweetId: String?
-    var replyTo: String?
-    var delegate: CellDelegate?
-    var tweets: [Tweet] = []
-    var temp: Tweet?
+    let characterCountLabel = UILabel()
+
+    var recepientTweetId: String?
+    var recepientUser: User?
+    var delegate: ComposeTweetDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tweets = []
-        self.setupUserFields()
         self.setupNavigationBar()
+        self.setupUserFields()
         configureTextView()
-        let tweetCharacterCount = NSString(string: self.tweetTextView.text).length
-        self.characterCountLabel.text = "\(140 - tweetCharacterCount)"
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        tweets = []
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -65,25 +58,50 @@ class ComposeTweetViewController: UIViewController, UITextViewDelegate, UINaviga
             }
             
             if let handle = user.screen_name{
-                self.handleLabel.text = handle
+                self.handleLabel.text = "@\(handle)"
             }
         }
+        
+        let tweetCharacterCount = NSString(string: self.tweetTextView.text).length
+        self.characterCountLabel.text = "\(140 - tweetCharacterCount)"
     }
     
     func setupNavigationBar(){
         navigationController?.delegate = self
+        
+        let customView = UIView()
+        customView.frame = CGRect(x: 0, y: 0, width: 100, height: 30)
+        
+        // character count
+        self.characterCountLabel.frame = CGRect(x: 0, y: 0, width: 30, height: 25)
+        self.characterCountLabel.text = "140"
+        self.characterCountLabel.textColor = UIColor.gray
+        customView.addSubview(characterCountLabel)
+        
+        // tweet button
+        self.tweetButton.isEnabled = false
+        self.tweetButton.setTitle("Tweet", for: UIControlState.normal)
+        self.tweetButton.frame = CGRect(x: 45, y: 0, width: 50, height: 25)
+        self.tweetButton.addTarget(self, action: #selector(onTweetTapped(_:)), for: UIControlEvents.touchDown)
+        self.tweetButton.isUserInteractionEnabled = true
+        customView.addSubview(tweetButton)
+        
+        let rightBarButton = UIBarButtonItem()
+        rightBarButton.customView = customView
+        
+        self.navigationItem.rightBarButtonItem = rightBarButton
     }
     
     func configureTextView(){
-        if let listener = replyTo{
-            if listener.isEmpty{
-                tweetTextView.text = ""
-                self.replyInfoLabel.isHidden = true
-            }else{
-                tweetTextView.text = "@\(listener)"
+        if let listener = self.recepientUser{
+            if let handle = listener.screen_name {
+                tweetTextView.text = "@\(handle)"
                 self.replyInfoLabel.isHidden = false
-                self.replyInfoLabel.text = "in reply to @\(listener)"
+                self.replyInfoLabel.text = "in reply to @\(handle)"
             }
+        }else {
+            tweetTextView.text = ""
+            self.replyInfoLabel.isHidden = true
         }
         
         tweetTextView.delegate = self
@@ -99,7 +117,14 @@ class ComposeTweetViewController: UIViewController, UITextViewDelegate, UINaviga
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        placeholderLabel.isHidden = !textView.text.isEmpty
+        if textView.text.isEmpty {
+            placeholderLabel.isHidden = false
+            self.tweetButton.isEnabled = false
+        }else{
+            placeholderLabel.isHidden = true
+            self.tweetButton.isEnabled = true
+        }
+        
         let characterleft = 140 - NSString(string: textView.text).length
         self.characterCountLabel.text = "\(characterleft)"
     }
@@ -108,60 +133,47 @@ class ComposeTweetViewController: UIViewController, UITextViewDelegate, UINaviga
         return NSString(string: textView.text).length + (NSString(string: text).length - range.length) <= 140
     }
     
-    @IBAction func onTapTweetButton(_ sender: AnyObject) {
-        
+    func onTweetTapped(_ sender: Any){
+        print("tweet tapped")
         self.tweetTextView.resignFirstResponder()
         let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         hud?.mode = MBProgressHUDMode.text
-        hud?.labelText = "Posting..."
-        let status = self.tweetTextView.text
-        //print(status)
-        TwitterClient.sharedInstance?.tweet(self.tweetId!, status: status! ,success: { (response: Tweet) -> () in
-            //print("response received")
-            self.tweets.append(response)
-            
-            hud?.labelText = "Post successful!"
-            self.tweetTextView.text = ""
-            self.replyInfoLabel.isHidden = true
-            self.placeholderLabel.isHidden = false		
-            MBProgressHUD.hide(for: self.view, animated: true)
-        }) { (error: NSError) -> () in
-            print("Error in tweet reply: \(error.localizedDescription)")
-        }
         
-    }
-    
-    @IBAction func onTweetButtonTapped(_ sender: Any) {
-        self.tweetTextView.resignFirstResponder()
-        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
-        hud?.mode = MBProgressHUDMode.text
-        hud?.labelText = "Posting..."
-        let status = self.tweetTextView.text
-        //print(status)
-        TwitterClient.sharedInstance?.tweet(self.tweetId!, status: status! ,success: { (response: Tweet) -> () in
-            //print("response received")
-            self.tweets.append(response)
-            
-            hud?.labelText = "Post successful!"
-            self.tweetTextView.text = ""
-            self.replyInfoLabel.isHidden = true
-            self.placeholderLabel.isHidden = false
-            MBProgressHUD.hide(for: self.view, animated: true)
-        }) { (error: NSError) -> () in
-            print("Error in tweet reply: \(error.localizedDescription)")
-        }
-    }
-    
-    
-    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        if let destinationViewController = viewController as? TweetsViewController{
-            for tweet in self.tweets{
-                //print("inserting")
-                destinationViewController.tweets?.insert(tweet, at: 0)
+        
+        if let statusText = self.tweetTextView.text{
+            if !statusText.isEmpty{
+                hud?.labelText = "Posting..."
+                if let statusId = self.recepientTweetId{
+                    
+                    TwitterClient.sharedInstance?.replyToStatus(status: statusText, id: statusId, success: { (dictionary:NSDictionary) in
+                        self.delegate?.onNewTweet(status: Tweet(tweet_dictionary: dictionary))
+                        self.dismiss(animated: true, completion: nil)
+                        hud?.labelText = "Post successful!"
+                        MBProgressHUD.hide(for: self.view, animated: true)
+                    }, failure: { (error: Error) in
+                        print("Error on replying to tweet: \(error.localizedDescription)")
+                        hud?.labelText = "Error occured while posting. Try later"
+                        MBProgressHUD.hide(for: self.view, animated: true)
+                    })
+                }else{
+                    TwitterClient.sharedInstance?.composeNewTweet(status: statusText, success: { (dictionary: NSDictionary) in
+                        self.delegate?.onNewTweet(status: Tweet(tweet_dictionary: dictionary))
+                        self.dismiss(animated: true, completion: nil)
+                        hud?.labelText = "Post successful!"
+                        MBProgressHUD.hide(for: self.view, animated: true)
+                    }, failure: { (error: Error) in
+                        print("Error on posting new tweet: \(error.localizedDescription)")
+                        hud?.labelText = "Error occured while posting. Try later"
+                        MBProgressHUD.hide(for: self.view, animated: true)
+                    })
+                }
             }
         }
     }
     
+    @IBAction func onCancelTapped(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
     
     // MARK: - Navigation
 
