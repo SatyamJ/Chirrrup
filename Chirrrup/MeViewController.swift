@@ -9,7 +9,7 @@
 import UIKit
 import MBProgressHUD
 
-class MeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CellDelegate {
     
     var user: User?
     var myTweets: [Tweet]?
@@ -32,9 +32,12 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setupUI()
+    }
+    
+    fileprivate func setupUI(){
         self.setupUIElements()
         self.requestNetworkData()
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -127,8 +130,12 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
         cell.tweet = self.myTweets![indexPath.row]
-        //cell.delegate = self
+        cell.delegate = self
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.userTweetsTableView.deselectRow(at: indexPath, animated: true)
     }
     
     fileprivate func requestNetworkData(){
@@ -142,15 +149,125 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
                 MBProgressHUD.hide(for: self.view, animated: true)
         })
     }
+    
+    func onTapCellRetweet(_ sender: AnyObject?) {
+        //print("onTapCellRetweet called")
+        if let recognizer = sender as? UITapGestureRecognizer{
+            let imageView = recognizer.view
+            if let cellView = imageView?.superview?.superview?.superview as? TweetCell {
+                if let indexPath = self.userTweetsTableView.indexPath(for: cellView) {
+                    if let tweet = self.myTweets?[indexPath.row]{
+                        //print("processing tweet id: \(tweet.tweetId!)")
+                        if tweet.retweeted == true{
+                            TwitterClient.sharedInstance?.unretweet(String(tweet.tweetId!),
+                                success: { () -> () in
+                                    self.myTweets![indexPath.row].retweeted = false
+                                    self.myTweets![indexPath.row].retweet_count -= 1
+                                    self.userTweetsTableView.reloadData()
+                            }, failure: { (error: NSError) -> () in
+                                print("Un-retweet error: \(error.localizedDescription)")
+                            })
+                        }else{
+                            TwitterClient.sharedInstance?.retweet(String(tweet.tweetId!),
+                              success: { () -> () in
+                                self.myTweets![indexPath.row].retweeted = true
+                                self.myTweets![indexPath.row].retweet_count += 1
+                                self.userTweetsTableView.reloadData()
+                            }, failure: { (error: NSError) -> () in
+                                print("Retweet error: \(error.localizedDescription)")
+                            })
+                        }
+                    }
+                }
+                
+            }
+        }
+    }
 
-    /*
+    func onTapCellLike(_ sender: AnyObject?) {
+        //print("onTapCellLike called")
+        if let recognizer = sender as? UITapGestureRecognizer{
+            let imageView = recognizer.view
+            if let cellView = imageView?.superview?.superview?.superview as? TweetCell {
+                if let indexPath = self.userTweetsTableView.indexPath(for: cellView) {
+                    if let tweet = self.myTweets?[indexPath.row]{
+                        //print("processing tweet id: \(tweet.tweetId)")
+                        if tweet.liked == true{
+                            //self.tweets![(indexPath?.row)!].liked = false
+                            TwitterClient.sharedInstance?.unlike(String(tweet.tweetId!),
+                                 success: { () -> () in
+                                    self.myTweets![indexPath.row].liked = false
+                                    self.myTweets![indexPath.row].likes_count -= 1
+                                    self.userTweetsTableView.reloadData()
+                            }, failure: { (error: NSError) -> () in
+                                print("Tweet Unlike error: \(error.localizedDescription)")
+                            })
+                        }else{
+                            //self.tweets![(indexPath?.row)!].liked = true
+                            TwitterClient.sharedInstance?.like(String(tweet.tweetId!),
+                                   success: { () -> () in
+                                    self.myTweets![indexPath.row].liked = true
+                                    self.myTweets![indexPath.row].likes_count += 1
+                                    self.userTweetsTableView.reloadData()
+                            }, failure: { (error: NSError) -> () in
+                                print("Tweet Like error: \(error.localizedDescription)")
+                            })
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func onTapCellReply(_ sender: AnyObject?) {
+        performSegue(withIdentifier: "tweetSegue", sender: sender)
+    }
+    
+    func onTapCellProfileImage(_ sender: AnyObject?){
+        //print("onTapCellProfileImage")
+        if let recog = sender as? UITapGestureRecognizer {
+            let view = recog.view
+            if let cell = view?.superview?.superview as? TweetCell {
+                if let indexPath = userTweetsTableView.indexPath(for: cell) {
+                    if let tweet = myTweets?[indexPath.row] {
+                        self.user = tweet.user
+                        self.setupUI()
+                        self.userTweetsTableView.setContentOffset(CGPoint.zero, animated: true)
+                    }
+                }
+            }
+        }
+    }
+    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showDetailsSegue" {
+            if let detailsViewController = segue.destination as? TweetDetailsViewController {
+                if let cell = sender as? TweetCell{
+                    if let index = self.userTweetsTableView.indexPath(for: cell) {
+                        detailsViewController.tweet = self.myTweets?[index.row]
+                    }
+                }   
+            }
+        }else if segue.identifier == "tweetSegue" {
+            if let nc = segue.destination as? UINavigationController {
+                if let composeViewController = nc.topViewController as? ComposeTweetViewController {
+                    if let recognizer = sender as? UIGestureRecognizer{
+                        let view = recognizer.view
+                        if let cell = view?.superview?.superview?.superview as? TweetCell{
+                            if let indexPath = userTweetsTableView.indexPath(for: cell) {
+                                if let tweet = self.myTweets?[indexPath.row]{
+                                    composeViewController.recepientTweetId = tweet.tweetId
+                                    composeViewController.recepientUser = tweet.user
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
-    */
+    
 
 }

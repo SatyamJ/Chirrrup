@@ -80,6 +80,8 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
             if let profileImageUrl = user.user_profile_image_url{
                 self.tweetProfileImageView.setImageWith(profileImageUrl)
             }
+            self.tweetProfileImageView.layer.cornerRadius = 5
+            self.tweetProfileImageView.layer.masksToBounds = true
             
             if let name = user.name{
                 self.tweetUsernameLabel.text = name
@@ -174,6 +176,10 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
         let tapReply = UITapGestureRecognizer(target: self, action: #selector(tappedReply(_:)))
         self.replyImageView.addGestureRecognizer(tapReply)
         self.replyImageView.isUserInteractionEnabled = true
+        
+        let tapProfileImage = UITapGestureRecognizer(target: self, action: #selector(ontappedProfileImage(_:)))
+        self.tweetProfileImageView.addGestureRecognizer(tapProfileImage)
+        self.tweetProfileImageView.isUserInteractionEnabled = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -250,6 +256,10 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
         performSegue(withIdentifier: "replySegue", sender: sender)
     }
     
+    func ontappedProfileImage(_ sender: AnyObject){
+        print("ontappedProfileImage called")
+        performSegue(withIdentifier: "showProfileSegue", sender: sender)
+    }
     
     // MARK: - Navigation
 
@@ -258,14 +268,19 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == "replySegue" {
-            if let destinationViewController = segue.destination as? ComposeTweetViewController {
-                destinationViewController.recepientTweetId = self.tweet?.tweetId
-                destinationViewController.recepientUser = self.tweet?.user
+            if let nc = segue.destination as? UINavigationController{
+                if let destinationViewController = nc.topViewController as? ComposeTweetViewController {
+                    if let tweet = self.tweet{
+                        destinationViewController.recepientTweetId = tweet.tweetId
+                        destinationViewController.recepientUser = tweet.user
+                    }
+                }
             }
         }else if segue.identifier == "showProfileSegue" {
-            
+            if let profileViewController = segue.destination as? MeViewController{
+                profileViewController.user = self.tweet?.user
+            }
         }
-        
     }
     
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
