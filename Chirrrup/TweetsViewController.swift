@@ -65,6 +65,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.delegate = self
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 120
+        self.tableView.tableFooterView = UIView()
     }
     
     fileprivate func setupRefreshControl(){
@@ -148,14 +149,16 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     fileprivate func loadMoreData(){
-        if let lastTweetId = Int((self.tweets?.last?.tweetId)! as String){
-            TwitterClient.sharedInstance?.homeTimelineOnScroll(lastTweetId-1, success: { (moreTweets: [Tweet]) in
-                self.tweets?.append(contentsOf: moreTweets)
-                self.loadingMoreView!.stopAnimating()
-                self.tableView.reloadData()
-                self.moreDataRequested = false
-            }) { (error: NSError) in
-                print("Error in loading more feeds: \(error.localizedDescription)")
+        if let lastTweetId = self.tweets?.last?.tweetId{
+            if let lastTweetIdInt = Int(lastTweetId) {
+                TwitterClient.sharedInstance?.homeTimelineOnScroll(lastTweetIdInt-1, success: { (moreTweets: [Tweet]) in
+                    self.tweets?.append(contentsOf: moreTweets)
+                    self.loadingMoreView!.stopAnimating()
+                    self.tableView.reloadData()
+                    self.moreDataRequested = false
+                }) { (error: NSError) in
+                    print("Error in loading more feeds: \(error.localizedDescription)")
+                }
             }
         }
     }
