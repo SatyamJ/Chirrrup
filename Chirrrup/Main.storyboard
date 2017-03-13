@@ -240,7 +240,7 @@
                                         <rect key="frame" x="0.0" y="295" width="375" height="211"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DGt-Dd-Vy6" id="zpi-rQ-pLh">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="210.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="210"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First Last" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ILk-Hv-46J">
@@ -410,7 +410,7 @@
                     <navigationItem key="navigationItem" id="gZ4-PO-Uvb">
                         <nil key="title"/>
                         <view key="titleView" contentMode="scaleToFill" id="dhH-jM-0N6">
-                            <rect key="frame" x="172.5" y="7" width="30" height="30"/>
+                            <rect key="frame" x="173" y="7" width="30" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Twitter_logo_white_32" translatesAutoresizingMaskIntoConstraints="NO" id="CAB-NO-Ib0">
@@ -457,7 +457,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="224"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LPe-HA-grn" id="vrL-Og-9o6">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="223.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="223"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pD8-pR-mdg">
@@ -634,7 +634,7 @@
                         <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" image="menu" id="l5t-49-rqO"/>
                         <view key="titleView" opaque="NO" contentMode="scaleToFill" id="TAi-RG-Mtq">
-                            <rect key="frame" x="172.5" y="7" width="30" height="30"/>
+                            <rect key="frame" x="173" y="7" width="30" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Twitter_logo_white_32" translatesAutoresizingMaskIntoConstraints="NO" id="qMs-A9-WWB">
@@ -1075,7 +1075,7 @@
                         <viewControllerLayoutGuide type="top" id="ZrN-qR-KeM"/>
                         <viewControllerLayoutGuide type="bottom" id="4jI-gW-klg"/>
                     </layoutGuides>
-                    <view key="view" alpha="0.59999999999999998" contentMode="scaleToFill" id="Z3m-rr-Xew">
+                    <view key="view" contentMode="scaleToFill" id="Z3m-rr-Xew">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -1102,7 +1102,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.46573429399999999" green="0.46573429399999999" blue="0.46573429399999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.62408921627979275" green="0.62408921627979275" blue="0.62408921627979275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstItem="zXa-aR-8N3" firstAttribute="top" secondItem="ffv-8E-3oV" secondAttribute="top" constant="8" id="2yr-ua-SqL"/>
@@ -1135,7 +1135,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Jes-w8-mXH" firstAttribute="top" secondItem="ZrN-qR-KeM" secondAttribute="bottom" constant="32" id="7Xh-3i-JrF"/>
                             <constraint firstItem="DDQ-9D-hjf" firstAttribute="leading" secondItem="Z3m-rr-Xew" secondAttribute="leading" constant="12" id="Cuf-9v-sDX"/>
@@ -1280,9 +1280,9 @@
         <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="eCW-Mq-cRd"/>
-        <segue reference="0xH-tD-zC4"/>
         <segue reference="vK0-9R-QaB"/>
-        <segue reference="59Z-e9-UAl"/>
+        <segue reference="eCW-Mq-cRd"/>
+        <segue reference="MmR-Vq-CHM"/>
+        <segue reference="5rd-9M-uki"/>
     </inferredMetricsTieBreakers>
 </document>
