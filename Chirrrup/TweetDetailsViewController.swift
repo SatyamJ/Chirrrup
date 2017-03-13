@@ -54,24 +54,29 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
         self.addGestures()
     }
     
-    override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
-        print("willRotate called")
-        print(self.bottommostView.frame.maxY)
-        let contentWidth = self.detailsScrollView.bounds.width
-//        let contentHeight = self.detailsScrollView.bounds.height * 3
-        self.detailsScrollView.contentSize = CGSize(width: contentWidth, height: self.bottommostView.frame.maxY)
+    override func viewDidAppear(_ animated: Bool) {
+        self.setScrollViewContentSize()
+    }
+    
+    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
+        print("didRotate called")
+        self.setScrollViewContentSize()
     }
     
     func setupScrollView(){
         self.detailsScrollView.delegate = self
+        self.setScrollViewContentSize()
+    }
+    
+    func setScrollViewContentSize(){
         let contentWidth = self.detailsScrollView.bounds.width
-//        let contentHeight = self.detailsScrollView.bounds.height * 3
-        self.detailsScrollView.contentSize = CGSize(width: contentWidth, height: self.bottommostView.frame.maxY)
+        let contentHeight = self.bottommostView.frame.maxY + 100.0
+        print(contentHeight)
+        self.detailsScrollView.contentSize = CGSize(width: contentWidth, height: contentHeight)
     }
     
     func setupNavigationBar(){
         navigationController?.delegate = self
-        
     }
     
     func setupUIElements(){
