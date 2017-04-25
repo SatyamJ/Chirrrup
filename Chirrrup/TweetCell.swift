@@ -131,7 +131,7 @@ class TweetCell: UITableViewCell {
                 //print("media: \(tweetMedia)")
                 self.tweetPosterView.isHidden = false
                 self.tweetPosterView.setImageWith(tweetMedia as URL)
-                self.tweetPosterView.layer.cornerRadius = 10
+                self.tweetPosterView.layer.cornerRadius = 5
                 self.tweetPosterView.layer.masksToBounds = true
             }else{
                 //print("No media found")

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -114,7 +114,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="267"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wCL-Lp-slR">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wCL-Lp-slR">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="200" id="WhO-7W-Qjb"/>
@@ -240,7 +240,7 @@
                                         <rect key="frame" x="0.0" y="295" width="375" height="211"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DGt-Dd-Vy6" id="zpi-rQ-pLh">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="210"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="210.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First Last" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ILk-Hv-46J">
@@ -285,7 +285,7 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="0sj-Tq-i44">
                                                     <rect key="frame" x="76" y="81" width="261" height="100"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="c0z-Lx-nPf">
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="c0z-Lx-nPf">
                                                             <rect key="frame" x="0.0" y="0.0" width="261" height="100"/>
                                                         </imageView>
                                                     </subviews>
@@ -410,7 +410,7 @@
                     <navigationItem key="navigationItem" id="gZ4-PO-Uvb">
                         <nil key="title"/>
                         <view key="titleView" contentMode="scaleToFill" id="dhH-jM-0N6">
-                            <rect key="frame" x="173" y="7" width="30" height="30"/>
+                            <rect key="frame" x="172.5" y="7" width="30" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Twitter_logo_white_32" translatesAutoresizingMaskIntoConstraints="NO" id="CAB-NO-Ib0">
@@ -457,7 +457,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="224"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LPe-HA-grn" id="vrL-Og-9o6">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="223"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="223.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pD8-pR-mdg">
@@ -499,7 +499,7 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="HTZ-ah-WO1">
                                                     <rect key="frame" x="81" y="82" width="261" height="107"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="myK-qd-h0u">
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="myK-qd-h0u">
                                                             <rect key="frame" x="0.0" y="0.0" width="261" height="107"/>
                                                         </imageView>
                                                     </subviews>
@@ -634,7 +634,7 @@
                         <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" image="menu" id="l5t-49-rqO"/>
                         <view key="titleView" opaque="NO" contentMode="scaleToFill" id="TAi-RG-Mtq">
-                            <rect key="frame" x="173" y="7" width="30" height="30"/>
+                            <rect key="frame" x="172.5" y="7" width="30" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Twitter_logo_white_32" translatesAutoresizingMaskIntoConstraints="NO" id="qMs-A9-WWB">
@@ -715,7 +715,7 @@
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 <dataDetectorType key="dataDetectorTypes" link="YES"/>
                                             </textView>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tAj-4C-dXv">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tAj-4C-dXv">
                                                 <rect key="frame" x="0.0" y="34.5" width="375" height="200"/>
                                             </imageView>
                                         </subviews>
@@ -1280,9 +1280,9 @@
         <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="vK0-9R-QaB"/>
-        <segue reference="eCW-Mq-cRd"/>
         <segue reference="MmR-Vq-CHM"/>
-        <segue reference="5rd-9M-uki"/>
+        <segue reference="Ah5-Zi-1f6"/>
+        <segue reference="bWw-di-EXx"/>
+        <segue reference="eCW-Mq-cRd"/>
     </inferredMetricsTieBreakers>
 </document>

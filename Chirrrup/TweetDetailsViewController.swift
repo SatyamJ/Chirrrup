@@ -153,8 +153,8 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
         if let tweetPosterUrl = tweet?.tweetMediaUrl{
             self.tweetPosterView.isHidden = false
             self.tweetPosterView.setImageWith(tweetPosterUrl as URL)
-            self.tweetPosterView.layer.cornerRadius = 10
-            self.tweetPosterView.layer.masksToBounds = true
+//            self.tweetPosterView.layer.cornerRadius = 10
+//            self.tweetPosterView.layer.masksToBounds = true
         }else{
             self.tweetPosterView.isHidden = true
         }

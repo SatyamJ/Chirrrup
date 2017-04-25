@@ -56,7 +56,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     
     func onTapNetworkError(_ sender: AnyObject){
 //        print("onTapNetworkError called")
-        self.networkErrorImageView.isHidden = true
+        hideNetworkError()
         self.requestNetworkData()
     }
     
@@ -116,15 +116,30 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     fileprivate func requestNetworkData(){
         MBProgressHUD.showAdded(to: self.view, animated: true)
         TwitterClient.sharedInstance?.homeTimeline({ (tweets:[Tweet]) -> () in
-            self.tweets = tweets
-            self.tableView.reloadData()
-            MBProgressHUD.hide(for: self.view, animated: true)
-            self.networkErrorImageView.isHidden = true
+            if tweets.count > 0 {
+                self.tweets = tweets
+                self.tableView.reloadData()
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.hideNetworkError()
+            }
+            
         }) { (error: NSError) -> () in
             print("Error: \(error.localizedDescription)")
             MBProgressHUD.hide(for: self.view, animated: true)
-            self.networkErrorImageView.isHidden = false
+            self.showNetworkError()
         }
+    }
+    
+    fileprivate func showNetworkError(){
+        UIView.animate(withDuration: 1, animations: {
+            self.networkErrorImageView.isHidden = false
+        })
+    }
+    
+    fileprivate func hideNetworkError(){
+        UIView.animate(withDuration: 1, animations: {
+            self.networkErrorImageView.isHidden = true
+        })
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
