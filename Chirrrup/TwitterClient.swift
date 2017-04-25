@@ -36,8 +36,10 @@ class TwitterClient: BDBOAuth1SessionManager {
             }
             
         }, failure: { (error: Error?) in
-            print("error: \(error?.localizedDescription)")
-            self.loginfailure?(error!)
+            if let error = error {
+                print("error: \(error.localizedDescription)")
+                self.loginfailure?(error)
+            }
         })
     }
     
@@ -48,7 +50,9 @@ class TwitterClient: BDBOAuth1SessionManager {
             print("Got request token!")
             success(requestToken!)
         }, failure: { (error: Error?) in
-            failure(error!)
+            if let error = error {
+                failure(error)
+            }
         })
     }
     
@@ -82,8 +86,10 @@ class TwitterClient: BDBOAuth1SessionManager {
                     self.loginfailure?(error)
                 })
             }) { (error: Error?) -> Void in
-                print("Access token error: \(error)")
-                self.loginfailure?(error!)
+                if let error = error {
+                    print("Access token error: \(error.localizedDescription)")
+                    self.loginfailure?(error)
+                }
             }
         }else{
             print("Authorization failed")
