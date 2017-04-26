@@ -176,6 +176,13 @@ class TweetCell: UITableViewCell {
         userProfileImageView.addGestureRecognizer(profileImageTapGes)
         userProfileImageView.isUserInteractionEnabled = true
         
+        let userHandleTapGesture = UITapGestureRecognizer(target: self, action: #selector(profileImageTapGestureAction(_:)))
+        self.userHandleLabel.addGestureRecognizer(userHandleTapGesture)
+        self.userHandleLabel.isUserInteractionEnabled = true
+        
+        let nameTapGesture = UITapGestureRecognizer(target: self, action: #selector(profileImageTapGestureAction(_:)))
+        self.nameLabel.addGestureRecognizer(nameTapGesture)
+        self.nameLabel.isUserInteractionEnabled = true
     }
 
     /*
