@@ -307,9 +307,12 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
             if let cell = view?.superview?.superview as? TweetCell {
                 if let indexPath = userTweetsTableView.indexPath(for: cell) {
                     if let tweet = myTweets?[indexPath.row] {
-                        self.user = tweet.user
-                        self.setupUI()
-                        self.userTweetsTableView.setContentOffset(CGPoint.zero, animated: true)
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        if let dvc = storyboard.instantiateViewController(withIdentifier: "MeViewController") as? MeViewController{
+                            dvc.user = tweet.user
+                            self.navigationController?.pushViewController(dvc, animated: true)
+                        }
+                        
                     }
                 }
             }

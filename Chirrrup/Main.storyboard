@@ -98,7 +98,7 @@
         <!--Me View Controller-->
         <scene sceneID="A4Q-7v-ndd">
             <objects>
-                <viewController id="N4a-zc-Iox" customClass="MeViewController" customModule="Chirrrup" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MeViewController" id="N4a-zc-Iox" customClass="MeViewController" customModule="Chirrrup" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9g1-Tx-LYH"/>
                         <viewControllerLayoutGuide type="bottom" id="RyY-mN-3fD"/>
