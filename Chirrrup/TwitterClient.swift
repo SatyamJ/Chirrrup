@@ -105,7 +105,9 @@ class TwitterClient: BDBOAuth1SessionManager {
             
             success(tweets)
         }) { (task, error: Error?) in
-            failure(error! as NSError)
+            if let error = error{
+                failure(error as NSError)
+            }
         }
     }
     
@@ -123,9 +125,34 @@ class TwitterClient: BDBOAuth1SessionManager {
         )
     }
     
+    func userTimelineBefore(_ lastId: Int?, _ screenName: String?, success: @escaping ([Tweet]) -> (), failure: @escaping (NSError) -> () ){
+        
+        var params:[String: Any] = [:]
+        if let handle = screenName{
+            params["screen_name"] = handle as Any
+        }
+        
+        if let lastID = lastId{
+            params["max_id"] = (lastID - 1) as Any
+        }
+        
+        get("1.1/statuses/user_timeline.json", parameters: params, progress: nil,
+            success: {(task, response) in
+                let tweetsArrayDictionary = response as! [NSDictionary]
+                let tweets = Tweet.arrayOfTweets(tweetsArrayDictionary)
+                success(tweets)
+        },
+            failure: { (task, error: Error?) -> Void in
+                failure(error! as NSError)
+        }
+        )
+    }
     
-    func homeTimelineOnScroll(_ lastId: Int, success: @escaping ([Tweet]) -> (), failure: @escaping (NSError) -> () ){
-        let params = ["max_id": lastId]
+    func homeTimelineOnScroll(_ lastId: Int?, success: @escaping ([Tweet]) -> (), failure: @escaping (NSError) -> () ){
+        var params:[String : Any] = [:]
+        if let earliestId = lastId{
+            params["max_id"] = (earliestId-1) as Any
+        }
         get("1.1/statuses/home_timeline.json", parameters: params, progress: nil,
             success: { (task, response) -> Void in
                 //print("Home timeline tweets")

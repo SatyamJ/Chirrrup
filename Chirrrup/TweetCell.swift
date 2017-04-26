@@ -14,6 +14,7 @@ protocol CellDelegate {
     func onTapCellLike(_ sender: AnyObject?)
     func onTapCellReply(_ sender: AnyObject?)
     func onTapCellRetweet(_ sender: AnyObject?)
+    func reload(_ sender: TweetCell)
 }
 
 class TweetCell: UITableViewCell {
@@ -127,17 +128,32 @@ class TweetCell: UITableViewCell {
                 self.tweetId = tweetId as String
             }
             
+            
             if let tweetMedia = tweet?.tweetMediaUrl{
                 //print("media: \(tweetMedia)")
-                self.tweetPosterView.isHidden = false
-                self.tweetPosterView.setImageWith(tweetMedia as URL)
+                if self.tweetPosterView.image == nil{
+                    self.tweetPosterView.alpha = 0
+                }
+                self.fadeInImageAtView(url: tweetMedia, posterImageView: tweetPosterView)
                 self.tweetPosterView.layer.cornerRadius = 5
                 self.tweetPosterView.layer.masksToBounds = true
             }else{
-                //print("No media found")
                 self.tweetPosterView.isHidden = true
             }
-            
+        }
+    }
+    
+    fileprivate func fadeInImageAtView(url: URL, posterImageView: UIImageView) -> Void{
+        let imageRequest = URLRequest(url: url)
+        posterImageView.setImageWith(imageRequest, placeholderImage: nil, success: { (imageRequest, response, image) in
+            posterImageView.image = image
+            self.delegate?.reload(self)
+             self.tweetPosterView.isHidden = false
+            UIView.animate(withDuration: 0.3, animations: {
+                posterImageView.alpha = 1
+            })
+        }) { (imageRequest, response, error) in
+            print(error)
         }
     }
     

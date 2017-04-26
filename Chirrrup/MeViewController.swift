@@ -80,13 +80,6 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
             
             if scrollView.contentOffset.y > scrollOffsetThreshold && userTweetsTableView.isDragging {
                 moreDataRequested = true
-                
-                // Update position of loadingMoreView, and start loading indicator
-                let frame = CGRect(x: 0, y: userTweetsTableView.contentSize.height, width: userTweetsTableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
-                if let progressView = self.loadingMoreView{
-                    progressView.frame = frame
-                    progressView.startAnimating()
-                }
                 loadMoreData()
             }
             
@@ -94,16 +87,39 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
     }
     
     fileprivate func loadMoreData(){
-        if let lastTweetId = Int((self.myTweets?.last?.tweetId)! as String){
-            TwitterClient.sharedInstance?.homeTimelineOnScroll(lastTweetId-1, success: { (moreTweets: [Tweet]) in
+        self.showProgressView()
+        TwitterClient.sharedInstance?.userTimelineBefore(self.getEarliestTweetId(), self.user?.screen_name,success: { (moreTweets: [Tweet]) in
+            
+            if moreTweets.count > 0 {
                 self.myTweets?.append(contentsOf: moreTweets)
-                self.loadingMoreView!.stopAnimating()
                 self.userTweetsTableView.reloadData()
-                self.moreDataRequested = false
-            }) { (error: NSError) in
-                print("Error in loading more feeds: \(error.localizedDescription)")
+            }
+            self.loadingMoreView?.stopAnimating()
+            self.moreDataRequested = false
+        }) { (error: NSError) in
+            self.loadingMoreView?.stopAnimating()
+            print("Error in loading more feeds: \(error.localizedDescription)")
+        }
+    }
+    
+    fileprivate func getEarliestTweetId() -> Int? {
+        var id:Int?
+        
+        if let tweets = self.myTweets{
+            if tweets.count > 0{
+                if let strId = tweets[tweets.count-1].tweetId{
+                    id = Int(strId)
+                }
             }
         }
+        return id
+    }
+    
+    fileprivate func showProgressView(){
+        // Update position of loadingMoreView, and start loading indicator
+        let frame = CGRect(x: 0, y: userTweetsTableView.contentSize.height, width: userTweetsTableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+        self.loadingMoreView?.frame = frame
+        self.loadingMoreView?.startAnimating()
     }
     
     fileprivate func setupTableView(){
@@ -297,6 +313,12 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
                     }
                 }
             }
+        }
+    }
+    
+    func reload(_ sender: TweetCell) {
+        if let index = self.userTweetsTableView.indexPath(for: sender){
+            self.userTweetsTableView.reloadRows(at: [index], with: UITableViewRowAnimation.none)
         }
     }
     

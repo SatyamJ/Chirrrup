@@ -126,8 +126,21 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         }) { (error: NSError) -> () in
             print("Error: \(error.localizedDescription)")
             MBProgressHUD.hide(for: self.view, animated: true)
-            self.showNetworkError()
+            if error.localizedDescription.contains("429"){
+                self.requestCountExceeded()
+            }else{
+                self.showNetworkError()
+            }
+            
         }
+    }
+    
+    fileprivate func requestCountExceeded(){
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hud?.show(animated: true, whileExecuting: {
+            hud?.labelText = "Request limit exceeded. Try again later."
+        })
+        hud?.hide(true, afterDelay: 1)
     }
     
     fileprivate func showNetworkError(){
@@ -164,18 +177,31 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     fileprivate func loadMoreData(){
-        if let lastTweetId = self.tweets?.last?.tweetId{
-            if let lastTweetIdInt = Int(lastTweetId) {
-                TwitterClient.sharedInstance?.homeTimelineOnScroll(lastTweetIdInt-1, success: { (moreTweets: [Tweet]) in
-                    self.tweets?.append(contentsOf: moreTweets)
-                    self.loadingMoreView!.stopAnimating()
-                    self.tableView.reloadData()
-                    self.moreDataRequested = false
-                }) { (error: NSError) in
-                    print("Error in loading more feeds: \(error.localizedDescription)")
+        TwitterClient.sharedInstance?.homeTimelineOnScroll(self.getEarliestTweetId(), success: { (moreTweets: [Tweet]) in
+            if moreTweets.count > 0 {
+                self.tweets?.append(contentsOf: moreTweets)
+                self.tableView.reloadData()
+            }
+            self.loadingMoreView?.stopAnimating()
+            self.moreDataRequested = false
+        }) { (error: NSError) in
+            self.loadingMoreView?.stopAnimating()
+            print("Error in loading more feeds: \(error.localizedDescription)")
+        }
+
+    }
+    
+    fileprivate func getEarliestTweetId() -> Int? {
+        var id:Int?
+        
+        if let tweets = self.tweets{
+            if tweets.count > 0{
+                if let strId = tweets[tweets.count-1].tweetId{
+                    id = Int(strId)
                 }
             }
         }
+        return id
     }
     
     func onTapCellProfileImage(_ sender: AnyObject?){
@@ -264,6 +290,12 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     func onNewTweet(status: Tweet) {
         self.tweets?.insert(status, at: 0)
         self.tableView.reloadData()
+    }
+    
+    func reload(_ sender: TweetCell) {
+        if let indexPath = self.tableView.indexPath(for: sender){
+            self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.none)
+        }
     }
     
         // MARK: - Navigation

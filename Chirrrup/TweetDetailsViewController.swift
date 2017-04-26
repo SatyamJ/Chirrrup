@@ -71,7 +71,7 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
     func setScrollViewContentSize(){
         let contentWidth = self.detailsScrollView.bounds.width
         let contentHeight = self.bottommostView.frame.maxY + 100.0
-        print(contentHeight)
+//        print(contentHeight)
         self.detailsScrollView.contentSize = CGSize(width: contentWidth, height: contentHeight)
     }
     
