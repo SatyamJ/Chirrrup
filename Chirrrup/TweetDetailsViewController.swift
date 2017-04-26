@@ -84,6 +84,7 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
         if let user = tweet?.user{
             if let profileImageUrl = user.user_profile_image_url{
                 self.tweetProfileImageView.setImageWith(profileImageUrl)
+                self.loadHigherResolutionImage(url: profileImageUrl, imageView: tweetProfileImageView)
             }
             self.tweetProfileImageView.layer.cornerRadius = 5
             self.tweetProfileImageView.layer.masksToBounds = true
@@ -166,6 +167,13 @@ class TweetDetailsViewController: UIViewController, UITextFieldDelegate, UINavig
         }else{
             self.retweetedByLabel.isHidden = true
             self.retweetedByImageView.isHidden = true
+        }
+    }
+    
+    fileprivate func loadHigherResolutionImage(url: URL, imageView: UIImageView) -> Void{
+        let hrStringUrl = url.absoluteString.replacingOccurrences(of: "_normal", with: "")
+        if let hRUrl = URL(string: hrStringUrl){
+            imageView.setImageWith(hRUrl)
         }
     }
     

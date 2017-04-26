@@ -156,6 +156,7 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
         
         if let profileImageUrl = showingUser.user_profile_image_url{
             self.profileImageView.setImageWith(profileImageUrl as URL)
+            self.loadHigherResolutionImage(url: profileImageUrl, imageView: profileImageView)
         }
         
         if let name = showingUser.name{
@@ -181,6 +182,13 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
         
         if let followingCount = showingUser.followingCount{
             self.followingCountLabel.text = self.formatNumber(number: followingCount)
+        }
+    }
+    
+    fileprivate func loadHigherResolutionImage(url: URL, imageView: UIImageView) -> Void{
+        let hrStringUrl = url.absoluteString.replacingOccurrences(of: "_normal", with: "")
+        if let hRUrl = URL(string: hrStringUrl){
+            imageView.setImageWith(hRUrl)
         }
     }
     

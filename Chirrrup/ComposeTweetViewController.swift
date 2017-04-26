@@ -49,6 +49,7 @@ class ComposeTweetViewController: UIViewController, UITextViewDelegate, UINaviga
         if let user = User.currentUser{
             if let profileImageUrl = user.user_profile_image_url{
                 self.userProfileImageView.setImageWith(profileImageUrl)
+                self.loadHigherResolutionImage(url: profileImageUrl, imageView: userProfileImageView)
             }
             self.userProfileImageView.layer.cornerRadius = 5
             self.userProfileImageView.layer.masksToBounds = true
@@ -64,6 +65,13 @@ class ComposeTweetViewController: UIViewController, UITextViewDelegate, UINaviga
         
         let tweetCharacterCount = NSString(string: self.tweetTextView.text).length
         self.characterCountLabel.text = "\(140 - tweetCharacterCount)"
+    }
+    
+    fileprivate func loadHigherResolutionImage(url: URL, imageView: UIImageView) -> Void{
+        let hrStringUrl = url.absoluteString.replacingOccurrences(of: "_normal", with: "")
+        if let hRUrl = URL(string: hrStringUrl){
+            imageView.setImageWith(hRUrl)
+        }
     }
     
     func setupNavigationBar(){
@@ -174,6 +182,11 @@ class ComposeTweetViewController: UIViewController, UITextViewDelegate, UINaviga
     @IBAction func onCancelTapped(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
+    
+    @IBAction func didTapBackground(_ sender: Any) {
+        self.tweetTextView.resignFirstResponder()
+    }
+    
     
     // MARK: - Navigation
 

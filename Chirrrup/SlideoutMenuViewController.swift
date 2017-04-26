@@ -34,6 +34,7 @@ class SlideoutMenuViewController: UIViewController, UIGestureRecognizerDelegate 
         if let user = User.currentUser{
             if let imageUrl = user.user_profile_image_url{
                 self.userProfileImageView.setImageWith(imageUrl as URL)
+                self.loadHigherResolutionImage(url: imageUrl, imageView: userProfileImageView)
             }
             self.userProfileImageView.layer.cornerRadius = 25
             self.userProfileImageView.layer.masksToBounds = true
@@ -65,6 +66,13 @@ class SlideoutMenuViewController: UIViewController, UIGestureRecognizerDelegate 
     @IBAction func onSignOut(_ sender: AnyObject) {
         TwitterClient.sharedInstance?.logout()
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    fileprivate func loadHigherResolutionImage(url: URL, imageView: UIImageView) -> Void{
+        let hrStringUrl = url.absoluteString.replacingOccurrences(of: "_normal", with: "")
+        if let hRUrl = URL(string: hrStringUrl){
+            imageView.setImageWith(hRUrl)
+        }
     }
 
     /*

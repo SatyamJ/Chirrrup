@@ -95,6 +95,8 @@ class TweetCell: UITableViewCell {
                 self.userProfileImageView.setImageWith(url as URL)
                 self.userProfileImageView.layer.cornerRadius = 5
                 self.userProfileImageView.layer.masksToBounds = true
+                
+                loadHigherResolutionImage(url: url, imageView: userProfileImageView)
             }
             
             if let retweetBy = tweet?.retweetedBy{
@@ -140,6 +142,13 @@ class TweetCell: UITableViewCell {
             }else{
                 self.tweetPosterView.isHidden = true
             }
+        }
+    }
+    
+    fileprivate func loadHigherResolutionImage(url: URL, imageView: UIImageView) -> Void{
+        let hrStringUrl = url.absoluteString.replacingOccurrences(of: "_normal", with: "")
+        if let hRUrl = URL(string: hrStringUrl){
+            imageView.setImageWith(hRUrl)
         }
     }
     
