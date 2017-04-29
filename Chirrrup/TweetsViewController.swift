@@ -78,6 +78,8 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         self.menuBarButton.target = self.revealViewController()
         self.menuBarButton.action = #selector(SWRevealViewController.revealToggle(_:))
         self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+        
+//        self.menuBarButton.image = User.currentUser.
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -93,6 +95,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
         cell.tweet = self.tweets![indexPath.row]
         cell.delegate = self
+        cell.accessoryType = .none
         return cell
     }
     

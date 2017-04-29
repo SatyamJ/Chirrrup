@@ -170,6 +170,12 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
         
         if let bannerUrl = showingUser.profile_banner_url{
             self.coverImageView.setImageWith(bannerUrl as URL)
+            
+            let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+            let blurEffectView = UIVisualEffectView(effect: blurEffect)
+            blurEffectView.frame = self.coverImageView.bounds
+            blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            self.coverImageView.addSubview(blurEffectView)
         }
         
         if let tweetCount = showingUser.tweetsCount{
@@ -216,6 +222,7 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
         let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
         cell.tweet = self.myTweets![indexPath.row]
         cell.delegate = self
+        cell.accessoryType = .none
         return cell
     }
     

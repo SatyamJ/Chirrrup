@@ -20,6 +20,8 @@ class SlideoutMenuViewController: UIViewController, UIGestureRecognizerDelegate 
     
     @IBOutlet weak var visitProfileView: UIView!
     
+    @IBOutlet weak var coverImageView: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupUserFields()
@@ -46,6 +48,18 @@ class SlideoutMenuViewController: UIViewController, UIGestureRecognizerDelegate 
             if let handle = user.screen_name{
                 self.userHandleLabel.text = "@\(handle)"
             }
+            
+            if let bannerUrl = user.profile_banner_url{
+                self.coverImageView.setImageWith(bannerUrl as URL)
+                
+                let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
+                let blurEffectView = UIVisualEffectView(effect: blurEffect)
+                blurEffectView.frame = self.coverImageView.bounds
+                blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                self.coverImageView.addSubview(blurEffectView)
+            }
+
+            
         }
     }
     
