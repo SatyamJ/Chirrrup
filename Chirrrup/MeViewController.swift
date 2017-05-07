@@ -157,6 +157,10 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
         if let profileImageUrl = showingUser.user_profile_image_url{
             self.profileImageView.setImageWith(profileImageUrl as URL)
             self.loadHigherResolutionImage(url: profileImageUrl, imageView: profileImageView)
+            self.profileImageView.layer.cornerRadius = 5
+            self.profileImageView.layer.masksToBounds = true
+            self.profileImageView.layer.borderWidth = 2
+            self.profileImageView.layer.borderColor = UIColor.white.cgColor
         }
         
         if let name = showingUser.name{

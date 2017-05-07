@@ -43,7 +43,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         self.setupRefreshControl()
         self.setupInfiniteScrollView()
         
-        self.networkErrorImageView.isHidden = true
+        self.networkErrorImageView.alpha = 0
         self.setupGestureRecognizers()
     }
     
@@ -125,6 +125,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                 MBProgressHUD.hide(for: self.view, animated: true)
                 self.hideNetworkError()
             }
+            MBProgressHUD.hide(for: self.view, animated: true)
             
         }) { (error: NSError) -> () in
             print("Error: \(error.localizedDescription)")
@@ -147,14 +148,14 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     fileprivate func showNetworkError(){
-        UIView.animate(withDuration: 1, animations: {
-            self.networkErrorImageView.isHidden = false
+        UIView.animate(withDuration: 2, animations: {
+            self.networkErrorImageView.alpha = 1.0
         })
     }
     
     fileprivate func hideNetworkError(){
         UIView.animate(withDuration: 1, animations: {
-            self.networkErrorImageView.isHidden = true
+            self.networkErrorImageView.alpha = 0.0
         })
     }
     
