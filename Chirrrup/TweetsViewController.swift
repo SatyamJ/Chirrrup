@@ -37,18 +37,11 @@ class TweetsViewController: UIViewController, BaseController, UITableViewDelegat
         // Dispose of any resources that can be recreated.
     }
     
-    fileprivate func setupUI(){
-        self.setupNavigationBar()
-        self.setupTableView()
-        self.requestNetworkData()
-        self.setupRefreshControl()
-        self.setupInfiniteScrollView()
-        
+    func setupNetworkErrorView(){
         self.networkErrorImageView.alpha = 0
-        self.setupGestureRecognizers()
     }
     
-    fileprivate func setupGestureRecognizers(){
+    internal func setupGestureRecognizers(){
         let networkGesture = UITapGestureRecognizer()
         networkGesture.addTarget(self, action: #selector(onTapNetworkError))
         self.ntwkErrStackView.addGestureRecognizer(networkGesture)
@@ -69,7 +62,7 @@ class TweetsViewController: UIViewController, BaseController, UITableViewDelegat
         self.tweetsTableView.tableFooterView = UIView()
     }
     
-    fileprivate func setupRefreshControl(){
+    internal func setupRefreshControl(){
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
         tweetsTableView.insertSubview(refreshControl, at: 0)
@@ -79,13 +72,31 @@ class TweetsViewController: UIViewController, BaseController, UITableViewDelegat
         self.menuBarButton.target = self.revealViewController()
         self.menuBarButton.action = #selector(SWRevealViewController.revealToggle(_:))
         self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-        
-//        self.menuBarButton.image = User.currentUser.
     }
     
+    func requestNetworkData(){
+        self.showProgress()
+        TwitterClient.sharedInstance?.homeTimeline({ (tweets:[Tweet]) -> () in
+            if tweets.count > 0 {
+                self.tweets = tweets
+                self.updateTableView()
+                self.hideProgress()
+                
+            }
+            self.hideProgress()
+            
+        }) { (error: NSError) -> () in
+            print("Error: \(error.localizedDescription)")
+            self.hideProgress()
+            if error.localizedDescription.contains("429"){
+                self.requestCountExceeded()
+            }else{
+                self.showNetworkError()
+            }
+        }
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         if self.tweets == nil {
             return 0
         }else{
@@ -101,7 +112,7 @@ class TweetsViewController: UIViewController, BaseController, UITableViewDelegat
         return cell
     }
     
-    fileprivate func setupInfiniteScrollView(){
+    internal func setupInfiniteScrollView(){
         // Set up Infinite Scroll loading indicator
         let frame = CGRect(x: 0, y: tweetsTableView.contentSize.height, width: tweetsTableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
         loadingMoreView = InfiniteScrollActivityView(frame: frame)
@@ -118,47 +129,34 @@ class TweetsViewController: UIViewController, BaseController, UITableViewDelegat
         refreshControl.endRefreshing()
     }
     
-    fileprivate func requestNetworkData(){
-        MBProgressHUD.showAdded(to: self.view, animated: true)
-        TwitterClient.sharedInstance?.homeTimeline({ (tweets:[Tweet]) -> () in
-            if tweets.count > 0 {
-                self.tweets = tweets
-                self.tweetsTableView.reloadData()
-                MBProgressHUD.hide(for: self.view, animated: true)
-                self.hideNetworkError()
-            }
-            MBProgressHUD.hide(for: self.view, animated: true)
-            
-        }) { (error: NSError) -> () in
-            print("Error: \(error.localizedDescription)")
-            MBProgressHUD.hide(for: self.view, animated: true)
-            if error.localizedDescription.contains("429"){
-                self.requestCountExceeded()
-            }else{
-                self.showNetworkError()
-            }
-            
-        }
-    }
     
-    fileprivate func requestCountExceeded(){
-        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
-        hud?.show(animated: true, whileExecuting: {
-            hud?.labelText = "Request limit exceeded. Try again later."
-        })
-        hud?.hide(true, afterDelay: 1)
-    }
     
-    fileprivate func showNetworkError(){
+    func showNetworkError(){
         UIView.animate(withDuration: 2, animations: {
             self.networkErrorImageView.alpha = 1.0
         })
     }
     
-    fileprivate func hideNetworkError(){
+    func hideNetworkError(){
         UIView.animate(withDuration: 1, animations: {
             self.networkErrorImageView.alpha = 0.0
         })
+    }
+    
+    func showProgress(){
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+    }
+    
+    func hideProgress(){
+        MBProgressHUD.hide(for: self.view, animated: true)
+    }
+    
+    func requestCountExceeded(){
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hud?.show(animated: true, whileExecuting: {
+            hud?.labelText = "Request limit exceeded. Try again later."
+        })
+        hud?.hide(true, afterDelay: 1)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -182,7 +180,7 @@ class TweetsViewController: UIViewController, BaseController, UITableViewDelegat
         }
     }
     
-    fileprivate func loadMoreData(){
+    func loadMoreData(){
         TwitterClient.sharedInstance?.homeTimelineOnScroll(self.getEarliestTweetId(), success: { (moreTweets: [Tweet]) in
             if moreTweets.count > 0 {
                 self.tweets?.append(contentsOf: moreTweets)
@@ -195,19 +193,6 @@ class TweetsViewController: UIViewController, BaseController, UITableViewDelegat
             print("Error in loading more feeds: \(error.localizedDescription)")
         }
 
-    }
-    
-    fileprivate func getEarliestTweetId() -> Int? {
-        var id:Int?
-        
-        if let tweets = tweets{
-            if tweets.count > 0{
-                if let strId = tweets[tweets.count-1].tweetId{
-                    id = Int(strId)
-                }
-            }
-        }
-        return id
     }
     
     func onTapCellProfileImage(_ sender: AnyObject?){

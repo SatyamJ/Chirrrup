@@ -7,16 +7,40 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 protocol BaseController: NSObjectProtocol, UITableViewDataSource, CellDelegate {
     var tweets: [Tweet]? {get set}
     
     func getCellIndex(of view: UIView) -> Int?
     func updateTableView()
+    func hideNetworkError()
+    func showNetworkError()
+    func showProgress()
+    func hideProgress()
+    func requestCountExceeded()
+    func requestNetworkData()
+    func loadMoreData()
+    func setupNavigationBar()
+    func setupTableView()
+    func setupRefreshControl()
+    func setupInfiniteScrollView()
+    func setupNetworkErrorView()
+    func setupGestureRecognizers()
 }
 
 
 extension BaseController{
+    
+    func setupUI(){
+        self.setupNavigationBar()
+        self.setupTableView()
+        self.requestNetworkData()
+        self.setupRefreshControl()
+        self.setupInfiniteScrollView()
+        self.setupNetworkErrorView()
+        self.setupGestureRecognizers()
+    }
     
     // Implementing UITableViewDataSource methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -44,15 +68,15 @@ extension BaseController{
                     if let liked = tweet.liked{
                         if liked{
                             TwitterClient.sharedInstance?.unlike(String(tweet.tweetId!),
-                                                                 success: { () -> () in
-                                                                    self.updateLikesCount(of: index, when: liked)
+                                success: { () -> () in
+                                    self.updateLikesCount(of: index, when: liked)
                             }, failure: { (error: NSError) -> () in
                                 print("Tweet Unlike error: \(error.localizedDescription)")
                             })
                         }else{
                             TwitterClient.sharedInstance?.like(String(tweet.tweetId!),
-                                                               success: { () -> () in
-                                                                self.updateLikesCount(of: index, when: liked)
+                                success: { () -> () in
+                                    self.updateLikesCount(of: index, when: liked)
                             }, failure: { (error: NSError) -> () in
                                 print("Tweet Like error: \(error.localizedDescription)")
                             })
@@ -87,15 +111,15 @@ extension BaseController{
                     if let retweeted = tweet.retweeted{
                         if retweeted {
                             TwitterClient.sharedInstance?.unretweet(String(tweet.tweetId!),
-                                                                    success: { () -> () in
-                                                                        self.updateRetweetCount(of: index, when: retweeted)
+                                success: { () -> () in
+                                    self.updateRetweetCount(of: index, when: retweeted)
                             }, failure: { (error: NSError) -> () in
                                 print("Un-retweet error: \(error.localizedDescription)")
                             })
                         }else{
                             TwitterClient.sharedInstance?.retweet(String(tweet.tweetId!),
-                                                                  success: { () -> () in
-                                                                    self.updateRetweetCount(of: index, when: retweeted)
+                                success: { () -> () in
+                                    self.updateRetweetCount(of: index, when: retweeted)
                             }, failure: { (error: NSError) -> () in
                                 print("Retweet error: \(error.localizedDescription)")
                             })
@@ -122,5 +146,15 @@ extension BaseController{
         }
     }
     
-    
+    func getEarliestTweetId() -> Int? {
+        var id:Int?
+        if let tweets = tweets{
+            if tweets.count > 0{
+                if let strId = tweets[tweets.count-1].tweetId{
+                    id = Int(strId)
+                }
+            }
+        }
+        return id
+    }
 }
