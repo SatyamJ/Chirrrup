@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		240A92451ED2BBF20093CE95 /* BaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 240A92441ED2BBF20093CE95 /* BaseController.swift */; };
+		2475138C1ED01379004A6E2A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2475138B1ED01379004A6E2A /* ProfileViewController.swift */; };
 		24EDB25E1E670EA1005E4D41 /* AuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EDB25D1E670EA1005E4D41 /* AuthorizationViewController.swift */; };
 		4A09DDF91C81E8F8008AC60C /* TweetDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A09DDF81C81E8F8008AC60C /* TweetDetailsViewController.swift */; };
 		4A09DDFD1C82B7EE008AC60C /* MeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A09DDFC1C82B7EE008AC60C /* MeViewController.swift */; };
@@ -30,6 +32,8 @@
 /* Begin PBXFileReference section */
 		000D4EFDC8C94675EB86B5D4 /* Pods-Chirrrup.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chirrrup.release.xcconfig"; path = "Pods/Target Support Files/Pods-Chirrrup/Pods-Chirrrup.release.xcconfig"; sourceTree = "<group>"; };
 		08B48185A4EF0EF9F1C1A2BB /* Pods_Chirrrup.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chirrrup.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		240A92441ED2BBF20093CE95 /* BaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseController.swift; sourceTree = "<group>"; };
+		2475138B1ED01379004A6E2A /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		24EDB25D1E670EA1005E4D41 /* AuthorizationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationViewController.swift; sourceTree = "<group>"; };
 		401672B0DAB1805F7E942F18 /* Pods-Chirrrup.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chirrrup.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Chirrrup/Pods-Chirrrup.debug.xcconfig"; sourceTree = "<group>"; };
 		4A09DDF81C81E8F8008AC60C /* TweetDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetDetailsViewController.swift; sourceTree = "<group>"; };
@@ -93,6 +97,8 @@
 				4A78364F1C856623001F54B6 /* ComposeTweetViewController.swift */,
 				4ABFA1C41CF3BDDB00951198 /* SlideoutMenuViewController.swift */,
 				24EDB25D1E670EA1005E4D41 /* AuthorizationViewController.swift */,
+				2475138B1ED01379004A6E2A /* ProfileViewController.swift */,
+				240A92441ED2BBF20093CE95 /* BaseController.swift */,
 			);
 			name = "view controllers";
 			sourceTree = "<group>";
@@ -205,6 +211,7 @@
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = R9AUQ2AUXF;
 						LastSwiftMigration = 0810;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -297,6 +304,7 @@
 				4ADF4E911C78675F00BF130C /* LoginViewController.swift in Sources */,
 				4A8122AF1CFC0C23009A95C8 /* InfiniteScrollActivityView.swift in Sources */,
 				4A09DDFD1C82B7EE008AC60C /* MeViewController.swift in Sources */,
+				2475138C1ED01379004A6E2A /* ProfileViewController.swift in Sources */,
 				4A55A1F41C72A3EA0092FB91 /* TwitterClient.swift in Sources */,
 				4A8139261C797C1500FF6B65 /* TweetCell.swift in Sources */,
 				4A09DDF91C81E8F8008AC60C /* TweetDetailsViewController.swift in Sources */,
@@ -305,6 +313,7 @@
 				4A8840951C729A7D00A1D7A0 /* AppDelegate.swift in Sources */,
 				4ABFA1C51CF3BDDB00951198 /* SlideoutMenuViewController.swift in Sources */,
 				4A7836501C856623001F54B6 /* ComposeTweetViewController.swift in Sources */,
+				240A92451ED2BBF20093CE95 /* BaseController.swift in Sources */,
 				4A8139221C78E92C00FF6B65 /* Tweet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -417,11 +426,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = R9AUQ2AUXF;
 				INFOPLIST_FILE = Chirrrup/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.codepath.Chirrrup;
 				PRODUCT_NAME = Chirrrup;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Chirrrup/Chirrrup-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -434,11 +445,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = R9AUQ2AUXF;
 				INFOPLIST_FILE = Chirrrup/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.codepath.Chirrrup;
 				PRODUCT_NAME = Chirrrup;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Chirrrup/Chirrrup-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};

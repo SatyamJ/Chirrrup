@@ -68,6 +68,7 @@ class TweetCell: UITableViewCell {
             
             if let text = tweet?.text{
                 self.tweetTextView.text = text
+                self.tweetTextView.isUserInteractionEnabled = false
             }
             
             if let retweetCount = tweet?.retweet_count{

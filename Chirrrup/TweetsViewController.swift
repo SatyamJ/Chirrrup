@@ -10,13 +10,14 @@ import UIKit
 import AFNetworking
 import MBProgressHUD
 
-class TweetsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CellDelegate, UIScrollViewDelegate, ComposeTweetDelegate {
+class TweetsViewController: UIViewController, BaseController, UITableViewDelegate, UIScrollViewDelegate, ComposeTweetDelegate {
 
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tweetsTableView: UITableView!
     @IBOutlet weak var menuBarButton: UIBarButtonItem!
     @IBOutlet weak var logoView: UIView!
     @IBOutlet weak var networkErrorImageView: UIImageView!
     @IBOutlet weak var ntwkErrStackView: UIStackView!
+    
     
     var tweets: [Tweet]?
     var moreDataRequested: Bool = false
@@ -28,7 +29,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.tableView.reloadData()
+        self.tweetsTableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -60,27 +61,28 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         self.requestNetworkData()
     }
     
-    fileprivate func setupTableView(){
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 120
-        self.tableView.tableFooterView = UIView()
+    func setupTableView(){
+        tweetsTableView.dataSource = self
+        tweetsTableView.delegate = self
+        tweetsTableView.rowHeight = UITableViewAutomaticDimension
+        tweetsTableView.estimatedRowHeight = 120
+        self.tweetsTableView.tableFooterView = UIView()
     }
     
     fileprivate func setupRefreshControl(){
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
-        tableView.insertSubview(refreshControl, at: 0)
+        tweetsTableView.insertSubview(refreshControl, at: 0)
     }
     
-    fileprivate func setupNavigationBar(){
+    func setupNavigationBar(){
         self.menuBarButton.target = self.revealViewController()
         self.menuBarButton.action = #selector(SWRevealViewController.revealToggle(_:))
         self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         
 //        self.menuBarButton.image = User.currentUser.
     }
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -101,14 +103,14 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     
     fileprivate func setupInfiniteScrollView(){
         // Set up Infinite Scroll loading indicator
-        let frame = CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+        let frame = CGRect(x: 0, y: tweetsTableView.contentSize.height, width: tweetsTableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
         loadingMoreView = InfiniteScrollActivityView(frame: frame)
         loadingMoreView!.isHidden = true
-        tableView.addSubview(loadingMoreView!)
+        tweetsTableView.addSubview(loadingMoreView!)
         
-        var insets = tableView.contentInset;
+        var insets = tweetsTableView.contentInset;
         insets.bottom += InfiniteScrollActivityView.defaultHeight;
-        tableView.contentInset = insets
+        tweetsTableView.contentInset = insets
     }
     
     func refreshControlAction(_ refreshControl: UIRefreshControl){
@@ -121,7 +123,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         TwitterClient.sharedInstance?.homeTimeline({ (tweets:[Tweet]) -> () in
             if tweets.count > 0 {
                 self.tweets = tweets
-                self.tableView.reloadData()
+                self.tweetsTableView.reloadData()
                 MBProgressHUD.hide(for: self.view, animated: true)
                 self.hideNetworkError()
             }
@@ -162,14 +164,14 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if (!moreDataRequested){
             
-            let scrollViewContentHeight = self.tableView.contentSize.height
-            let scrollOffsetThreshold = scrollViewContentHeight - self.tableView.bounds.size.height
+            let scrollViewContentHeight = self.tweetsTableView.contentSize.height
+            let scrollOffsetThreshold = scrollViewContentHeight - self.tweetsTableView.bounds.size.height
             
-            if scrollView.contentOffset.y > scrollOffsetThreshold && tableView.isDragging {
+            if scrollView.contentOffset.y > scrollOffsetThreshold && tweetsTableView.isDragging {
                 moreDataRequested = true
                 
                 // Update position of loadingMoreView, and start loading indicator
-                let frame = CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+                let frame = CGRect(x: 0, y: tweetsTableView.contentSize.height, width: tweetsTableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
                 if let progressView = self.loadingMoreView{
                     progressView.frame = frame
                     progressView.startAnimating()
@@ -184,7 +186,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         TwitterClient.sharedInstance?.homeTimelineOnScroll(self.getEarliestTweetId(), success: { (moreTweets: [Tweet]) in
             if moreTweets.count > 0 {
                 self.tweets?.append(contentsOf: moreTweets)
-                self.tableView.reloadData()
+                self.tweetsTableView.reloadData()
             }
             self.loadingMoreView?.stopAnimating()
             self.moreDataRequested = false
@@ -198,7 +200,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     fileprivate func getEarliestTweetId() -> Int? {
         var id:Int?
         
-        if let tweets = self.tweets{
+        if let tweets = tweets{
             if tweets.count > 0{
                 if let strId = tweets[tweets.count-1].tweetId{
                     id = Int(strId)
@@ -213,77 +215,29 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         performSegue(withIdentifier: "showUserProfileSegue", sender: sender)
     }
     
-    func onTapCellLike(_ sender: AnyObject?) {
-        //print("onTapCellLike called")
-        if let recognizer = sender as? UITapGestureRecognizer{
-            let imageView = recognizer.view
-            if let cellView = imageView?.superview?.superview?.superview as? TweetCell {
-                if let indexPath = self.tableView.indexPath(for: cellView) {
-                    if let tweet = self.tweets?[indexPath.row]{
-                        //print("processing tweet id: \(tweet.tweetId)")
-                        if tweet.liked == true{
-                            //self.tweets![(indexPath?.row)!].liked = false
-                            TwitterClient.sharedInstance?.unlike(String(tweet.tweetId!),
-                                 success: { () -> () in
-                                    self.tweets![indexPath.row].liked = false
-                                    self.tweets![indexPath.row].likes_count -= 1
-                                    self.tableView.reloadData()
-                            }, failure: { (error: NSError) -> () in
-                                print("Tweet Unlike error: \(error.localizedDescription)")
-                            })
-                        }else{
-                            //self.tweets![(indexPath?.row)!].liked = true
-                            TwitterClient.sharedInstance?.like(String(tweet.tweetId!),
-                               success: { () -> () in
-                                self.tweets![indexPath.row].liked = true
-                                self.tweets![indexPath.row].likes_count += 1
-                                self.tableView.reloadData()
-                            }, failure: { (error: NSError) -> () in
-                                print("Tweet Like error: \(error.localizedDescription)")
-                            })
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
     func onTapCellReply(_ sender: AnyObject?) {
         performSegue(withIdentifier: "tweetSegue", sender: sender)
     }
     
-    func onTapCellRetweet(_ sender: AnyObject?) {
-        //print("onTapCellRetweet called")
-        if let recognizer = sender as? UITapGestureRecognizer{
-            let imageView = recognizer.view
-            if let cellView = imageView?.superview?.superview?.superview as? TweetCell {
-                if let indexPath = self.tableView.indexPath(for: cellView) {
-                    if let tweet = self.tweets?[indexPath.row]{
-                        //print("processing tweet id: \(tweet.tweetId!)")
-                        if tweet.retweeted == true{
-                            TwitterClient.sharedInstance?.unretweet(String(tweet.tweetId!),
-                                success: { () -> () in
-                                    self.tweets![indexPath.row].retweeted = false
-                                    self.tweets![indexPath.row].retweet_count -= 1
-                                    self.tableView.reloadData()
-                            }, failure: { (error: NSError) -> () in
-                                print("Un-retweet error: \(error.localizedDescription)")
-                            })
-                        }else{
-                            TwitterClient.sharedInstance?.retweet(String(tweet.tweetId!),
-                                  success: { () -> () in
-                                    self.tweets![indexPath.row].retweeted = true
-                                    self.tweets![indexPath.row].retweet_count += 1
-                                    self.tableView.reloadData()
-                            }, failure: { (error: NSError) -> () in
-                                print("Retweet error: \(error.localizedDescription)")
-                            })
-                        }
-                    }
-                }
+    func updateRetweetCount(of index: Int, when retweeted: Bool){
+        if let tweets = self.tweets{
+            if retweeted{
+                tweets[index].retweeted = false
+                tweets[index].retweet_count -= 1
                 
+            }else{
+                tweets[index].retweeted = true
+                tweets[index].retweet_count += 1
             }
+            
+            self.tweetsTableView.reloadData()
         }
+    }
+    
+    func getCellIndex(of view: UIView) -> Int?{
+        let pointInTable = view.convert(view.bounds.origin, to: self.tweetsTableView)
+        let index = self.tweetsTableView.indexPathForRow(at: pointInTable)?.row
+        return index
     }
     
     
@@ -293,13 +247,17 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
 
     func onNewTweet(status: Tweet) {
         self.tweets?.insert(status, at: 0)
-        self.tableView.reloadData()
+        self.tweetsTableView.reloadData()
     }
     
     func reload(_ sender: TweetCell) {
-        if let indexPath = self.tableView.indexPath(for: sender){
-            self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.none)
+        if let indexPath = self.tweetsTableView.indexPath(for: sender){
+            self.tweetsTableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.none)
         }
+    }
+    
+    func updateTableView(){
+        self.tweetsTableView.reloadData()
     }
     
         // MARK: - Navigation
@@ -311,13 +269,13 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         if segue.identifier == "TweetDetailsSegue"{
             if let detailsViewController = segue.destination as? TweetDetailsViewController {
                 if let cell = sender as? TweetCell{
-                    if let indexPath = tableView.indexPath(for: cell) {
-                        detailsViewController.tweet = self.tweets![indexPath.row] as Tweet
+                    if let indexPath = tweetsTableView.indexPath(for: cell) {
+                        detailsViewController.tweet = tweets![indexPath.row] as Tweet
                         detailsViewController.row = indexPath.row
                         let bgView = UIView()
                         bgView.backgroundColor = UIColor.gray
                         cell.selectedBackgroundView = bgView
-                        tableView.deselectRow(at: indexPath, animated: true)
+                        tweetsTableView.deselectRow(at: indexPath, animated: true)
                     }
                 }
             }
@@ -326,7 +284,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                 if let recog = sender as? UITapGestureRecognizer {
                     let view = recog.view
                     if let cell = view?.superview?.superview as? TweetCell {
-                        if let indexPath = tableView.indexPath(for: cell) {
+                        if let indexPath = tweetsTableView.indexPath(for: cell) {
                             if let tweet = tweets?[indexPath.row] {
                                 profileViewController.user = tweet.user
                             }
@@ -341,8 +299,8 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                     if let recognizer = sender as? UIGestureRecognizer{
                         let view = recognizer.view
                         if let cell = view?.superview?.superview?.superview as? TweetCell{
-                            if let indexPath = tableView.indexPath(for: cell) {
-                                if let tweet = self.tweets?[indexPath.row]{
+                            if let indexPath = tweetsTableView.indexPath(for: cell) {
+                                if let tweet = tweets?[indexPath.row]{
                                     composeViewController.recepientTweetId = tweet.tweetId
                                     composeViewController.recepientUser = tweet.user
                                 }

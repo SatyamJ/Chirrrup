@@ -656,7 +656,7 @@
                         <outlet property="menuBarButton" destination="l5t-49-rqO" id="HBD-Gs-dxj"/>
                         <outlet property="networkErrorImageView" destination="exT-Od-Xfw" id="a8y-Bi-2en"/>
                         <outlet property="ntwkErrStackView" destination="EXL-qZ-ZJH" id="WDG-eb-EWS"/>
-                        <outlet property="tableView" destination="Nji-uc-rev" id="nQN-S8-cfP"/>
+                        <outlet property="tweetsTableView" destination="Nji-uc-rev" id="S71-gj-TDP"/>
                         <segue destination="N4a-zc-Iox" kind="push" identifier="showUserProfileSegue" id="59Z-e9-UAl"/>
                     </connections>
                 </viewController>
@@ -912,7 +912,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hui-SV-wpV">
-                                <rect key="frame" x="0.0" y="20" width="375" height="258"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="258"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="in reply to @handle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RH4-tB-H1f">
                                         <rect key="frame" x="8" y="81" width="116.5" height="16"/>
@@ -1303,8 +1303,8 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="eCW-Mq-cRd"/>
-        <segue reference="MmR-Vq-CHM"/>
-        <segue reference="Ah5-Zi-1f6"/>
-        <segue reference="bWw-di-EXx"/>
+        <segue reference="59Z-e9-UAl"/>
+        <segue reference="vK0-9R-QaB"/>
+        <segue reference="0xH-tD-zC4"/>
     </inferredMetricsTieBreakers>
 </document>
